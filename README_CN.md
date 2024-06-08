@@ -44,10 +44,11 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 ## 截图
 ### 检查 API 用量
 获取每小时、每日和每月的配额。
-<img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/HomePage_EN.png"/>
+<img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/HomePage_CN.png"/>
 ### 文件分析
 上传文件并获取分析报告
-<img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/File_EN.gif"/>
+
+<img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/File_CN.gif"/>
 ### URL 分析
 轻松扫描 URL
-<img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/URL_EN.png"/>
+<img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/URL_CN.png"/>
