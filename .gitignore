@@ -13,5 +13,5 @@
 .obsidian/plugins/obsidian-pandoc/main.js
 .obsidian/plugins/obsidian-pandoc/manifest.json
 .obsidian/plugins/obsidian-pandoc/styles.css
-VirusTotal.xcodeproj/project.xcworkspace/xcuserdata/jerry.xcuserdatad/UserInterfaceState.xcuserstate
-VirusTotal.xcodeproj/project.xcworkspace/xcuserdata/jerry.xcuserdatad/UserInterfaceState.xcuserstate
+
+*.xcuserstate
