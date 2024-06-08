@@ -27,9 +27,10 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 ```
 
 ## 功能
+- 将文件和网址上传到 VirusTotal
+- 在 VirusTotal 网站查看分析报告
+- 在 App 中查看分析报告
 - 检查 API 用量
-- 文件分析
-- URL 分析
 - 移除 URL 中的追踪链接
 - 集成 macOS 系统服务
 - 将 URL 拖放到应用程序图标进行扫描

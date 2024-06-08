@@ -27,10 +27,11 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 ```
 
 ## Features
+- Uploade files and URLs to VirusTotal
+- View Analysis Report on VirusTotal
+- View Analysis Report in app
 - Check API quota
-- URL Analysis
 - Remove tracking query in URL
-- File Analysis
 - System Service support for both URLs and files
 - Drop URL on app icon to scan
 - Drop file in app to scan
