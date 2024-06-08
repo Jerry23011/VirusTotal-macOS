@@ -41,8 +41,8 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 This app is sandboxed and only contacts VirusTotal and GitHub (for downloading updates).
 Note that this is NOT an official app from VirusTotal. All source code is available, so feel free to compile it yourself.
 The data the app sends to VirusTotal conforms to VirusTotal's [Privacy Policy](https://docs.virustotal.com/docs/privacy-policy)
-
-
+## Acknowledgements
+See [Acknowledgements](https://github.com/Jerry23011/VirusTotal-macOS/blob/main/ACKNOWLEDGEMENTS.md)
 ## Screenshots
 ### Check Quota
 Retrieve your hourly, daily, and monthly quota.

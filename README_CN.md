@@ -41,7 +41,8 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 采用 App 沙盒，只通过网络连接 VirusTotal 和 GitHub（下载更新）
 请注意：本 App 不是 VirusTotal 的官方程序。但所有源代码都是公开的，不放心请检查代码并自行编译。
 所有发送到 VirusTotal 的数据均遵循 VirusTotal [隐私政策](https://docs.virustotal.com/docs/privacy-policy)
-
+## 致谢
+请见 [Acknowledgements](https://github.com/Jerry23011/VirusTotal-macOS/blob/main/ACKNOWLEDGEMENTS.md)
 ## 截图
 ### 检查 API 用量
 获取每小时、每日和每月的配额。
