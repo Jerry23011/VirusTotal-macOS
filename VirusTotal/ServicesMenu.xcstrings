@@ -4,6 +4,12 @@
     "Scan File with VirusTotal" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skenovat soubor přes VirusTotal"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21,6 +27,12 @@
     "Scan URL with VirusTotal" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skenovat URL přes VirusTotal"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
