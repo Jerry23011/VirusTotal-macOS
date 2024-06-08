@@ -28,6 +28,7 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 ## Features
 - Check API quota
 - URL Analysis
+- Remove tracking query in URL
 - File Analysis
 - System Service support for both URLs and files
 - Drop URL on app icon to scan
