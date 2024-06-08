@@ -15,8 +15,7 @@
 你可以在 [VirusTotal API 页面](https://www.virustotal.com/gui/my-apikey)获取一个免费的公共 API 密钥。
 <img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/API.png"/>
 
-#### 下载
-<img src="https://img.shields.io/badge/macOS-14.0-green"/>
+#### 下载 <img src="https://img.shields.io/badge/macOS-14.0-green"/>
 
 请前往 [Releases](https://github.com/Jerry23011/VirusTotal-macOS/releases) 以获取最新的 dmg 文件。
 #### 绕过 macOS 公证
