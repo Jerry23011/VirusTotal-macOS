@@ -3,6 +3,12 @@
   "strings" : {
     "" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19,6 +25,12 @@
     },
     "%@" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35,6 +47,12 @@
     },
     "about.contributor.link" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uznání"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51,6 +69,12 @@
     },
     "about.current.version %@" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verze %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67,6 +91,12 @@
     },
     "about.github.link" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GitHub"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83,6 +113,12 @@
     },
     "analysis.date.label %@" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čas poslední analýzy: %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -99,6 +135,12 @@
     },
     "check.for.updates" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zkontrolovat aktualizace…"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115,6 +157,12 @@
     },
     "community.score.label %lld" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komunitní hodnocení: %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -131,6 +179,12 @@
     },
     "errorview.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VirusTotal narazil na chybu"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -147,6 +201,12 @@
     },
     "fileview.button.open.caption" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nebo sem přetáhněte soubor, který chcete analyzovat"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163,6 +223,12 @@
     },
     "fileview.button.open.finder" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otevřít soubor ve Finderu…"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -179,6 +245,12 @@
     },
     "fileview.button.upload" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potvrdit nahrání souboru"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -195,6 +267,12 @@
     },
     "fileview.file.type %@" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zjištěný typ souboru: %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -211,6 +289,12 @@
     },
     "fileview.indicator.uploading" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nahrávání…"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -227,6 +311,12 @@
     },
     "fileview.name.size %@ %@" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (%2$@)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -243,6 +333,12 @@
     },
     "fileview.tip.message" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zde se můžete kdykoliv vrátit na stránku Nahrát"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -259,6 +355,12 @@
     },
     "fileview.tip.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zpět na stránku Nahrát"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -275,6 +377,12 @@
     },
     "fileview.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analýza souboru"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -291,6 +399,12 @@
     },
     "fileview.toolbar.back" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zpět na stránku Nahrát"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -307,6 +421,12 @@
     },
     "fileview.uniquesource.help.details" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tohle číslo označuje, z kolika zdrojůů byl tento soubor nahrán."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -323,6 +443,12 @@
     },
     "fileview.uniquesource.help.headline" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jedinečné zdroje"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -339,6 +465,12 @@
     },
     "fileview.uniquesource.label %lld" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jedinečné zdroje: %lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -355,6 +487,12 @@
     },
     "homepage.quota.daily" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denní limit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -371,6 +509,12 @@
     },
     "homepage.quota.hourly" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hodinový limit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -387,6 +531,12 @@
     },
     "homepage.quota.monthly" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Měsíční limit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -403,6 +553,12 @@
     },
     "homepage.quota.used %lld %lld" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Použito: %1$lld/%2$lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -419,6 +575,12 @@
     },
     "homepage.status.checking" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probíhá kontrola stavu služby… "
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -435,6 +597,12 @@
     },
     "homepage.status.fail" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Při připojování se vyskytla chyba"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -451,6 +619,12 @@
     },
     "homepage.status.retry" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zkusit znovu"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -467,6 +641,12 @@
     },
     "homepage.status.success" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Služba běží"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -483,6 +663,12 @@
     },
     "launchview.button.done" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hotovo"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -499,6 +685,12 @@
     },
     "launchview.prompt.getapi" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokud již máte API klíč, najdete ho [zde](https://www.virustotal.com/gui/my-apikey)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -515,6 +707,12 @@
     },
     "launchview.prompt.setting" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tohle nastavení můžete kdykoliv změnit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -531,6 +729,12 @@
     },
     "launchview.prompt.signup" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Zde](https://www.virustotal.com/gui/join-us) si vytvořte účet VirusTotal"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -547,6 +751,12 @@
     },
     "launchview.setup.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VirusTotal pro macOS"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -563,6 +773,12 @@
     },
     "loading.title.progress (%@s)..." : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probíhá analýza (%@s) ..."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -579,6 +795,12 @@
     },
     "menubar.open.about" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O aplikaci VirusTotal"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -595,6 +817,12 @@
     },
     "menubar.open.main" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nové okno"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -611,6 +839,12 @@
     },
     "settings.advanced" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokročilé"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -627,6 +861,12 @@
     },
     "settings.advanced.mini" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mini režim"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -643,6 +883,12 @@
     },
     "settings.api" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -659,6 +905,12 @@
     },
     "settings.api.alert.button" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -675,6 +927,12 @@
     },
     "settings.api.help.details" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klíč API a uživatelské jméno získáte po zaregistrování na této adrese: https://virustotal.com/gui/join-us"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -691,6 +949,12 @@
     },
     "settings.api.help.headline" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kde získám klíč API a uživatelské jméno?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -707,6 +971,12 @@
     },
     "settings.api.key" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klíč API"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -723,6 +993,12 @@
     },
     "settings.api.key.placeholder" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "xxxxxx"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -739,6 +1015,12 @@
     },
     "settings.api.message.failed" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Překontrolujte zadané informace"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -755,6 +1037,12 @@
     },
     "settings.api.message.success" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VirusTotal je připravený!"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -771,6 +1059,12 @@
     },
     "settings.api.message.unkown" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neznámý stav ověření"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -787,6 +1081,12 @@
     },
     "settings.api.username" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uživatelské jméno"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -803,6 +1103,12 @@
     },
     "settings.api.username.placeholder" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "zohledňuje-velikost-písmen"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -819,6 +1125,12 @@
     },
     "settings.api.verify" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ověřit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -835,6 +1147,12 @@
     },
     "settings.api.verify.failed" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Při ověřování se vyskytla chyba"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -851,6 +1169,12 @@
     },
     "settings.api.verify.success" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Úspěšně ověřeno"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -867,6 +1191,12 @@
     },
     "settings.coming.soon" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Již brzy"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -883,6 +1213,12 @@
     },
     "settings.general" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obecné"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -899,6 +1235,12 @@
     },
     "settings.general.check_for_updates" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zkontrolovat aktualizace"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -915,6 +1257,12 @@
     },
     "settings.general.check_now" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zkontrolovat"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -931,6 +1279,12 @@
     },
     "settings.general.cleanurl" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstranit sledování z konečné URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -947,6 +1301,12 @@
     },
     "settings.general.launch" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otevřít při přihlášení"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -963,6 +1323,12 @@
     },
     "settings.general.update" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automaticky kontrolovat aktualizace"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -979,6 +1345,12 @@
     },
     "settnigs.general.current_version %@" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Současná verze: %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -996,6 +1368,12 @@
     "sidebar.file" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soubor"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1013,6 +1391,12 @@
     "sidebar.home" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stav"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1030,6 +1414,12 @@
     "sidebar.url" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1046,6 +1436,12 @@
     },
     "toolbar.button.rescan" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Požádat o nový sken"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1062,6 +1458,12 @@
     },
     "urlview.button.go.vt" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit ve VirusTotal"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1078,6 +1480,12 @@
     },
     "urlview.button.scan" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skenovat"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1094,6 +1502,12 @@
     },
     "urlview.finalurl.help.details" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konečná URL je adresa, která je na konci všech přesměrování. Může pomoci proti phishingovým útokům."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1110,6 +1524,12 @@
     },
     "urlview.finalurl.help.headline" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konečná URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1126,6 +1546,12 @@
     },
     "urlview.textfield.placeholder" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "https://priklad.cz"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1142,6 +1568,12 @@
     },
     "urlview.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analýza URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1158,6 +1590,12 @@
     },
     "urlview.welcome.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skenovat URL nebo IP adresu"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1174,6 +1612,12 @@
     },
     "vendor.count.label %lld %lld" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld/%2$lld zabezpečovatelná označilo tuto URL jako nebezpečnou"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1190,6 +1634,12 @@
     },
     "VirusTotal for macOS" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VirusTotal pro macOS"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
