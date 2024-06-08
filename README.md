@@ -14,7 +14,9 @@
 ## Quick Setup
 You can get a free public API key from VirusTotal. Visit [VirusTotal's API page](https://www.virustotal.com/gui/my-apikey) to retrieve it.
 <img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/API.png"/>
-Bypassing macOS notarization popup
+#### Bypassing macOS notarization popup
+In case you got a popup saying "VirusTotal.app” will damage your computer. You should move it to the Bin" 
+
 `sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app`
 ## Downloads
 <img src="https://img.shields.io/badge/macOS-14.0-green"/>
