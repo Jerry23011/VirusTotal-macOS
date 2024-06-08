@@ -52,7 +52,7 @@
 	<key>SUEnableInstallerLauncherService</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://github.com/Jerry23011/VirusTotal-macOS/blob/main/appcast.xml</string>
+	<string>https://raw.githubusercontent.com/Jerry23011/VirusTotal-macOS/main/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>U/7p1dbaC+qCDixx+Ge3iqQVbRNrbH/JwnHjZDUIWEs=</string>
 </dict>
