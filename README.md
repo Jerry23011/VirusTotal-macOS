@@ -14,24 +14,27 @@
 ## Quick Setup
 You can get a free public API key from VirusTotal. Visit [VirusTotal's API page](https://www.virustotal.com/gui/my-apikey) to retrieve it.
 <img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/API.png"/>
-#### Bypassing macOS notarization popup
-In case you got a popup saying "VirusTotal.app” will damage your computer. You should move it to the Bin" 
 
-`sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app`
-## Downloads
+#### Downloads
 <img src="https://img.shields.io/badge/macOS-14.0-green"/>
 
 Please head to [Releases](https://github.com/Jerry23011/VirusTotal-macOS/releases) to get the latest dmg.
+#### Bypassing macOS notarization
+In case you got a popup saying "VirusTotal.app” will damage your computer. You should move it to the Bin", execute the following code in your Terminal.app. I don't have an Apple Developer membership. The app is open-source, feel free to compile it from source.
+
+```
+sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
+```
 
 ## Features
-- Super light, the app is < 15MB
-- Sandboxed app
-- Check quota status
+- Check API quota
 - URL Analysis
 - File Analysis
 - System Service support for both URLs and files
 - Drop URL on app icon to scan
 - Drop file in app to scan
+- Super light, the app is < 15MB
+- Sandboxed app
 - Auto-updates via Sparkle
 ## Privacy
 This app is sandboxed and only contacts VirusTotal and GitHub (for downloading updates).
