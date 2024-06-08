@@ -8,7 +8,7 @@
             <sparkle:version>2</sparkle:version>
             <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases/tag/1.0</sparkle:releaseNotesLink>
+            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases</sparkle:releaseNotesLink>
             <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.0/VirusTotal.dmg" length="4436979" type="application/octet-stream" sparkle:edSignature="tiztQK0IGjtrnH2Bxq48tRaQtoqZqyEbmuguCfWwJjXSxNci0iFYKAwOS8SOyMo5MG7pxQm64/6EwFiyAP49AA=="/>
         </item>
     </channel>
