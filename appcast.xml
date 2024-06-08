@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>VirusTotal</title>
+        <item>
+            <title>1.0</title>
+            <pubDate>Sat, 08 Jun 2024 10:22:40 +0800</pubDate>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/blob/main/VirusTotal.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/Jerry23011/releases/download/1.0/VirusTotal.dmg" length="4436896" type="application/octet-stream" sparkle:edSignature="dXs3M5EXUs+cWJsafZJxl53ubsbv6lgQ2S1+Uyqn/z1gatAVGAYt2pqwXbMk05DsyEqocpt7YUS88i48G9zeCA=="/>
+        </item>
+    </channel>
+</rss>
