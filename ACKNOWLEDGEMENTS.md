@@ -8,4 +8,5 @@ In alphabetical order
 - [Defaults](https://github.com/sindresorhus/Defaults)
 - [LaunchAtLogin](https://github.com/sindresorhus/LaunchAtLogin-Modern)
 - [Sparkle](https://github.com/sparkle-project/Sparkle)
+- [SwiftLint](https://github.com/realm/SwiftLint)
 - [Vortex](https://github.com/twostraws/Vortex)
