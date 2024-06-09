@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SidebarView: View {
+    @ObservedObject private var appState = AppState.shared
     @State private var searchText = ""
 
     var body: some View {
@@ -24,7 +25,9 @@ struct SidebarView: View {
         }
         .listStyle(.sidebar)
         .frame(minWidth: 200)
-        .searchable(text: $searchText, placement: .sidebar)
+        .searchable(text: $searchText,
+                    isPresented: $appState.sidebarSearchFocused,
+                    placement: .sidebar)
         .navigationSplitViewColumnWidth(200)
     }
 

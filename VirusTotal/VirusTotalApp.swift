@@ -15,6 +15,7 @@ struct VirusTotalApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.openWindow) private var openWindow
     @Default(.appFirstLaunch) private var appFirstLaunch: Bool
+    @ObservedObject private var appState = AppState.shared
 
     var body: some Scene {
         Window("VirusTotal for macOS", id: WindowID.main.rawValue) {
@@ -50,6 +51,9 @@ struct VirusTotalApp: App {
             CommandGroup(after: .appInfo) {
                 CheckForUpdatesView(updater: updaterController.updater)
             }
+            CommandGroup(before: .textEditing) {
+                openSidebarSearch
+            }
         }
     }
 
@@ -67,6 +71,14 @@ struct VirusTotalApp: App {
         Button {openWindow(id: "about")} label: {
             Text("menubar.open.about")
         }
+    }
+
+    @ViewBuilder
+    var openSidebarSearch: some View {
+        Button {appState.sidebarSearchFocused = true} label: {
+            Text("menubar.edit.search")
+        }
+        .keyboardShortcut("f")
     }
 
     // MARK: Internal

@@ -809,6 +809,22 @@
         }
       }
     },
+    "menubar.edit.search" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索"
+          }
+        }
+      }
+    },
     "menubar.open.about" : {
       "localizations" : {
         "cs" : {
