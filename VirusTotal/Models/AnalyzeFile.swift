@@ -71,7 +71,7 @@ final class AnalyzeFile {
 
         currentAFRequest = AF.upload(
             multipartFormData: { multipartFormData in
-                multipartFormData.append(fileURL, withName: "file")
+                self.appendFile(to: multipartFormData, from: fileURL)
             },
             to: apiEndPoint,
             headers: headers)
@@ -159,6 +159,23 @@ final class AnalyzeFile {
 
     // Store a reference to the current request
     private var currentAFRequest: Request?
+
+    /// Appends a file to the given MultipartFormData instance.
+    /// Handle AF's .bodyPartFilenameInvalid error for files without an extension e.g. Mach-O
+    private func appendFile(to multipartFormData: MultipartFormData, from fileURL: URL) {
+        let fileName = fileURL.lastPathComponent
+        let pathExtension = fileURL.pathExtension
+        if !fileName.isEmpty && !pathExtension.isEmpty {
+            multipartFormData.append(fileURL, withName: "file")
+        } else {
+            let defaultFileName = "file"
+            let defaultMimeType = "application/octet-stream"
+            multipartFormData.append(fileURL,
+                                     withName: "file",
+                                     fileName: defaultFileName,
+                                     mimeType: defaultMimeType)
+        }
+    }
 }
 
 // MARK: Results
