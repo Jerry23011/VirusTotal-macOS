@@ -34,10 +34,13 @@ struct SidebarView: View {
         switch item {
         case .home:
             HomeView()
+                .frame(minWidth: 600, minHeight: 500)
         case .fileUpload:
             FileView()
+                .frame(minWidth: 600, minHeight: 500)
         case .urlLookup:
             URLView()
+                .frame(minWidth: 600, minHeight: 500)
         }
     }
 
