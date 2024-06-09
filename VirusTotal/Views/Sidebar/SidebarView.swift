@@ -11,20 +11,19 @@ struct SidebarView: View {
     @State private var searchText = ""
 
     var body: some View {
-        VStack {
-            List {
-                Section {
-                    ForEach(filteredItems) { item in
-                        NavigationLink(destination: viewForSidebarItem(item)) {
-                            Label(item.localizedText, systemImage: item.systemImageName)
-                        }
-                        .tag(item)
+        List {
+            Section {
+                ForEach(filteredItems) { item in
+                    NavigationLink(destination: viewForSidebarItem(item)) {
+                        Label(item.localizedText,
+                              systemImage: item.systemImageName)
                     }
+                    .tag(item)
                 }
             }
-            .listStyle(.sidebar)
-            .frame(minWidth: 200)
         }
+        .listStyle(.sidebar)
+        .frame(minWidth: 200)
         .searchable(text: $searchText, placement: .sidebar)
         .navigationSplitViewColumnWidth(200)
     }
