@@ -30,7 +30,7 @@ struct VirusTotalApp: App {
         .defaultSize(width: 800, height: 550)
         .defaultPosition(.center)
 
-        Window("", id: WindowID.about.rawValue) {
+        Window("About VirusTotal", id: WindowID.about.rawValue) {
             AboutView()
         }
         .defaultSize(width: 530, height: 220)

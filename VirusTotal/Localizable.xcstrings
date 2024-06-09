@@ -45,6 +45,22 @@
         }
       }
     },
+    "About VirusTotal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About VirusTotal"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关于 VirusTotal"
+          }
+        }
+      }
+    },
     "about.contributor.link" : {
       "localizations" : {
         "cs" : {
