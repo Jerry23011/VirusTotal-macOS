@@ -75,6 +75,7 @@ final class AnalyzeURLViewModel: ObservableObject {
                         self.analyzeURL()
                     }
                 } else {
+                    log.error("Too many requests")
                     self.statusMonitor = .fail
                     self.errorMessage = "Request timeout."
                 }

@@ -50,7 +50,7 @@ struct FileView: View {
                                     viewModel.handleFileImport(url)
                                 }
                             case .failure(let error):
-                                print("File Import Error: \(error.localizedDescription)")
+                                log.error("File Import Error: \(error.localizedDescription)")
                             }
                         }
                         Text("fileview.button.open.caption")

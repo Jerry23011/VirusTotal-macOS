@@ -54,12 +54,14 @@ final class AnalyzeURL {
                                 self?.retryAnalyzeURL(inputURL: inputURL,
                                                       completion: completion)
                             } else {
+                                log.error(uploadResult.errorMessage ?? "Upload failed with unknown error.")
                                 urlAlysResult.errorMessage = uploadResult.errorMessage
                                 urlAlysResult.statusMonitor = uploadResult.statusMonitor
                                 completion(urlAlysResult)
                             }
                         }
                     } else {
+                        log.error(error)
                         urlAlysResult.errorMessage = error.localizedDescription
                         urlAlysResult.statusMonitor = .fail
                         completion(urlAlysResult)
@@ -84,6 +86,7 @@ final class AnalyzeURL {
                 case .success:
                     reanalyzeResult.requestSuccess = true
                 case .failure(let error):
+                    log.error(error)
                     reanalyzeResult.errorMessage = error.localizedDescription
                     reanalyzeResult.requestSuccess = false
                 }
@@ -120,6 +123,7 @@ final class AnalyzeURL {
                 uploadResult.uploadSuccess = true
                 completion(uploadResult)
             case .failure(let error):
+                log.error(error)
                 uploadResult.uploadSuccess = false
                 uploadResult.statusMonitor = .fail
                 uploadResult.errorMessage = error.localizedDescription

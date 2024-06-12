@@ -49,6 +49,7 @@ final class QuotaStatus {
                     completion(quotaResult)
 
                 case .failure(let error):
+                    log.error(error)
                     quotaResult.statusSuccess = false
                     quotaResult.errorMessage = error.localizedDescription
                     completion(quotaResult)

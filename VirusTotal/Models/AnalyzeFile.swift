@@ -50,6 +50,7 @@ final class AnalyzeFile {
                     if response.response?.statusCode == 404 {
                         fileAlysResult.statusMonitor = .upload
                     } else {
+                        log.error(error)
                         fileAlysResult.errorMessage = error.localizedDescription
                         fileAlysResult.statusMonitor = .fail
                     }
@@ -91,6 +92,7 @@ final class AnalyzeFile {
                 fileUploadResult.uploadSuccess = true
                 completion(fileUploadResult)
             case .failure(let error):
+                log.error(error)
                 fileUploadResult.uploadSuccess = false
                 fileUploadResult.errorMessage = error.localizedDescription
                 fileUploadResult.statusMonitor = .fail
@@ -120,6 +122,7 @@ final class AnalyzeFile {
                     endpointResult.largeFileEndpoint = endpointResponse.data
                     completion(endpointResult)
                 case .failure(let error):
+                    log.error(error)
                     endpointResult.getEndpointSuccess = false
                     endpointResult.errorMessage = error.localizedDescription
                     endpointResult.statusMonitor = .fail
@@ -144,6 +147,7 @@ final class AnalyzeFile {
                 case .success:
                     completion(true, nil)
                 case .failure(let error):
+                    log.error(error)
                     completion(false, error.localizedDescription)
                 }
             }

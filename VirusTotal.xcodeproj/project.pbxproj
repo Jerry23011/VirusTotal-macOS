@@ -21,6 +21,7 @@
 		C4509AD42C139E0000FDDCFF /* SparkleUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4509AD32C139E0000FDDCFF /* SparkleUpdates.swift */; };
 		C45BEB692C0CF0D400E7F856 /* FileTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45BEB682C0CF0D400E7F856 /* FileTypeView.swift */; };
 		C46013062BFE05D20047E949 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46013052BFE05D20047E949 /* String.swift */; };
+		C461739E2C1A1F070006FDAC /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C461739D2C1A1F070006FDAC /* SwiftyBeaver */; };
 		C46849F72C1391FB0073CFEE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = C46849F62C1391FB0073CFEE /* Sparkle */; };
 		C47144EE2C0F1A8E002D1129 /* WindowID.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47144ED2C0F1A8E002D1129 /* WindowID.swift */; };
 		C47144F02C0F1B65002D1129 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47144EF2C0F1B65002D1129 /* NSApplication.swift */; };
@@ -154,6 +155,7 @@
 				C47532072BFA1C2C002EC019 /* Defaults in Frameworks */,
 				C4F73B2A2C0F020C0047743B /* Vortex in Frameworks */,
 				C41D968C2BFB280B00F2A496 /* Alamofire in Frameworks */,
+				C461739E2C1A1F070006FDAC /* SwiftyBeaver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,6 +400,7 @@
 				C4C4B39E2C02692D006AAA63 /* LaunchAtLogin */,
 				C4F73B292C0F020C0047743B /* Vortex */,
 				C46849F62C1391FB0073CFEE /* Sparkle */,
+				C461739D2C1A1F070006FDAC /* SwiftyBeaver */,
 			);
 			productName = VirusTotal;
 			productReference = C47531DE2BFA0FFB002EC019 /* VirusTotal.app */;
@@ -434,6 +437,7 @@
 				C4C4B39D2C02692D006AAA63 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				C4F73B282C0F020C0047743B /* XCRemoteSwiftPackageReference "Vortex" */,
 				C46849F52C1391FB0073CFEE /* XCRemoteSwiftPackageReference "Sparkle" */,
+				C461739C2C1A1F070006FDAC /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
 			);
 			productRefGroup = C47531DF2BFA0FFB002EC019 /* Products */;
 			projectDirPath = "";
@@ -759,6 +763,14 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		C461739C2C1A1F070006FDAC /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
+			};
+		};
 		C46849F52C1391FB0073CFEE /* XCRemoteSwiftPackageReference "Sparkle" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sparkle-project/Sparkle";
@@ -798,6 +810,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C41D968A2BFB280B00F2A496 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		C461739D2C1A1F070006FDAC /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C461739C2C1A1F070006FDAC /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
 		};
 		C46849F62C1391FB0073CFEE /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;

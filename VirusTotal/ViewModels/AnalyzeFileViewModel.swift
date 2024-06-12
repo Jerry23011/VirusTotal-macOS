@@ -45,6 +45,7 @@ final class AnalyzeFileViewModel: ObservableObject {
         self.fileURL = fileURL
         let fileSize = getFileSize(for: fileURL)
         guard fileSize < 681_574_400 else {
+            log.error("Filesize \(fileSize) exceeded 650 MB.")
             self.errorMessage = "Local Error: VirusTotal only accepts files up to 650 MB"
             self.statusMonitor = .fail
             return
@@ -143,6 +144,7 @@ final class AnalyzeFileViewModel: ObservableObject {
     func startFileUpload() {
         guard !self.cancellationRequested else { return }
         guard let fileSize = self.fileSize else {
+            log.error("No File Size \(String(describing: fileSize))")
             self.errorMessage = noFileSizeError
             self.statusMonitor = .fail
             return
@@ -171,6 +173,7 @@ final class AnalyzeFileViewModel: ObservableObject {
                         }
                     }
                 } else {
+                    log.error("Failed to fetch large file upload endpoint.")
                     self?.errorMessage = "Failed to fetch large file upload endpoint."
                     self?.statusMonitor = .fail
                 }
@@ -191,6 +194,7 @@ final class AnalyzeFileViewModel: ObservableObject {
                     self?.getNewFileReport()
                     self?.errorMessage = nil
                 } else {
+                    log.error(errorMessage ?? "Unknown error during re-scan")
                     self?.statusMonitor = .fail
                     self?.errorMessage = errorMessage
                 }
@@ -221,7 +225,7 @@ final class AnalyzeFileViewModel: ObservableObject {
             let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileURL.path)
             return fileAttributes[.size] as? Int64 ?? 0
         } catch {
-            print("Error getting file size: \(error)")
+            log.error("Error getting file size: \(error)")
             return 0
         }
     }
@@ -252,7 +256,7 @@ final class AnalyzeFileViewModel: ObservableObject {
 
         QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { [self] thumbnail, error in
             guard let thumbnail = thumbnail else {
-                print("Thumbnail Error: \(error?.localizedDescription ?? "Unknown thumbnail error")")
+                log.error("Thumbnail Error: \(error?.localizedDescription ?? "Unknown thumbnail error")")
                 return
             }
             DispatchQueue.main.async {
@@ -283,6 +287,7 @@ final class AnalyzeFileViewModel: ObservableObject {
     private func retryFileReport(retryCount: Int,
                                  completion: ((Bool) -> Void)? = nil) {
         guard retryCount < 28 else {
+            log.error("Request Timeout. \(self.errorMessage ?? "")")
             self.errorMessage = "Request timeout." + (self.errorMessage ?? "")
             self.statusMonitor = .fail
             completion?(false)
