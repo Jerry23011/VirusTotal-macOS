@@ -14,4 +14,5 @@ In alphabetical order
 - [LaunchAtLogin](https://github.com/sindresorhus/LaunchAtLogin-Modern)
 - [Sparkle](https://github.com/sparkle-project/Sparkle)
 - [SwiftLint](https://github.com/realm/SwiftLint)
+- [SwiftyBeaver](https://github.com/SwiftyBeaver/SwiftyBeaver)
 - [Vortex](https://github.com/twostraws/Vortex)

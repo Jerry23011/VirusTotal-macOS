@@ -41,6 +41,7 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 ## 隐私
 采用 App 沙盒，只通过网络连接 VirusTotal 和 GitHub（下载更新）
 请注意：本 App 不是 VirusTotal 的官方程序。但所有源代码都是公开的，不放心请检查代码并自行编译。
+日志文件仅存储在本地且不会发送到任何外部存储
 所有发送到 VirusTotal 的数据均遵循 VirusTotal [隐私政策](https://docs.virustotal.com/docs/privacy-policy)
 ## 贡献
 我们欢迎 Issue 和 PR！如果你有兴趣做本地化，请参考[这篇文档](https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/Docs/Localization-Guide_EN.md)
