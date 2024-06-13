@@ -105,6 +105,8 @@ struct VirusTotalApp: App {
     private func configureLogging() {
             // Add console destination
             let console = ConsoleDestination()
+        console.logPrintWay = .logger(subsystem: "org.eu.moyuapp.VirusTotal",
+                                      category: "VirusTotal")
             log.addDestination(console)
 
             // Add file destination
