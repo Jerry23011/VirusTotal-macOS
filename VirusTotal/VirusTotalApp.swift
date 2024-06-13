@@ -103,38 +103,38 @@ struct VirusTotalApp: App {
 
     /// Configure logging with SwiftyBeaver
     private func configureLogging() {
-            // Add console destination
-            let console = ConsoleDestination()
+        // Add console destination
+        let console = ConsoleDestination()
         console.logPrintWay = .logger(subsystem: "org.eu.moyuapp.VirusTotal",
                                       category: "VirusTotal")
-            log.addDestination(console)
+        log.addDestination(console)
 
-            // Add file destination
-            let file = FileDestination()
-            let logFileName = "VirusTotal.log"
-            let fileManager = FileManager.default
-            if let logsDirectory = fileManager.urls(
-                for: .cachesDirectory,
-                in: .userDomainMask
-            ).first?.appendingPathComponent("Logs") {
-                do {
-                    // Ensure the Logs directory exists
-                    try fileManager.createDirectory(
-                        at: logsDirectory,
-                        withIntermediateDirectories: true,
-                        attributes: nil
-                    )
-                    let logFileURL = logsDirectory.appendingPathComponent(logFileName)
-                    file.logFileURL = logFileURL
-                    log.addDestination(file)
-                    log.info("App Launched")
-                } catch {
-                    log.error("Failed to create Logs directory: \(error)")
-                }
-            } else {
-                log.error("Failed to set log file URL.")
+        // Add file destination
+        let file = FileDestination()
+        let logFileName = "VirusTotal.log"
+        let fileManager = FileManager.default
+        if let logsDirectory = fileManager.urls(
+            for: .cachesDirectory,
+            in: .userDomainMask
+        ).first?.appendingPathComponent("Logs") {
+            do {
+                // Ensure the Logs directory exists
+                try fileManager.createDirectory(
+                    at: logsDirectory,
+                    withIntermediateDirectories: true,
+                    attributes: nil
+                )
+                let logFileURL = logsDirectory.appendingPathComponent(logFileName)
+                file.logFileURL = logFileURL
+                log.addDestination(file)
+                log.info("App Launched")
+            } catch {
+                log.error("Failed to create Logs directory: \(error)")
             }
+        } else {
+            log.error("Failed to set log file URL.")
         }
+    }
 }
 
 let log = SwiftyBeaver.self
