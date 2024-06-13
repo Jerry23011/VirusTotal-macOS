@@ -40,6 +40,6 @@ struct SettingsViewItem: View {
 #Preview {
     SettingsViewItem(color: .accentColor,
                      systemImage: "swift",
-                     labelText: "settings.coming.soon",
-                     subtitleText: "settings.coming.soon")
+                     labelText: "settings.advanced.mini",
+                     subtitleText: "settings.advanced.mini.restart")
 }

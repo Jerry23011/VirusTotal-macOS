@@ -501,6 +501,9 @@
         }
       }
     },
+    "Hello, World!" : {
+
+    },
     "homepage.quota.daily" : {
       "localizations" : {
         "cs" : {
@@ -945,6 +948,22 @@
         }
       }
     },
+    "settings.advanced.mini.restart" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relaunch app to take effect"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重启应用以生效"
+          }
+        }
+      }
+    },
     "settings.api" : {
       "localizations" : {
         "cs" : {
@@ -1249,28 +1268,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "验证成功"
-          }
-        }
-      }
-    },
-    "settings.coming.soon" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Již brzy"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coming soon"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "敬请期待"
           }
         }
       }

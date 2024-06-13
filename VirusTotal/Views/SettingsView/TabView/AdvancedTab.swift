@@ -18,10 +18,9 @@ struct AdvancedTab: View {
                     SettingsViewItem(color: .accentColor,
                                      systemImage: "smallcircle.filled.circle",
                                      labelText: "settings.advanced.mini",
-                                     subtitleText: "settings.coming.soon")
+                                     subtitleText: "settings.advanced.mini.restart")
                 }
-                .padding(.vertical, 3)
-                .disabled(true)
+                .padding(.vertical, 4)
             }
         }
         .controlSize(.small)

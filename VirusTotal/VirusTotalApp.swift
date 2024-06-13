@@ -21,13 +21,18 @@ struct VirusTotalApp: App {
 
     var body: some Scene {
         Window("VirusTotal for macOS", id: WindowID.main.rawValue) {
-            ContentView()
-                .sheet(isPresented: $appFirstLaunch, onDismiss: {
-                    appFirstLaunch = false
-                }, content: {
-                    LaunchView()
-                        .frame(width: 400, height: 430)
-                })
+            if !miniMode {
+                ContentView()
+                    .sheet(isPresented: $appFirstLaunch, onDismiss: {
+                        appFirstLaunch = false
+                    }, content: {
+                        LaunchView()
+                            .frame(width: 400, height: 430)
+                    })
+            } else {
+                MiniModeView()
+                    .frame(width: 350, height: 250)
+            }
         }
         .windowResizability(.contentSize)
         .defaultSize(width: 800, height: 550)
@@ -126,6 +131,7 @@ struct VirusTotalApp: App {
     // MARK: Private
     private let updaterController: SPUStandardUpdaterController
     private let feedbackURL = URL(string: "https://github.com/Jerry23011/VirusTotal-macOS/issues/new/choose")!
+    private var miniMode: Bool { Defaults[.miniMode] }
     private var logDirectory: URL {
         let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
         return homeDirectory.appendingPathComponent("Library/Caches/Logs", isDirectory: true)
