@@ -809,6 +809,22 @@
         }
       }
     },
+    "menubar.check.log" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspect Logs"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看日志"
+          }
+        }
+      }
+    },
     "menubar.edit.search" : {
       "localizations" : {
         "en" : {

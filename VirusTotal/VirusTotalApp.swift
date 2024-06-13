@@ -43,14 +43,18 @@ struct VirusTotalApp: App {
             SettingsView(updater: updaterController.updater)
         }
         .commands {
-            CommandGroup(replacing: .newItem) {
-                openMainWindow
-            }
             CommandGroup(replacing: .appInfo) {
                 openAboutWindow
             }
             CommandGroup(after: .appInfo) {
                 CheckForUpdatesView(updater: updaterController.updater)
+            }
+            CommandGroup(replacing: .newItem) {
+                openMainWindow
+            }
+            CommandGroup(before: .help) {
+                openLogDirectory
+                Divider()
             }
             CommandGroup(before: .textEditing) {
                 openSidebarSearch
@@ -82,6 +86,15 @@ struct VirusTotalApp: App {
         .keyboardShortcut("f")
     }
 
+    @ViewBuilder
+    var openLogDirectory: some View {
+        Button {
+            logDirectory.openInFinder()
+        } label: {
+            Text("menubar.check.log")
+        }
+    }
+
     // MARK: Internal
     init() {
         // Tips
@@ -100,6 +113,11 @@ struct VirusTotalApp: App {
 
     // MARK: Private
     private let updaterController: SPUStandardUpdaterController
+    private let feedbackURL = URL(string: "https://github.com/Jerry23011/VirusTotal-macOS/issues/new/choose")!
+    private var logDirectory: URL {
+        let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
+        return homeDirectory.appendingPathComponent("Library/Caches/Logs", isDirectory: true)
+    }
 
     /// Configure logging with SwiftyBeaver
     private func configureLogging() {
