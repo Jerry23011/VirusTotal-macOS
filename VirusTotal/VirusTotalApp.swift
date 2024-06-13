@@ -32,6 +32,7 @@ struct VirusTotalApp: App {
         .windowResizability(.contentSize)
         .defaultSize(width: 800, height: 550)
         .defaultPosition(.center)
+        .commandsRemoved()
 
         Window("About VirusTotal", id: WindowID.about.rawValue) {
             AboutView()
