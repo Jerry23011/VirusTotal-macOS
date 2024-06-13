@@ -20,6 +20,12 @@
 		C4436AA92C0906C600C9DF65 /* OpenFinderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4436AA82C0906C600C9DF65 /* OpenFinderButton.swift */; };
 		C4509AD42C139E0000FDDCFF /* SparkleUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4509AD32C139E0000FDDCFF /* SparkleUpdates.swift */; };
 		C456DF012C1B377F007096F3 /* MiniModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C456DF002C1B377F007096F3 /* MiniModeView.swift */; };
+		C456DF032C1B4D69007096F3 /* TabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C456DF022C1B4D69007096F3 /* TabModel.swift */; };
+		C456DF052C1B5169007096F3 /* MiniHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C456DF042C1B5169007096F3 /* MiniHomeView.swift */; };
+		C456DF072C1B5178007096F3 /* MiniFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C456DF062C1B5178007096F3 /* MiniFileView.swift */; };
+		C456DF092C1B5181007096F3 /* MiniURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C456DF082C1B5181007096F3 /* MiniURLView.swift */; };
+		C456DF0B2C1B547A007096F3 /* FloatingTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C456DF0A2C1B547A007096F3 /* FloatingTabBarView.swift */; };
+		C456DF282C1B7AC7007096F3 /* MiniModeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C456DF272C1B7AC7007096F3 /* MiniModeButtonStyle.swift */; };
 		C45BEB692C0CF0D400E7F856 /* FileTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45BEB682C0CF0D400E7F856 /* FileTypeView.swift */; };
 		C46013062BFE05D20047E949 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46013052BFE05D20047E949 /* String.swift */; };
 		C461739E2C1A1F070006FDAC /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C461739D2C1A1F070006FDAC /* SwiftyBeaver */; };
@@ -92,6 +98,12 @@
 		C4436AA82C0906C600C9DF65 /* OpenFinderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFinderButton.swift; sourceTree = "<group>"; };
 		C4509AD32C139E0000FDDCFF /* SparkleUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleUpdates.swift; sourceTree = "<group>"; };
 		C456DF002C1B377F007096F3 /* MiniModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniModeView.swift; sourceTree = "<group>"; };
+		C456DF022C1B4D69007096F3 /* TabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabModel.swift; sourceTree = "<group>"; };
+		C456DF042C1B5169007096F3 /* MiniHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniHomeView.swift; sourceTree = "<group>"; };
+		C456DF062C1B5178007096F3 /* MiniFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniFileView.swift; sourceTree = "<group>"; };
+		C456DF082C1B5181007096F3 /* MiniURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniURLView.swift; sourceTree = "<group>"; };
+		C456DF0A2C1B547A007096F3 /* FloatingTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTabBarView.swift; sourceTree = "<group>"; };
+		C456DF272C1B7AC7007096F3 /* MiniModeButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniModeButtonStyle.swift; sourceTree = "<group>"; };
 		C45BEB682C0CF0D400E7F856 /* FileTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeView.swift; sourceTree = "<group>"; };
 		C46013052BFE05D20047E949 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		C461739F2C1AFD770006FDAC /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
@@ -191,6 +203,12 @@
 			isa = PBXGroup;
 			children = (
 				C456DF002C1B377F007096F3 /* MiniModeView.swift */,
+				C456DF042C1B5169007096F3 /* MiniHomeView.swift */,
+				C456DF062C1B5178007096F3 /* MiniFileView.swift */,
+				C456DF082C1B5181007096F3 /* MiniURLView.swift */,
+				C456DF022C1B4D69007096F3 /* TabModel.swift */,
+				C456DF0A2C1B547A007096F3 /* FloatingTabBarView.swift */,
+				C456DF272C1B7AC7007096F3 /* MiniModeButtonStyle.swift */,
 			);
 			path = MiniMode;
 			sourceTree = "<group>";
@@ -280,8 +298,8 @@
 				C49305CD2C07AE9D00ABF5BE /* FileView */,
 				C4C34EF12C00A85400AB8C13 /* URLView */,
 				C475321A2BFA26CF002EC019 /* Sidebar */,
-				C475320A2BFA1C8D002EC019 /* SettingsView */,
 				C456DEFF2C1B374B007096F3 /* MiniMode */,
+				C475320A2BFA1C8D002EC019 /* SettingsView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -513,9 +531,12 @@
 				C4C34EFA2C00B5E000AB8C13 /* WelcomeView.swift in Sources */,
 				C4D237A52C0A53720020FB2A /* Int64.swift in Sources */,
 				C475320F2BFA1E09002EC019 /* GeneralTab.swift in Sources */,
+				C456DF032C1B4D69007096F3 /* TabModel.swift in Sources */,
 				C47144F52C0F8D2F002D1129 /* NSPasteboard.swift in Sources */,
 				C47531E42BFA0FFB002EC019 /* ContentView.swift in Sources */,
 				C4EB28082C0B954700719CDC /* UploadProgressView.swift in Sources */,
+				C456DF072C1B5178007096F3 /* MiniFileView.swift in Sources */,
+				C456DF092C1B5181007096F3 /* MiniURLView.swift in Sources */,
 				C47531E22BFA0FFB002EC019 /* VirusTotalApp.swift in Sources */,
 				C493D2312C0DE06C000BD68C /* VTSetupView.swift in Sources */,
 				C47532092BFA1C84002EC019 /* SettingsView.swift in Sources */,
@@ -523,6 +544,7 @@
 				C4C34EF62C00AA8F00AB8C13 /* LoadingView.swift in Sources */,
 				C4FC3BAB2C12163900AF7D24 /* AnalyzeURL.swift in Sources */,
 				C41D969C2BFBAA8B00F2A496 /* IndicatorLEDView.swift in Sources */,
+				C456DF0B2C1B547A007096F3 /* FloatingTabBarView.swift in Sources */,
 				C49077A12C03337F00AC96D3 /* HelpButtonItemView.swift in Sources */,
 				C46173A02C1AFD770006FDAC /* URL.swift in Sources */,
 				C4F73B272C0F00190047743B /* AboutView.swift in Sources */,
@@ -559,8 +581,10 @@
 				C47144EE2C0F1A8E002D1129 /* WindowID.swift in Sources */,
 				C4C4B3A12C026C06006AAA63 /* SettingsViewItem.swift in Sources */,
 				C490779D2C0312A700AC96D3 /* HelpButton.swift in Sources */,
+				C456DF052C1B5169007096F3 /* MiniHomeView.swift in Sources */,
 				C47532152BFA1E62002EC019 /* AdvancedTab.swift in Sources */,
 				C4118DD82C0CBC0500E572C0 /* FileReportView.swift in Sources */,
+				C456DF282C1B7AC7007096F3 /* MiniModeButtonStyle.swift in Sources */,
 				C493D2242C0DB233000BD68C /* Double.swift in Sources */,
 				C4F2440D2C00C0EF00D79F9F /* URLChartView.swift in Sources */,
 			);

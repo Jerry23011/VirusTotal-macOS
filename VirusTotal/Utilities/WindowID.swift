@@ -10,4 +10,5 @@ import Foundation
 enum WindowID: String, CaseIterable {
     case main
     case about
+    case miniTabBar
 }

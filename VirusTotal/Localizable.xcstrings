@@ -904,6 +904,22 @@
         }
       }
     },
+    "mini.url.urlplaceholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter URL here"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "在这里输入 URL"
+          }
+        }
+      }
+    },
     "settings.advanced" : {
       "localizations" : {
         "cs" : {
