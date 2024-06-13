@@ -15,6 +15,7 @@ import SwiftyBeaver
 struct VirusTotalApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.openURL) private var openURL
     @Default(.appFirstLaunch) private var appFirstLaunch: Bool
     @ObservedObject private var appState = AppState.shared
 
@@ -53,6 +54,7 @@ struct VirusTotalApp: App {
                 openMainWindow
             }
             CommandGroup(before: .help) {
+                provideFeedback
                 openLogDirectory
                 Divider()
             }
@@ -92,6 +94,15 @@ struct VirusTotalApp: App {
             logDirectory.openInFinder()
         } label: {
             Text("menubar.check.log")
+        }
+    }
+
+    @ViewBuilder
+    var provideFeedback: some View {
+        Button {
+            openURL(feedbackURL)
+        } label: {
+            Text("menubar.help.feedback")
         }
     }
 

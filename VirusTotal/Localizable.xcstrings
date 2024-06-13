@@ -841,6 +841,22 @@
         }
       }
     },
+    "menubar.help.feedback" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provide Feedback"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提交反馈"
+          }
+        }
+      }
+    },
     "menubar.open.about" : {
       "localizations" : {
         "cs" : {
