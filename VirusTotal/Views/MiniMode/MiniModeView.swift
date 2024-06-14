@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MiniModeView: View {
     @StateObject private var tabModel: TabModel = .init()
-    @Environment(\.controlActiveState) private var state
+    @Environment(\.controlActiveState) private var controlActiveState
 
     var body: some View {
         TabView(selection: $tabModel.activeTab) {
@@ -38,9 +38,10 @@ struct MiniModeView: View {
                     }
             }
         }
-        .onChange(of: state) {_, newValue in
+        .onChange(of: controlActiveState) {_, newValue in
             if newValue == .key {
                 tabModel.addTabBar()
+                tabModel.isTabBarAdded = true
             }
         }
         .task {

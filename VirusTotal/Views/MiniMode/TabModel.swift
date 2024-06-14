@@ -9,7 +9,7 @@ import SwiftUI
 
 class TabModel: ObservableObject {
     @Published var activeTab: Tab = .file
-    @Published private(set) var isTabBarAdded: Bool = false
+    @Published var isTabBarAdded: Bool = false
     @Published var hideTabBar: Bool = false
     func addTabBar() {
         guard !isTabBarAdded else { return }
