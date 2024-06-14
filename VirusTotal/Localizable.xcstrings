@@ -501,9 +501,6 @@
         }
       }
     },
-    "Hello, World!" : {
-
-    },
     "homepage.quota.daily" : {
       "localizations" : {
         "cs" : {
@@ -900,6 +897,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新建窗口"
+          }
+        }
+      }
+    },
+    "minimode.file.drag.file" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "or drop a file"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "或拖入文件"
           }
         }
       }
