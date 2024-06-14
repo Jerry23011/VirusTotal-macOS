@@ -14,7 +14,7 @@ struct MiniURLView: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            TextField("mini.url.urlplaceholder",
+            TextField("urlview.textfield.placeholder",
                       text: $viewModel.inputURL)
             .lineLimit(1)
             .textFieldStyle(RoundedBorderTextFieldStyle())
