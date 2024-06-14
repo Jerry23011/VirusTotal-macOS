@@ -31,7 +31,7 @@ struct VirusTotalApp: App {
                     })
             } else {
                 MiniModeView()
-                    .frame(width: 200, height: 160)
+                    .frame(width: 230, height: 180)
             }
         }
         .windowResizability(.contentSize)

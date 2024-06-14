@@ -11,6 +11,7 @@ class TabModel: ObservableObject {
     @Published var activeTab: Tab = .file
     @Published var isTabBarAdded: Bool = false
     @Published var hideTabBar: Bool = false
+
     func addTabBar() {
         guard !isTabBarAdded else { return }
 
