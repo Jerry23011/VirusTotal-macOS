@@ -25,7 +25,6 @@ struct MiniFileView: View {
                 EmptyView()
             }
         }
-        .frame(width: 230, height: 165)
         .border(isFileDropped ? Color.accentColor : .clear, width: 5)
 
     }

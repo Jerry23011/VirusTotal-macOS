@@ -8,50 +8,25 @@
 import SwiftUI
 
 struct MiniModeView: View {
-    @StateObject private var tabModel: TabModel = .init()
-    @Environment(\.controlActiveState) private var controlActiveState
-
     var body: some View {
-        TabView(selection: $tabModel.activeTab) {
+        TabView {
             MiniHomeView()
-                .tag(Tab.home)
-            MiniFileView()
-                .tag(Tab.file)
-                .background(HideTabBar())
-            MiniURLView()
-                .tag(Tab.url)
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigation) {
-                Button("", systemImage: "sidebar.left") {
-                    tabModel.hideTabBar.toggle()
+                .tabItem {
+                    Label("sidebar.home", systemImage: "house.fill")
                 }
-            }
-        }
-        .background {
-            GeometryReader {
-                let rect = $0.frame(in: .global)
-
-                Color.clear
-                    .onChange(of: rect) {
-                        tabModel.updateTabPosition()
-                    }
-            }
-        }
-        .onChange(of: controlActiveState) {_, newValue in
-            if newValue == .key {
-                tabModel.addTabBar()
-                tabModel.isTabBarAdded = true
-            }
+            MiniFileView()
+                .tabItem {
+                    Label("sidebar.file", systemImage: "arrow.up.doc.fill")
+                }
+            MiniURLView()
+                .tabItem {
+                    Label("sidebar.url", systemImage: "link")
+                }
         }
         .task {
             if let window = NSApp.findWindow(WindowID.main) {
                 window.titleVisibility = .hidden
                 window.titlebarAppearsTransparent = true
-                if #available(macOS 15.0, *) {
-                    // Removes the default tab bar on macOS 15.0+
-                    window.toolbar?.removeItem(at: 0)
-                }
             }
         }
     }

@@ -11,7 +11,7 @@ struct MiniHomeView: View {
     @StateObject private var viewModel = QuotaStatusViewModel()
 
     var body: some View {
-        Form {
+        VStack(alignment: .center) {
             HStack(alignment: .center) {
                 IndicatorLEDView(statusSuccess: $viewModel.statusSuccess)
                 Button(action: viewModel.retryRequest) {
@@ -22,13 +22,15 @@ struct MiniHomeView: View {
                 .buttonStyle(MiniModeButtonStyle())
                 .keyboardShortcut("r")
             }
+            .padding(.horizontal)
+            .padding(.vertical)
             if let errorMessage = viewModel.errorMessage {
                 Text(errorMessage)
                     .shadow(color: .red, radius: 10)
                     .padding(.horizontal)
             }
+            Spacer()
         }
-        .formStyle(.grouped)
         .onAppear {
             viewModel.performRequest()
         }

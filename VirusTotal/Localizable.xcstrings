@@ -215,6 +215,9 @@
         }
       }
     },
+    "File" : {
+
+    },
     "fileview.button.open.caption" : {
       "localizations" : {
         "cs" : {
@@ -500,6 +503,9 @@
           }
         }
       }
+    },
+    "Home" : {
+
     },
     "homepage.quota.daily" : {
       "localizations" : {
@@ -1529,6 +1535,9 @@
           }
         }
       }
+    },
+    "URL" : {
+
     },
     "urlview.button.go.vt" : {
       "localizations" : {
