@@ -67,6 +67,7 @@ struct MiniFileView: View {
         .onChange(of: viewModel.statusMonitor) {
             if shouldOpenURL() {
                 openURL(URL(string: makeVtURL(viewModel.inputSHA256)) ?? vtWebsite)
+                viewModel.statusMonitor = .none
             }
         }
     }
@@ -103,6 +104,7 @@ struct MiniFileView: View {
         .onChange(of: viewModel.statusMonitor) {
             if shouldOpenURL() {
                 openURL(URL(string: makeVtURL(viewModel.inputSHA256)) ?? vtWebsite)
+                viewModel.statusMonitor = .none
             }
         }
     }
