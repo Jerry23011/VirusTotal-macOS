@@ -25,8 +25,7 @@ struct MiniFileView: View {
                 EmptyView()
             }
         }
-        .border(isFileDropped ? Color.accentColor : .clear, width: 5)
-
+        .modifier(FileDropModifier(dropped: isFileDropped))
     }
 
     // MARK: ViewBuilders
@@ -104,6 +103,23 @@ struct MiniFileView: View {
         .onChange(of: viewModel.statusMonitor) {
             if shouldOpenURL() {
                 openURL(URL(string: makeVtURL(viewModel.inputSHA256)) ?? vtWebsite)
+            }
+        }
+    }
+
+    // MARK: Modifier
+    private struct FileDropModifier: ViewModifier {
+        var dropped: Bool
+
+        func body(content: Content) -> some View {
+            if #available(macOS 15, *) {
+                content
+                    .border(dropped ? Color.accentColor : .clear, width: 5)
+            } else {
+                content
+                    .overlay(RoundedRectangle(cornerRadius: 7)
+                            .inset(by: -0.4)
+                            .stroke(dropped ? Color.accentColor : .clear, lineWidth: 5))
             }
         }
     }
