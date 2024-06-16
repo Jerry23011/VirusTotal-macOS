@@ -22,3 +22,27 @@ struct FileNavigationTip: Tip {
         Tips.MaxDisplayCount(1)
     }
 }
+
+struct FileWaitTimeTip: Tip {
+
+    @Parameter
+    static var isWaitTooLong: Bool = false
+
+    var title: Text {
+        Text("fileview.tip.wait.title")
+    }
+    var message: Text? {
+        Text("fileview.tip.wait.message")
+    }
+    var image: Image? {
+        Image(systemName: "hourglass")
+            .symbolRenderingMode(.hierarchical)
+    }
+    var options: [Option] {
+        Tips.MaxDisplayCount(1)
+    }
+
+    var rules: [Rule] {[
+        #Rule(Self.$isWaitTooLong) { $0 == true }
+    ]}
+}

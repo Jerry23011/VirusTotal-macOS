@@ -391,6 +391,38 @@
         }
       }
     },
+    "fileview.tip.wait.message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Give it a moment, the analysis could take a few minutes."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该分析可能需要几分钟，请耐心等待"
+          }
+        }
+      }
+    },
+    "fileview.tip.wait.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almost there"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "马上就好"
+          }
+        }
+      }
+    },
     "fileview.title" : {
       "localizations" : {
         "cs" : {
