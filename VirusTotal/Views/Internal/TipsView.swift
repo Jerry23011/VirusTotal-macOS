@@ -9,10 +9,10 @@ import TipKit
 
 struct FileNavigationTip: Tip {
     var title: Text {
-        Text("fileview.tip.title")
+        Text("fileview.tip.nav.title")
     }
     var message: Text? {
-        Text("fileview.tip.message")
+        Text("fileview.tip.nav.message")
     }
     var image: Image? {
         Image(systemName: "doc.fill.badge.plus")

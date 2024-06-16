@@ -347,7 +347,7 @@
         }
       }
     },
-    "fileview.tip.message" : {
+    "fileview.tip.nav.message" : {
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -369,7 +369,7 @@
         }
       }
     },
-    "fileview.tip.title" : {
+    "fileview.tip.nav.title" : {
       "localizations" : {
         "cs" : {
           "stringUnit" : {
