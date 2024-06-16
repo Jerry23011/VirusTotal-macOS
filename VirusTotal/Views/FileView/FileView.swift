@@ -16,8 +16,6 @@ struct FileView: View {
     @State private var isFileImporterPresent: Bool = false
     @State private var isFileDropped: Bool = false
 
-    var tip = FileNavigationTip()
-
     var body: some View {
         ZStack {
             VStack {
@@ -126,6 +124,7 @@ struct FileView: View {
     // MARK: Private
 
     private let vtWebsite = URL(string: "https://virustotal.com")!
+    private var tip = FileNavigationTip()
 
     /// Action for the toolbar button
     private func backToFileView() {
