@@ -35,6 +35,7 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 - System Service support for both URLs and files
 - Drop URL on app icon to scan
 - Drop file in app to scan
+- Mini mode that swiftly opens VT website after uploads
 - Super light, the app is < 15MB
 - Sandboxed app
 - Auto-updates via Sparkle

@@ -35,6 +35,7 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 - 集成 macOS 系统服务
 - 将 URL 拖放到应用程序图标进行扫描
 - 将文件拖放到应用程序中进行扫描
+- 迷你模式，上传文件后立即打开 VT 网站
 - 超轻量，App 本身小于 15MB
 - 沙盒 App
 - Sparkle 自动更新
