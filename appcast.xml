@@ -3,6 +3,15 @@
     <channel>
         <title>VirusTotal</title>
         <item>
+            <title>1.1</title>
+            <pubDate>Tue, 18 Jun 2024 02:00:11 +0800</pubDate>
+            <sparkle:version>5</sparkle:version>
+            <sparkle:shortVersionString>1.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.1/VirusTotal.dmg" length="4613966" type="application/octet-stream" sparkle:edSignature="umXo3Plnwh5dyD069fXSKpFue4a0m+v1UIcrXxGe9Nm0oe7iyjj9He5ucxxtwO3wkAp/puf2lLbEOHFItyENCA=="/>
+        </item>
+        <item>
             <title>1.0.1</title>
             <pubDate>Wed, 12 Jun 2024 21:12:03 +0800</pubDate>
             <sparkle:version>4</sparkle:version>
