@@ -9,7 +9,7 @@ import SwiftUI
 import AppKit
 
 class WindowManager {
-    static func showURLWindow() {
+    @MainActor static func showURLWindow() {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 550, height: 530),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
@@ -25,7 +25,7 @@ class WindowManager {
         window.makeKeyAndOrderFront(nil)
     }
 
-    static func showFileWindow() {
+    @MainActor static func showFileWindow() {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 550, height: 530),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
