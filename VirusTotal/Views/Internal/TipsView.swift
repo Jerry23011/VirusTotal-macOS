@@ -25,6 +25,8 @@ struct FileNavigationTip: Tip {
 
 struct FileWaitTimeTip: Tip {
 
+    // TODO: Check future versions of Xcode to see if problem got fixed
+    // https://forums.developer.apple.com/forums/thread/757291
     @Parameter
     static var isWaitTooLong: Bool = false
 
