@@ -42,9 +42,7 @@ struct URLChartView: View {
                 }
             }
             .animation(.smooth, value: animateChart)
-            .onAppear {
-                    animateChart = true
-            }
+            .task { animateChart = true }
         }
     }
 
