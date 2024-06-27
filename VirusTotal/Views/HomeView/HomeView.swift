@@ -9,7 +9,7 @@ import SwiftUI
 import Defaults
 
 struct HomeView: View {
-    @ObservedObject private var viewModel = QuotaStatusViewModel.shared
+    @StateObject private var viewModel = QuotaStatusViewModel.shared
 
     @Default(.hourlyQuota) private var hourlyQuota
     @Default(.dailyQuota) private var dailyQuota
@@ -49,8 +49,8 @@ struct HomeView: View {
             .scrollDisabled(true)
             .scrollIndicators(.never)
         }
-        .onAppear {
-            viewModel.performRequest()
+        .task {
+            await viewModel.performRequest()
         }
         .onDisappear {
             viewModel.statusSuccess = nil

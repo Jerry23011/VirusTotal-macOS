@@ -31,8 +31,8 @@ struct MiniHomeView: View {
             }
             Spacer()
         }
-        .onAppear {
-            viewModel.performRequest()
+        .task {
+            await viewModel.performRequest()
         }
     }
 }
