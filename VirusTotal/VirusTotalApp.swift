@@ -163,7 +163,7 @@ struct VirusTotalApp: App {
                 let logFileURL = logsDirectory.appendingPathComponent(logFileName)
                 file.logFileURL = logFileURL
                 log.addDestination(file)
-                log.info("App Launched")
+                log.verbose("App Launched")
             } catch {
                 log.error("Failed to create Logs directory: \(error)")
             }

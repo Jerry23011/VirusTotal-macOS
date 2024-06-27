@@ -57,21 +57,15 @@ final class URLViewModel: ObservableObject {
 
        do {
            while retryCount < maxRetries {
-               log.info("retryCount < maxRetries \(retryCount < maxRetries), Start while loop")
                let result = try await URLAnalysis.shared.analyzeURL(inputURL: inputURL)
-               log.info("AnalyzeURL.shared.analyzeURL() called")
-               log.info("StatusMonitor: \(statusMonitor)")
                updateUIWithResult(result)
 
                if isValidResponse(result.lastAnalysisStats) {
-                   log.info("isValidResponse \(String(describing: isValidResponse))")
                    statusMonitor = .success
-                   log.info("StatusMonitor: \(statusMonitor)")
                    return
                }
 
                retryCount += 1
-               log.info("Sleep 5s")
                // Wait for 5 seconds
                try await Task.sleep(nanoseconds: 5_000_000_000)
            }

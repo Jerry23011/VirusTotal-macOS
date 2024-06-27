@@ -41,7 +41,6 @@ actor URLAnalysis {
                 if uploadResult.uploadSuccess == true {
                     // Wait for 2 seconds before firing request
                     try await Task.sleep(nanoseconds: 2_000_000_000)
-                    log.info("Sleep 2s done, calling analyzeURL")
                     return try await analyzeURL(inputURL: inputURL)
                 } else {
                     throw Errors.upload(uploadResult.errorMessage ?? "Upload failed with unknown error.")
