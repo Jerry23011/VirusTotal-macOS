@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-class AppState: ObservableObject {
+@MainActor
+final class AppState: ObservableObject {
     static let shared = AppState()
 
     @Published var sidebarSearchFocused: Bool = false
