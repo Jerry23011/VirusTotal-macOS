@@ -68,17 +68,18 @@ actor QuotaStatus {
 // MARK: - Networking
 
 private func fetchQuotas(apiKey: String, userName: String) async throws -> Quotas {
-        let apiEndPoint = "https://www.virustotal.com/api/v3/users/\(userName)/overall_quotas"
-        let headers: HTTPHeaders = [
-            "accept": "application/json",
-            "x-apikey": apiKey
-        ]
+    let apiEndPoint = "https://www.virustotal.com/api/v3/users/\(userName)/overall_quotas"
+    let headers: HTTPHeaders = [
+        "accept": "application/json",
+        "x-apikey": apiKey
+    ]
 
-        let quotas = try await AF.request(apiEndPoint, method: .get, headers: headers)
+    let quotas = try await AF.request(apiEndPoint, method: .get, headers: headers)
         .validate()
-            .serializingDecodable(Quotas.self)
-            .value
-        return quotas
+        .serializingDecodable(Quotas.self)
+        .value
+
+    return quotas
 }
 
 // MARK: - QuotaResult
