@@ -351,20 +351,20 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Zde se můžete kdykoliv vrátit na stránku Nahrát"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can always head back to the upload page here."
+            "value" : "You can always head back to the file selection page here."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "你可以在这里返回文件上传页面"
+            "value" : "你可以在这里返回文件选择页面"
           }
         }
       }
@@ -373,20 +373,20 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Zpět na stránku Nahrát"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Back to Upload Page"
+            "value" : "Back to Selection Page"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "返回上传界面"
+            "value" : "返回选择界面"
           }
         }
       }
@@ -449,20 +449,20 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Zpět na stránku Nahrát"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Back to Upload Page"
+            "value" : "Back to Selection Page"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "返回上传界面"
+            "value" : "返回选择界面"
           }
         }
       }
