@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MiniURLView: View {
-    @StateObject private var viewModel = AnalyzeURLViewModel()
+    @StateObject private var viewModel = URLViewModel()
     @FocusState private var isTextFieldFocused: Bool
     @Environment(\.openURL) private var openURL
 

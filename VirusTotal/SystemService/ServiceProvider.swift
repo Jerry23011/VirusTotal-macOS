@@ -9,7 +9,7 @@ import Cocoa
 import SwiftUI
 
 class ServiceProvider: NSObject {
-    private var urlViewModel = AnalyzeURLViewModel.shared
+    private var urlViewModel = URLViewModel.shared
     private var fileViewModel = AnalyzeFileViewModel.shared
 
     @objc

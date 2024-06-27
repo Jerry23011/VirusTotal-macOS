@@ -60,6 +60,7 @@
 		C493D2312C0DE06C000BD68C /* VTSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493D2302C0DE06C000BD68C /* VTSetupView.swift */; };
 		C493D2352C0DE5C0000BD68C /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493D2342C0DE5C0000BD68C /* LaunchView.swift */; };
 		C493D23A2C0E26A2000BD68C /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C493D2392C0E26A2000BD68C /* InfoPlist.xcstrings */; };
+		C4ABCFB82C2D6C0600AF8944 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */; };
 		C4B5B39C2C0643DC0086728D /* URLInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B5B39B2C0643DC0086728D /* URLInfoView.swift */; };
 		C4B5D8972C038C5900B00550 /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B5D8962C038C5900B00550 /* ServiceProvider.swift */; };
 		C4BAEBCC2C1623AF009040C1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BAEBCB2C1623AF009040C1 /* AppState.swift */; };
@@ -77,8 +78,8 @@
 		C4F2440D2C00C0EF00D79F9F /* URLChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F2440C2C00C0EF00D79F9F /* URLChartView.swift */; };
 		C4F73B272C0F00190047743B /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F73B262C0F00190047743B /* AboutView.swift */; };
 		C4F73B2A2C0F020C0047743B /* Vortex in Frameworks */ = {isa = PBXBuildFile; productRef = C4F73B292C0F020C0047743B /* Vortex */; };
-		C4FC3BA92C1215F600AF7D24 /* AnalyzeURLViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC3BA82C1215F600AF7D24 /* AnalyzeURLViewModel.swift */; };
-		C4FC3BAB2C12163900AF7D24 /* AnalyzeURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC3BAA2C12163900AF7D24 /* AnalyzeURL.swift */; };
+		C4FC3BA92C1215F600AF7D24 /* URLViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC3BA82C1215F600AF7D24 /* URLViewModel.swift */; };
+		C4FC3BAB2C12163900AF7D24 /* URLAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC3BAA2C12163900AF7D24 /* URLAnalysis.swift */; };
 		C4FFC0A82C0888AC007AE28D /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FFC0A72C0888AC007AE28D /* WindowManager.swift */; };
 		C4FFC0AB2C08DC15007AE28D /* AnalyzeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FFC0AA2C08DC15007AE28D /* AnalyzeFile.swift */; };
 /* End PBXBuildFile section */
@@ -136,6 +137,7 @@
 		C493D2302C0DE06C000BD68C /* VTSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VTSetupView.swift; sourceTree = "<group>"; };
 		C493D2342C0DE5C0000BD68C /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		C493D2392C0E26A2000BD68C /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C4B5B39B2C0643DC0086728D /* URLInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLInfoView.swift; sourceTree = "<group>"; };
 		C4B5D8962C038C5900B00550 /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
 		C4BAEBCB2C1623AF009040C1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -151,8 +153,8 @@
 		C4EB28072C0B954700719CDC /* UploadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressView.swift; sourceTree = "<group>"; };
 		C4F2440C2C00C0EF00D79F9F /* URLChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLChartView.swift; sourceTree = "<group>"; };
 		C4F73B262C0F00190047743B /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
-		C4FC3BA82C1215F600AF7D24 /* AnalyzeURLViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeURLViewModel.swift; sourceTree = "<group>"; };
-		C4FC3BAA2C12163900AF7D24 /* AnalyzeURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeURL.swift; sourceTree = "<group>"; };
+		C4FC3BA82C1215F600AF7D24 /* URLViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLViewModel.swift; sourceTree = "<group>"; };
+		C4FC3BAA2C12163900AF7D24 /* URLAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLAnalysis.swift; sourceTree = "<group>"; };
 		C4FFC0A72C0888AC007AE28D /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		C4FFC0AA2C08DC15007AE28D /* AnalyzeFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -178,8 +180,8 @@
 			isa = PBXGroup;
 			children = (
 				C41D96882BFB27CD00F2A496 /* QuotaStatus.swift */,
-				C4FC3BAA2C12163900AF7D24 /* AnalyzeURL.swift */,
 				C4FFC0AA2C08DC15007AE28D /* AnalyzeFile.swift */,
+				C4FC3BAA2C12163900AF7D24 /* URLAnalysis.swift */,
 				C4436AA42C08FC2000C9DF65 /* SharedResponses.swift */,
 			);
 			path = Models;
@@ -189,8 +191,8 @@
 			isa = PBXGroup;
 			children = (
 				C4436AA62C09000B00C9DF65 /* QuotaStatusViewModel.swift */,
-				C4FC3BA82C1215F600AF7D24 /* AnalyzeURLViewModel.swift */,
 				C4436AA12C08F5DF00C9DF65 /* AnalyzeFileViewModel.swift */,
+				C4FC3BA82C1215F600AF7D24 /* URLViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -230,6 +232,7 @@
 			children = (
 				C47144ED2C0F1A8E002D1129 /* WindowID.swift */,
 				C4509AD32C139E0000FDDCFF /* SparkleUpdates.swift */,
+				C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -518,7 +521,7 @@
 			files = (
 				C47531F32BFA15AE002EC019 /* HomeView.swift in Sources */,
 				C456DF012C1B377F007096F3 /* MiniModeView.swift in Sources */,
-				C4FC3BA92C1215F600AF7D24 /* AnalyzeURLViewModel.swift in Sources */,
+				C4FC3BA92C1215F600AF7D24 /* URLViewModel.swift in Sources */,
 				C4436AA52C08FC2000C9DF65 /* SharedResponses.swift in Sources */,
 				C4FFC0A82C0888AC007AE28D /* WindowManager.swift in Sources */,
 				C4DA01DE2C09F652000EDC3C /* FileUploadView.swift in Sources */,
@@ -535,7 +538,7 @@
 				C47532092BFA1C84002EC019 /* SettingsView.swift in Sources */,
 				C4FFC0AB2C08DC15007AE28D /* AnalyzeFile.swift in Sources */,
 				C4C34EF62C00AA8F00AB8C13 /* LoadingView.swift in Sources */,
-				C4FC3BAB2C12163900AF7D24 /* AnalyzeURL.swift in Sources */,
+				C4FC3BAB2C12163900AF7D24 /* URLAnalysis.swift in Sources */,
 				C41D969C2BFBAA8B00F2A496 /* IndicatorLEDView.swift in Sources */,
 				C49077A12C03337F00AC96D3 /* HelpButtonItemView.swift in Sources */,
 				C46173A02C1AFD770006FDAC /* URL.swift in Sources */,
@@ -566,6 +569,7 @@
 				C48336E12BFCF4D40097BD4F /* QuotaItem.swift in Sources */,
 				C4436AA72C09000B00C9DF65 /* QuotaStatusViewModel.swift in Sources */,
 				C49305CC2C07A65000ABF5BE /* View.swift in Sources */,
+				C4ABCFB82C2D6C0600AF8944 /* ErrorManager.swift in Sources */,
 				C49077A92C03535000AC96D3 /* AppDelegate.swift in Sources */,
 				C47144F02C0F1B65002D1129 /* NSApplication.swift in Sources */,
 				C4509AD42C139E0000FDDCFF /* SparkleUpdates.swift in Sources */,
