@@ -16,39 +16,37 @@ struct HomeView: View {
     @Default(.monthlyQuota) private var monthlyQuota
 
     var body: some View {
-        VStack {
-            Form {
-                Section {
-                    HStack(alignment: .center) {
-                        IndicatorLEDView(statusSuccess: $viewModel.statusSuccess)
-                        StatusMessageView(statusSuccess: $viewModel.statusSuccess,
-                                          errorMessage: $viewModel.errorMessage)
-                        Spacer()
-                        Button(action: viewModel.retryRequest) {
-                            Text("homepage.status.retry")
-                        }
-                        .padding(.trailing, 10)
-                        .keyboardShortcut("r", modifiers: .command)
+        Form {
+            Section {
+                HStack(alignment: .center) {
+                    IndicatorLEDView(statusSuccess: $viewModel.statusSuccess)
+                    StatusMessageView(statusSuccess: $viewModel.statusSuccess,
+                                      errorMessage: $viewModel.errorMessage)
+                    Spacer()
+                    Button(action: viewModel.retryRequest) {
+                        Text("homepage.status.retry")
                     }
-                    .frame(height: 35)
+                    .padding(.trailing, 10)
+                    .keyboardShortcut("r", modifiers: .command)
                 }
-                Section {
-                    QuotaItem(title: "homepage.quota.hourly",
-                              systemImage: "clock.fill",
-                              quotaItem: hourlyQuota)
-                    QuotaItem(title: "homepage.quota.daily",
-                              systemImage: "sun.horizon.fill",
-                              quotaItem: dailyQuota)
-                    QuotaItem(title: "homepage.quota.monthly",
-                              systemImage: "calendar",
-                              quotaItem: monthlyQuota)
-                }
+                .frame(height: 35)
             }
-            .formStyle(.grouped)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .scrollDisabled(true)
-            .scrollIndicators(.never)
+            Section {
+                QuotaItem(title: "homepage.quota.hourly",
+                          systemImage: "clock.fill",
+                          quotaItem: hourlyQuota)
+                QuotaItem(title: "homepage.quota.daily",
+                          systemImage: "sun.horizon.fill",
+                          quotaItem: dailyQuota)
+                QuotaItem(title: "homepage.quota.monthly",
+                          systemImage: "calendar",
+                          quotaItem: monthlyQuota)
+            }
         }
+        .formStyle(.grouped)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .scrollDisabled(true)
+        .scrollIndicators(.never)
         .task {
             await viewModel.performRequest()
         }
