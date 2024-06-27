@@ -75,6 +75,7 @@ private func fetchQuotas(apiKey: String, userName: String) async throws -> Quota
         ]
 
         let quotas = try await AF.request(apiEndPoint, method: .get, headers: headers)
+        .validate()
             .serializingDecodable(Quotas.self)
             .value
         return quotas
