@@ -47,6 +47,12 @@
     },
     "About VirusTotal" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O aplikaci VirusTotal"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -393,6 +399,12 @@
     },
     "fileview.tip.wait.message" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analýza může zabrat několik minut."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -409,6 +421,12 @@
     },
     "fileview.tip.wait.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skoro hotovo"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -843,6 +861,12 @@
     },
     "menubar.check.log" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit protokol"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -859,6 +883,12 @@
     },
     "menubar.edit.search" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyhledat"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -875,6 +905,12 @@
     },
     "menubar.help.feedback" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "POskytnout zpětnou odezvu"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -935,6 +971,12 @@
     },
     "minimode.file.drag.file" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nebo přetáhněte soubor"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -995,6 +1037,12 @@
     },
     "settings.advanced.mini.restart" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro uplatnění restartujte aplikaci"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
