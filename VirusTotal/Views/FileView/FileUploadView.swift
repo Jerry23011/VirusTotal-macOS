@@ -30,11 +30,17 @@ struct FileUploadView: View {
                     .padding(.top)
                 OpenFinderButton(title: "fileview.button.upload",
                                  systemImage: "square.and.arrow.up",
-                                 action: viewModel.startFileUpload)
+                                 action: startFileUpload)
                 .frame(width: 200)
                 .keyboardShortcut(.return, modifiers: .command)
                 .disabled(viewModel.statusMonitor == .uploading)
             }
+    }
+
+    private func startFileUpload() {
+        Task {
+            await viewModel.startFileUpload()
+        }
     }
 }
 

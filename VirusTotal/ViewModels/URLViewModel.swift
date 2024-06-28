@@ -69,7 +69,7 @@ final class URLViewModel: ObservableObject {
                // Wait for 5 seconds
                try await Task.sleep(nanoseconds: 5_000_000_000)
            }
-           let timeoutError = Errors.timeout("Request timeout: too many requests")
+           let timeoutError = VTError.timeout("Request timeout: too many requests")
            log.error(timeoutError)
            throw timeoutError
        } catch {

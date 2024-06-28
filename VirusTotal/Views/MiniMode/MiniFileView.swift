@@ -45,7 +45,9 @@ struct MiniFileView: View {
                 switch result {
                 case .success(let urls):
                     urls.forEach { url in
-                        viewModel.handleFileImport(url)
+                        Task {
+                            await viewModel.handleFileImport(url)
+                        }
                     }
                 case .failure(let error):
                     log.error("File Import Error: \(error.localizedDescription)")
@@ -153,8 +155,9 @@ struct MiniFileView: View {
             return false
         }
         NSApp.activate(ignoringOtherApps: true)
-        viewModel.setupFileInfo(fileURL: fileURL) {
-            viewModel.getFileReport()
+        Task {
+            await viewModel.setupFileInfo(fileURL: fileURL)
+            await viewModel.getFileReport()
         }
         return true
     }
@@ -167,8 +170,10 @@ struct MiniFileView: View {
 
     /// Trigger `uploadFile` and call `cancelOngoingRequest` after completion
     private func uploadFile() {
-        viewModel.uploadFile {_ in
-            viewModel.cancelOngoingRequest()
+        Task {
+            if try await viewModel.uploadFile() {
+                viewModel.cancelOngoingRequest()
+            }
         }
     }
 

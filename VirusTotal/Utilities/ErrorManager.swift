@@ -7,10 +7,11 @@
 
 import Foundation
 
-enum Errors: Error {
+enum VTError: Error {
     /// When POST request failed file uploading
     case upload(_ message: String)
-    /// When the item has been reanalyzed for too many times
-    /// and still has no valid results
+    /// When the item has been reanalyzed for too many times and still has no valid results
     case timeout(_ message: String)
+    /// Default Error for `getThumbnailImage()`
+    case thumnailError
 }

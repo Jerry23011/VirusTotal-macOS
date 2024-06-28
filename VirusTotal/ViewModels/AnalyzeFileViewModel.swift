@@ -10,6 +10,7 @@ import SwiftUI
 import CryptoKit
 import QuickLookThumbnailing
 
+@MainActor
 final class AnalyzeFileViewModel: ObservableObject {
     static let shared = AnalyzeFileViewModel()
 
@@ -32,15 +33,14 @@ final class AnalyzeFileViewModel: ObservableObject {
     var inputSHA256: String = ""
 
     /// Handle the File Import modifier, run setupFileInfo and getFileReport
-    func handleFileImport(_ url: URL) {
+    func handleFileImport(_ url: URL) async {
         _ = url.startAccessingSecurityScopedResource()
-        setupFileInfo(fileURL: url) {
-            self.getFileReport()
-        }
+        await setupFileInfo(fileURL: url)
+        await getFileReport()
     }
 
     /// Given a fileURL, setup fileSize, fileName, thumbnailImage, and fileSHA256
-    func setupFileInfo(fileURL: URL, completion: @escaping () -> Void) {
+    func setupFileInfo(fileURL: URL) async {
         self.cancellationRequested = false
         self.fileURL = fileURL
         let fileSize = getFileSize(for: fileURL)
@@ -52,96 +52,97 @@ final class AnalyzeFileViewModel: ObservableObject {
         }
         self.fileSize = fileSize
         self.fileName = getFileName(for: fileURL)
-        getThumbnailImage(for: fileURL)
+        await getThumbnailImage(for: fileURL)
         if let fileSHA256 = self.getFileSHA256(for: fileURL) {
             self.inputSHA256 = fileSHA256
         }
-        completion()
     }
 
-    func getNewFileReport(completion: ((Bool) -> Void)? = nil) {
+    func getNewFileReport() async {
         guard !self.cancellationRequested else { return }
         self.numberOfRetries = 0 // Reset retry count when a new request is made
-        getFileReport(completion: completion)
+        await getFileReport()
     }
 
     /// Given a file sha256, get the report of the file
-    func getFileReport(completion: ((Bool) -> Void)? = nil) {
+    func getFileReport() async {
         guard !self.cancellationRequested else { return }
-        AnalyzeFile.shared.getFileReport(sha256: inputSHA256) { result in
-            DispatchQueue.main.async {
-                self.statusMonitor = result.statusMonitor
-                self.errorMessage = result.errorMessage
-                self.lastAnalysisStats = result.lastAnalysisStats
-                self.typeDescription = result.typeDescription
-                self.lastAnalysisDate = result.lastAnalysisDate
-                self.reputation = result.reputation
-                self.uniqueSources = result.uniqueSources
+        do {
+            let result = try await AnalyzeFile.shared.getFileReport(sha256: inputSHA256)
+            self.statusMonitor = result.statusMonitor
+            self.errorMessage = result.errorMessage
+            self.lastAnalysisStats = result.lastAnalysisStats
+            self.typeDescription = result.typeDescription
+            self.lastAnalysisDate = result.lastAnalysisDate
+            self.reputation = result.reputation
+            self.uniqueSources = result.uniqueSources
 
-                if result.getReportSuccess == true {
-                    if self.isValidResponse(responses: result.lastAnalysisStats!) {
-                        self.statusMonitor = .success
-                        completion?(true)
-                    } else {
-                        self.retryFileReport(retryCount: self.numberOfRetries,
-                                             completion: completion)
-                    }
+            if result.getReportSuccess == true {
+                if self.isValidResponse(responses: result.lastAnalysisStats!) {
+                    self.statusMonitor = .success
                 } else {
-                    self.errorMessage = result.errorMessage
-                    completion?(false)
+                    await self.retryFileReport(retryCount: self.numberOfRetries)
                 }
+            } else {
+                self.errorMessage = result.errorMessage
             }
+        } catch {
+            self.errorMessage = error.localizedDescription
+            self.statusMonitor = .fail
         }
     }
 
     /// Upload file
-    func uploadFile(completion: @escaping (Bool) -> Void) {
-        guard !self.cancellationRequested else { return }
+    func uploadFile() async throws -> Bool {
+        guard !self.cancellationRequested else { return false }
         self.statusMonitor = .uploading
-        AnalyzeFile.shared.uploadFile(fileURL: self.fileURL ?? defaultFileURL,
-                                      apiEndPoint: chooseUploadEndpoint(),
-                                      progressHandler: { [weak self] progress in
-            DispatchQueue.main.async {
-                self?.uploadProgress = progress
-            }
-        },
-                                      completion: { [weak self] uploadResult in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-
-                if uploadResult.uploadSuccess == true {
-                    self.statusMonitor = .analyzing
-                    self.uploadSuccess = true
-                    completion(true)
-                } else {
-                    self.errorMessage = uploadResult.errorMessage
-                    self.statusMonitor = uploadResult.statusMonitor
-                    completion(false)
+        do {
+            let uploadResult = try await AnalyzeFile.shared.uploadFile(
+                fileURL: self.fileURL ?? defaultFileURL,
+                apiEndPoint: chooseUploadEndpoint()
+            ) { progress in
+                DispatchQueue.main.async {
+                    self.uploadProgress = progress
                 }
             }
-        })
+            if uploadResult.uploadSuccess == true {
+                self.statusMonitor = .analyzing
+                self.uploadSuccess = true
+                return true
+            } else {
+                self.errorMessage = uploadResult.errorMessage
+                self.statusMonitor = uploadResult.statusMonitor
+                return false
+            }
+        } catch {
+            self.errorMessage = error.localizedDescription
+            self.statusMonitor = .fail
+            return false
+        }
     }
 
     /// Fetch the large file upload endpoint
-    func fetchLargeFileEndpoint(completion: @escaping (Bool) -> Void) {
-        guard !self.cancellationRequested else { return }
-        AnalyzeFile.shared.getLargeFileEndpoint { [weak self] endpointResult in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if endpointResult.getEndpointSuccess == true {
-                    self.largeFileEndpoint = endpointResult.largeFileEndpoint
-                    completion(true)
-                } else {
-                    self.errorMessage = endpointResult.errorMessage
-                    self.statusMonitor = endpointResult.statusMonitor
-                    completion(false)
-                }
+    func fetchLargeFileEndpoint() async throws -> Bool {
+        guard !self.cancellationRequested else { return false }
+        do {
+            let endpointResult = try await AnalyzeFile.shared.getLargeFileEndpoint()
+            if endpointResult.getEndpointSuccess == true {
+                self.largeFileEndpoint = endpointResult.largeFileEndpoint
+                return true
+            } else {
+                self.errorMessage = endpointResult.errorMessage
+                self.statusMonitor = endpointResult.statusMonitor
+                return false
             }
+        } catch {
+            self.errorMessage = error.localizedDescription
+            self.statusMonitor = .fail
+            return false
         }
     }
 
     /// Start file upload based on file size
-    func startFileUpload() {
+    func startFileUpload() async {
         guard !self.cancellationRequested else { return }
         guard let fileSize = self.fileSize else {
             log.error("No File Size \(String(describing: fileSize))")
@@ -150,63 +151,55 @@ final class AnalyzeFileViewModel: ObservableObject {
             return
         }
 
-        switch fileSize {
-        case ..<33_554_432:
-            self.uploadFile { [weak self] success in
-                if success {
-                    // Add a 20s delay to wait for VT sync data
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 20) {
-                        self?.getNewFileReport()
-                    }
+        do {
+            switch fileSize {
+            case ..<33_554_432:
+                if try await uploadFile() {
+                    try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
+                    await getNewFileReport()
                 }
-            }
-
-        case 33_554_432...681_574_400:
-            self.fetchLargeFileEndpoint { [weak self] success in
-                if success {
-                    self?.uploadFile { uploadSuccess in
-                        if uploadSuccess {
-                            // Add a 20s delay to wait for VT sync data
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 20) {
-                                self?.getNewFileReport()
-                            }
-                        }
+            case 33_554_432...681_574_400:
+                if try await fetchLargeFileEndpoint() {
+                    if try await uploadFile() {
+                        try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
+                        await getNewFileReport()
                     }
                 } else {
                     log.error("Failed to fetch large file upload endpoint.")
-                    self?.errorMessage = "Failed to fetch large file upload endpoint."
-                    self?.statusMonitor = .fail
+                    self.errorMessage = "Failed to fetch large file upload endpoint."
+                    self.statusMonitor = .fail
                 }
+            default:
+                self.errorMessage = "Unexpected file size."
+                self.statusMonitor = .fail
             }
-        default:
-            self.errorMessage = "Unexpected file size."
+        } catch {
+            self.errorMessage = error.localizedDescription
             self.statusMonitor = .fail
         }
     }
 
     // Request to re-analyze a file
-    func requestReanalyze() {
+    func requestReanalyze() async {
         guard !self.cancellationRequested else { return }
-
-        AnalyzeFile.shared.reanalyzeFile(sha256: inputSHA256) { [weak self] success, errorMessage in
-            DispatchQueue.main.async {
-                if success {
-                    self?.getNewFileReport()
-                    self?.errorMessage = nil
-                } else {
-                    log.error(errorMessage ?? "Unknown error during re-scan")
-                    self?.statusMonitor = .fail
-                    self?.errorMessage = errorMessage
-                }
-            }
+        do {
+            try await AnalyzeFile.shared.reanalyzeFile(sha256: inputSHA256)
+            await getNewFileReport()
+            self.errorMessage = nil
+        } catch {
+            log.error(error.localizedDescription)
+            self.statusMonitor = .fail
+            self.errorMessage = error.localizedDescription
         }
     }
 
     /// Cancel on-going AF request and stop model from running
     func cancelOngoingRequest() {
-        AnalyzeFile.shared.cancelAFRequest()
-        cancellationRequested = true
+        Task {
+            await AnalyzeFile.shared.cancelAFRequest()
+            cancellationRequested = true
         }
+    }
 
     // MARK: Private
 
@@ -245,7 +238,7 @@ final class AnalyzeFileViewModel: ObservableObject {
     }
 
     /// Given a fileURL, generate a thumbnail icon and pass it to the viewModel
-    private func getThumbnailImage(for fileURL: URL) {
+    private func getThumbnailImage(for fileURL: URL) async {
         let selectedFileURL: URL = fileURL
         let size = CGSize(width: 50, height: 50)
         let scale = NSScreen.main?.backingScaleFactor ?? 1.0
@@ -254,14 +247,19 @@ final class AnalyzeFileViewModel: ObservableObject {
                                                    scale: scale,
                                                    representationTypes: .icon)
 
-        QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { [self] thumbnail, error in
-            guard let thumbnail = thumbnail else {
-                log.error("Thumbnail Error: \(error?.localizedDescription ?? "Unknown thumbnail error")")
-                return
+        do {
+            let thumbnail = try await withCheckedThrowingContinuation { continuation in
+                QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { thumbnail, error in
+                    if let thumbnail = thumbnail {
+                        continuation.resume(returning: thumbnail)
+                    } else {
+                        continuation.resume(throwing: error ?? VTError.thumnailError)
+                    }
+                }
             }
-            DispatchQueue.main.async {
-                self.thumbnailImage = thumbnail.thumbnailImage
-            }
+            self.thumbnailImage = thumbnail.thumbnailImage
+        } catch {
+            log.error("Thumbnail Error: \(error)")
         }
     }
 
@@ -284,19 +282,26 @@ final class AnalyzeFileViewModel: ObservableObject {
 
     /// Retry getting file report to wait for the server processing time when new file is scanned
     /// getFileReport() will be called every 10 seconds up to 28 times (300 seconds)
-    private func retryFileReport(retryCount: Int,
-                                 completion: ((Bool) -> Void)? = nil) {
+    private func retryFileReport(retryCount: Int) async {
+        guard !self.cancellationRequested else { return }
         guard retryCount < 28 else {
             log.error("Request Timeout. \(self.errorMessage ?? "")")
             self.errorMessage = "Request timeout." + (self.errorMessage ?? "")
             self.statusMonitor = .fail
-            completion?(false)
             return
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+        do {
+            try await Task.sleep(for: .seconds(10))
             self.numberOfRetries += 1
-            self.getFileReport(completion: completion)
+            await getFileReport()
+
+            if self.statusMonitor != .success {
+                return await retryFileReport(retryCount: self.numberOfRetries)
+            }
+        } catch {
+            self.errorMessage = "Error during retry: \(error.localizedDescription)"
+            self.statusMonitor = .fail
         }
     }
 }

@@ -45,7 +45,9 @@ struct FileView: View {
                             switch result {
                             case .success(let urls):
                                 urls.forEach { url in
-                                    viewModel.handleFileImport(url)
+                                    Task {
+                                        await viewModel.handleFileImport(url)
+                                    }
                                 }
                             case .failure(let error):
                                 log.error("File Import Error: \(error.localizedDescription)")
@@ -155,8 +157,10 @@ struct FileView: View {
     }
 
     private func requestReanalyze() {
-        viewModel.statusMonitor = .loading
-        viewModel.requestReanalyze()
+        Task {
+            viewModel.statusMonitor = .loading
+            await viewModel.requestReanalyze()
+        }
     }
 
     /// Return true if viewModel.statusMonitor is .none, .upload, or .success
@@ -185,8 +189,9 @@ struct FileView: View {
             return false
         }
         NSApp.activate(ignoringOtherApps: true)
-        viewModel.setupFileInfo(fileURL: fileURL) {
-            viewModel.getFileReport()
+        Task {
+            await viewModel.setupFileInfo(fileURL: fileURL)
+            await viewModel.getFileReport()
         }
         return true
     }

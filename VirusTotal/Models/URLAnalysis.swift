@@ -43,7 +43,7 @@ actor URLAnalysis {
                     try await Task.sleep(nanoseconds: 2_000_000_000)
                     return try await analyzeURL(inputURL: inputURL)
                 } else {
-                    throw Errors.upload(uploadResult.errorMessage ?? "Upload failed with unknown error.")
+                    throw VTError.upload(uploadResult.errorMessage ?? "Upload failed with unknown error.")
                 }
             } else {
                 throw error
