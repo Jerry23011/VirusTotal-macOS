@@ -25,7 +25,7 @@ struct FileChartView: View {
                     angularInset: 1.5
                 )
                 .cornerRadius(3)
-                .foregroundStyle(by: .value(String("Type"), element.type))
+                .foregroundStyle(by: .value(String("Type"), element.type.nslocalized))
             }
             .chartLegend(position: .leading, alignment: .center)
             .chartBackground { chartProxy in
@@ -62,21 +62,21 @@ struct FileChartView: View {
 
     private var flagStats: [FlagStats] {
         return [
-            .init(type: "Type Unsupported",
+            .init(type: "flag.type.unsupported",
                   number: viewModel.lastAnalysisStats?.typeUnsupported ?? 0),
-            .init(type: "Undetected",
+            .init(type: "flag.undetected",
                   number: viewModel.lastAnalysisStats?.undetected ?? 0),
-            .init(type: "Suspicious",
+            .init(type: "flag.suspicious",
                   number: viewModel.lastAnalysisStats?.suspicious ?? 0),
-            .init(type: "Failure",
+            .init(type: "flag.failure",
                   number: viewModel.lastAnalysisStats?.failure ?? 0),
-            .init(type: "Malicious",
+            .init(type: "flag.malicious",
                   number: viewModel.lastAnalysisStats?.malicious ?? 0),
-            .init(type: "Harmless",
+            .init(type: "flag.harmless",
                   number: viewModel.lastAnalysisStats?.harmless ?? 0),
-            .init(type: "Timeout",
+            .init(type: "flag.timeout",
                   number: viewModel.lastAnalysisStats?.timeout ?? 0),
-            .init(type: "Confirmed Timeout",
+            .init(type: "flag.confirmed.timeout",
                   number: viewModel.lastAnalysisStats?.confirmedTimeout ?? 0)
         ]
     }
