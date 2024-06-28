@@ -96,15 +96,19 @@ final class FileViewModel: ObservableObject {
     func uploadFile() async throws -> Bool {
         guard !self.cancellationRequested else { return false }
         self.statusMonitor = .uploading
+
+        let updateProgress: @Sendable (Double) -> Void = { [weak self] progress in
+            Task { @MainActor [weak self] in
+                self?.uploadProgress = progress
+            }
+        }
+
         do {
             let uploadResult = try await FileAnalysis.shared.uploadFile(
                 fileURL: self.fileURL ?? defaultFileURL,
-                apiEndPoint: chooseUploadEndpoint()
-            ) { progress in
-                DispatchQueue.main.async {
-                    self.uploadProgress = progress
-                }
-            }
+                apiEndPoint: chooseUploadEndpoint(),
+                progressHandler: updateProgress
+            )
             if uploadResult.uploadSuccess == true {
                 self.statusMonitor = .analyzing
                 self.uploadSuccess = true

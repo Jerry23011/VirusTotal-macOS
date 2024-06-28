@@ -60,7 +60,7 @@ actor FileAnalysis {
 
     func uploadFile(fileURL: URL,
                     apiEndPoint: String,
-                    progressHandler: @escaping (Double) -> Void) async throws -> FileUploadResult {
+                    progressHandler: @Sendable @escaping (Double) -> Void) async throws -> FileUploadResult {
         let headers: HTTPHeaders = [
             "accept": "application/json",
             "content-type": "multipart/form-data",
