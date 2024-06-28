@@ -11,24 +11,25 @@ import CryptoKit
 import QuickLookThumbnailing
 
 @MainActor
-final class FileViewModel: ObservableObject {
+@Observable
+final class FileViewModel {
     static let shared = FileViewModel()
 
-    @Published var statusMonitor: AnalysisStatus?
-    @Published var errorMessage: String?
-    @Published var lastAnalysisStats: FileAnalysisStats?
-    @Published var typeDescription: String?
-    @Published var lastAnalysisDate: String?
-    @Published var reputation: Int?
-    @Published var uniqueSources: Int?
+    var statusMonitor: AnalysisStatus?
+    var errorMessage: String?
+    var lastAnalysisStats: FileAnalysisStats?
+    var typeDescription: String?
+    var lastAnalysisDate: String?
+    var reputation: Int?
+    var uniqueSources: Int?
 
-    @Published var fileSize: Int64?
-    @Published var fileName: String?
-    @Published var thumbnailImage: NSImage?
+    var fileSize: Int64?
+    var fileName: String?
+    var thumbnailImage: NSImage?
 
     // Not stable due to URLSession's behaviors
     // https://github.com/Alamofire/Alamofire/issues/3813
-    @Published var uploadProgress: Double = 0.0
+    var uploadProgress: Double = 0.0
 
     var inputSHA256: String = ""
 

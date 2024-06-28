@@ -10,8 +10,9 @@ import Alamofire
 import UniformTypeIdentifiers
 import TipKit
 
+@MainActor
 struct FileView: View {
-    @StateObject private var viewModel = FileViewModel.shared
+    @State private var viewModel = FileViewModel.shared
 
     @State private var isFileImporterPresent: Bool = false
     @State private var isFileDropped: Bool = false

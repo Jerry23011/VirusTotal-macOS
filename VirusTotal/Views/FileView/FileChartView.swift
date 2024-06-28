@@ -8,8 +8,9 @@
 import SwiftUI
 import Charts
 
+@MainActor
 struct FileChartView: View {
-    @ObservedObject private var viewModel = FileViewModel.shared
+    private var viewModel = FileViewModel.shared
 
     @State private var animateChart = false
 

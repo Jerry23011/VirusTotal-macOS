@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+@MainActor
 struct FileReportView: View {
-    @ObservedObject private var viewModel = FileViewModel.shared
+    private var viewModel = FileViewModel.shared
 
     var body: some View {
         VStack {
