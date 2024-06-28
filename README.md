@@ -25,7 +25,12 @@ In case you got a popup saying "VirusTotal.app” will damage your computer. You
 ```
 sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 ```
-
+##### Homebrew
+You can run the following commands in your Terminal.app
+```
+brew tap marsanne/homebrew-cask
+brew install --cask virustotal
+```
 ## Features
 - Uploade files and URLs to VirusTotal
 - View Analysis Report on VirusTotal
