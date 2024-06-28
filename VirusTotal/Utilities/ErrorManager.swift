@@ -12,6 +12,6 @@ enum VTError: Error {
     case upload(_ message: String)
     /// When the item has been reanalyzed for too many times and still has no valid results
     case timeout(_ message: String)
-    /// Default Error for `getThumbnailImage()`
-    case thumnailError
+    /// Local Errors with no impact by network connection
+    case local(_ message: String)
 }

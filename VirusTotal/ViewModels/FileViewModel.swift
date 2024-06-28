@@ -257,7 +257,7 @@ final class FileViewModel: ObservableObject {
                     if let thumbnail = thumbnail {
                         continuation.resume(returning: thumbnail)
                     } else {
-                        continuation.resume(throwing: error ?? VTError.thumnailError)
+                        continuation.resume(throwing: error ?? VTError.local("Unknown error generating Thumbnail."))
                     }
                 }
             }
