@@ -59,7 +59,7 @@ final class URLViewModel: ObservableObject {
            while retryCount < maxRetries {
                let result = try await URLAnalysis.shared.analyzeURL(inputURL: inputURL)
                updateUIWithResult(result)
-
+               self.statusMonitor = .analyzing
                if isValidResponse(result.lastAnalysisStats) {
                    statusMonitor = .success
                    return
