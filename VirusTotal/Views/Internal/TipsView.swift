@@ -27,8 +27,19 @@ struct FileWaitTimeTip: Tip {
 
     // TODO: Check future versions of Xcode to see if problem got fixed
     // https://forums.developer.apple.com/forums/thread/757291
-    @Parameter
-    static var isWaitTooLong: Bool = false
+//     @Parameter
+//     static var isWaitTooLong: Bool = false
+
+    static var isWaitTooLong: Bool {
+        get {
+            isWaitTooLongPH.wrappedValue
+        }
+        set {
+            isWaitTooLongPH.wrappedValue = newValue
+        }
+    }
+
+    static nonisolated(unsafe) var isWaitTooLongPH = Tips.Parameter<Bool>(Self.self, "+isWaitTooLong", false)
 
     var title: Text {
         Text("fileview.tip.wait.title")
@@ -44,7 +55,12 @@ struct FileWaitTimeTip: Tip {
         Tips.MaxDisplayCount(1)
     }
 
+    // TODO: Check future versions of Xcode to see if problem got fixed
+//    var rules: [Rule] {[
+//        #Rule(Self.$isWaitTooLong) { $0 == true }
+//    ]}
+
     var rules: [Rule] {[
-        #Rule(Self.$isWaitTooLong) { $0 == true }
+        #Rule(FileWaitTimeTip.isWaitTooLongPH) { $0 == true }
     ]}
 }
