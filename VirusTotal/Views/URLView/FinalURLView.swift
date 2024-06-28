@@ -8,8 +8,9 @@
 import SwiftUI
 import Defaults
 
+@MainActor
 struct FinalURLView: View {
-    @ObservedObject private var viewModel = URLViewModel.shared
+    private var viewModel = URLViewModel.shared
 
     var body: some View {
         HStack(alignment: .center) {

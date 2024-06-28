@@ -9,19 +9,20 @@ import Foundation
 import SwiftUI
 
 @MainActor
+@Observable
 final class URLViewModel: ObservableObject {
     static let shared = URLViewModel()
 
-    @Published var inputURL: String = ""
-    @Published var vtURL: String = ""
-    @Published var lastAnalysisTime: String = ""
-    @Published var finalURL: String = ""
-    @Published var finalURLHost: String = ""
-    @Published var finalURLClean: String = ""
-    @Published var errorMessage: String?
-    @Published var communityScore: Int = 0
-    @Published var analysisStats: URLAnalysisStats?
-    @Published var statusMonitor: AnalysisStatus = .empty
+    var inputURL: String = ""
+    var vtURL: String = ""
+    var lastAnalysisTime: String = ""
+    var finalURL: String = ""
+    var finalURLHost: String = ""
+    var finalURLClean: String = ""
+    var errorMessage: String?
+    var communityScore: Int = 0
+    var analysisStats: URLAnalysisStats?
+    var statusMonitor: AnalysisStatus = .empty
 
     private var retryCount = 0
     private let maxRetries = 10

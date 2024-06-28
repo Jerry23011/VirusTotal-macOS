@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+@MainActor
 struct MiniURLView: View {
-    @StateObject private var viewModel = URLViewModel()
+    @State private var viewModel = URLViewModel()
     @FocusState private var isTextFieldFocused: Bool
     @State private var isURLOpened: Bool = false
     @Environment(\.openURL) private var openURL
@@ -45,7 +46,6 @@ struct MiniURLView: View {
             }
             .buttonStyle(MiniModeButtonStyle())
             Spacer()
-
         }
         .padding()
         .onChange(of: viewModel.statusMonitor) {
