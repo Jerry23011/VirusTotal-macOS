@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 class ServiceProvider: NSObject {
     private let urlViewModel = URLViewModel.shared
-    private let fileViewModel = AnalyzeFileViewModel.shared
+    private let fileViewModel = FileViewModel.shared
 
     @objc
     func scanURLService(_ pasteboard: NSPasteboard, userData: String, error: NSErrorPointer) {

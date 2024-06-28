@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FileTypeView: View {
-    @ObservedObject private var viewModel = AnalyzeFileViewModel.shared
+    @ObservedObject private var viewModel = FileViewModel.shared
 
     var body: some View {
         VStack(alignment: .center) {

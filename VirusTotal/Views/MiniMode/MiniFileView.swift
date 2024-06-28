@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MiniFileView: View {
-    @ObservedObject private var viewModel = AnalyzeFileViewModel()
+    @ObservedObject private var viewModel = FileViewModel()
     @Environment(\.openURL) private var openURL
 
     @State private var isFileImporterPresent: Bool = false

@@ -14,7 +14,7 @@
 		C41D968C2BFB280B00F2A496 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C41D968B2BFB280B00F2A496 /* Alamofire */; };
 		C41D969C2BFBAA8B00F2A496 /* IndicatorLEDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41D969B2BFBAA8B00F2A496 /* IndicatorLEDView.swift */; };
 		C41D969E2BFBBD9D00F2A496 /* StatusMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41D969D2BFBBD9D00F2A496 /* StatusMessageView.swift */; };
-		C4436AA22C08F5DF00C9DF65 /* AnalyzeFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4436AA12C08F5DF00C9DF65 /* AnalyzeFileViewModel.swift */; };
+		C4436AA22C08F5DF00C9DF65 /* FileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4436AA12C08F5DF00C9DF65 /* FileViewModel.swift */; };
 		C4436AA52C08FC2000C9DF65 /* SharedResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4436AA42C08FC2000C9DF65 /* SharedResponses.swift */; };
 		C4436AA72C09000B00C9DF65 /* QuotaStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4436AA62C09000B00C9DF65 /* QuotaStatusViewModel.swift */; };
 		C4436AA92C0906C600C9DF65 /* OpenFinderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4436AA82C0906C600C9DF65 /* OpenFinderButton.swift */; };
@@ -81,7 +81,7 @@
 		C4FC3BA92C1215F600AF7D24 /* URLViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC3BA82C1215F600AF7D24 /* URLViewModel.swift */; };
 		C4FC3BAB2C12163900AF7D24 /* URLAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FC3BAA2C12163900AF7D24 /* URLAnalysis.swift */; };
 		C4FFC0A82C0888AC007AE28D /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FFC0A72C0888AC007AE28D /* WindowManager.swift */; };
-		C4FFC0AB2C08DC15007AE28D /* AnalyzeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FFC0AA2C08DC15007AE28D /* AnalyzeFile.swift */; };
+		C4FFC0AB2C08DC15007AE28D /* FileAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FFC0AA2C08DC15007AE28D /* FileAnalysis.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,7 +91,7 @@
 		C41D96882BFB27CD00F2A496 /* QuotaStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaStatus.swift; sourceTree = "<group>"; };
 		C41D969B2BFBAA8B00F2A496 /* IndicatorLEDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorLEDView.swift; sourceTree = "<group>"; };
 		C41D969D2BFBBD9D00F2A496 /* StatusMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMessageView.swift; sourceTree = "<group>"; };
-		C4436AA12C08F5DF00C9DF65 /* AnalyzeFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeFileViewModel.swift; sourceTree = "<group>"; };
+		C4436AA12C08F5DF00C9DF65 /* FileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileViewModel.swift; sourceTree = "<group>"; };
 		C4436AA42C08FC2000C9DF65 /* SharedResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedResponses.swift; sourceTree = "<group>"; };
 		C4436AA62C09000B00C9DF65 /* QuotaStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaStatusViewModel.swift; sourceTree = "<group>"; };
 		C4436AA82C0906C600C9DF65 /* OpenFinderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFinderButton.swift; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 		C4FC3BA82C1215F600AF7D24 /* URLViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLViewModel.swift; sourceTree = "<group>"; };
 		C4FC3BAA2C12163900AF7D24 /* URLAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLAnalysis.swift; sourceTree = "<group>"; };
 		C4FFC0A72C0888AC007AE28D /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
-		C4FFC0AA2C08DC15007AE28D /* AnalyzeFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeFile.swift; sourceTree = "<group>"; };
+		C4FFC0AA2C08DC15007AE28D /* FileAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAnalysis.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,7 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				C41D96882BFB27CD00F2A496 /* QuotaStatus.swift */,
-				C4FFC0AA2C08DC15007AE28D /* AnalyzeFile.swift */,
+				C4FFC0AA2C08DC15007AE28D /* FileAnalysis.swift */,
 				C4FC3BAA2C12163900AF7D24 /* URLAnalysis.swift */,
 				C4436AA42C08FC2000C9DF65 /* SharedResponses.swift */,
 			);
@@ -191,7 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				C4436AA62C09000B00C9DF65 /* QuotaStatusViewModel.swift */,
-				C4436AA12C08F5DF00C9DF65 /* AnalyzeFileViewModel.swift */,
+				C4436AA12C08F5DF00C9DF65 /* FileViewModel.swift */,
 				C4FC3BA82C1215F600AF7D24 /* URLViewModel.swift */,
 			);
 			path = ViewModels;
@@ -536,7 +536,7 @@
 				C47531E22BFA0FFB002EC019 /* VirusTotalApp.swift in Sources */,
 				C493D2312C0DE06C000BD68C /* VTSetupView.swift in Sources */,
 				C47532092BFA1C84002EC019 /* SettingsView.swift in Sources */,
-				C4FFC0AB2C08DC15007AE28D /* AnalyzeFile.swift in Sources */,
+				C4FFC0AB2C08DC15007AE28D /* FileAnalysis.swift in Sources */,
 				C4C34EF62C00AA8F00AB8C13 /* LoadingView.swift in Sources */,
 				C4FC3BAB2C12163900AF7D24 /* URLAnalysis.swift in Sources */,
 				C41D969C2BFBAA8B00F2A496 /* IndicatorLEDView.swift in Sources */,
@@ -559,7 +559,7 @@
 				C493D2352C0DE5C0000BD68C /* LaunchView.swift in Sources */,
 				C4E91C572BFF9051003800E7 /* DefaultsBridges.swift in Sources */,
 				C40FBC272C118F5000EE7F5B /* FinalURLView.swift in Sources */,
-				C4436AA22C08F5DF00C9DF65 /* AnalyzeFileViewModel.swift in Sources */,
+				C4436AA22C08F5DF00C9DF65 /* FileViewModel.swift in Sources */,
 				C47531F72BFA169D002EC019 /* FileView.swift in Sources */,
 				C47531F92BFA16CF002EC019 /* URLView.swift in Sources */,
 				C4436AA92C0906C600C9DF65 /* OpenFinderButton.swift in Sources */,

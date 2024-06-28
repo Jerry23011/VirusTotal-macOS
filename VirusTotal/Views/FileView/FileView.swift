@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 import TipKit
 
 struct FileView: View {
-    @StateObject private var viewModel = AnalyzeFileViewModel.shared
+    @StateObject private var viewModel = FileViewModel.shared
 
     @State private var isFileImporterPresent: Bool = false
     @State private var isFileDropped: Bool = false

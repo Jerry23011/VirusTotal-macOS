@@ -1,5 +1,5 @@
 //
-//  AnalyzeFileViewModel.swift
+//  FileViewModel.swift
 //  VirusTotal
 //
 //  Created by Jerry on 2024-05-31.
@@ -11,8 +11,8 @@ import CryptoKit
 import QuickLookThumbnailing
 
 @MainActor
-final class AnalyzeFileViewModel: ObservableObject {
-    static let shared = AnalyzeFileViewModel()
+final class FileViewModel: ObservableObject {
+    static let shared = FileViewModel()
 
     @Published var statusMonitor: AnalysisStatus?
     @Published var errorMessage: String?
@@ -68,7 +68,7 @@ final class AnalyzeFileViewModel: ObservableObject {
     func getFileReport() async {
         guard !self.cancellationRequested else { return }
         do {
-            let result = try await AnalyzeFile.shared.getFileReport(sha256: inputSHA256)
+            let result = try await FileAnalysis.shared.getFileReport(sha256: inputSHA256)
             self.statusMonitor = result.statusMonitor
             self.errorMessage = result.errorMessage
             self.lastAnalysisStats = result.lastAnalysisStats
@@ -97,7 +97,7 @@ final class AnalyzeFileViewModel: ObservableObject {
         guard !self.cancellationRequested else { return false }
         self.statusMonitor = .uploading
         do {
-            let uploadResult = try await AnalyzeFile.shared.uploadFile(
+            let uploadResult = try await FileAnalysis.shared.uploadFile(
                 fileURL: self.fileURL ?? defaultFileURL,
                 apiEndPoint: chooseUploadEndpoint()
             ) { progress in
@@ -125,7 +125,7 @@ final class AnalyzeFileViewModel: ObservableObject {
     func fetchLargeFileEndpoint() async throws -> Bool {
         guard !self.cancellationRequested else { return false }
         do {
-            let endpointResult = try await AnalyzeFile.shared.getLargeFileEndpoint()
+            let endpointResult = try await FileAnalysis.shared.getLargeFileEndpoint()
             if endpointResult.getEndpointSuccess == true {
                 self.largeFileEndpoint = endpointResult.largeFileEndpoint
                 return true
@@ -183,7 +183,7 @@ final class AnalyzeFileViewModel: ObservableObject {
     func requestReanalyze() async {
         guard !self.cancellationRequested else { return }
         do {
-            try await AnalyzeFile.shared.reanalyzeFile(sha256: inputSHA256)
+            try await FileAnalysis.shared.reanalyzeFile(sha256: inputSHA256)
             await getNewFileReport()
             self.errorMessage = nil
         } catch {
@@ -196,7 +196,7 @@ final class AnalyzeFileViewModel: ObservableObject {
     /// Cancel on-going AF request and stop model from running
     func cancelOngoingRequest() {
         Task {
-            await AnalyzeFile.shared.cancelAFRequest()
+            await FileAnalysis.shared.cancelAFRequest()
             cancellationRequested = true
         }
     }

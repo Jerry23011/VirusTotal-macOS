@@ -1,5 +1,5 @@
 //
-//  AnalyzeFile.swift
+//  FileAnalysis.swift
 //  VirusTotal
 //
 //  Created by Jerry on 2024-05-31.
@@ -9,8 +9,8 @@ import Foundation
 import Alamofire
 import Defaults
 
-actor AnalyzeFile {
-    static let shared = AnalyzeFile()
+actor FileAnalysis {
+    static let shared = FileAnalysis()
 
     func getFileReport(sha256: String) async throws -> FileAnalysisResult {
         let apiEndPoint = "https://www.virustotal.com/api/v3/files/\(sha256)"

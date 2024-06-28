@@ -9,7 +9,7 @@ import SwiftUI
 import Charts
 
 struct FileChartView: View {
-    @ObservedObject private var viewModel = AnalyzeFileViewModel.shared
+    @ObservedObject private var viewModel = FileViewModel.shared
 
     @State private var animateChart = false
 
