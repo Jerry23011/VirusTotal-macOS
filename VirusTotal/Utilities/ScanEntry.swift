@@ -8,8 +8,6 @@
 import Foundation
 import SwiftUI
 
-// MARK: - ScanEntry
-
 struct ScanEntry: Identifiable, Codable {
     let id: UUID
     let timestamp: Date

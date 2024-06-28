@@ -11,6 +11,7 @@ import SwiftUI
 struct ScanHistoryView: View {
     @State private var historyManager = ScanHistoryManager.shared
     @State private var tableSelection: Set<ScanEntry.ID> = []
+    @State private var showingClearConfirmation = false
 
     var body: some View {
         Table(historyManager.scanEntries, selection: $tableSelection) {
@@ -46,10 +47,48 @@ struct ScanHistoryView: View {
                 log.error("Error loading scan entries: \(error)")
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                if !historyManager.scanEntries.isEmpty {
+                    Button(action: showConfirmClear) {
+                        Label("history.toolbar.clear", systemImage: "trash")
+                    }
+                    .help("history.toolbar.clear.help")
+                    .keyboardShortcut(.delete, modifiers: [.command, .shift])
+                    .confirmationDialog("history.clear.confirmation.title",
+                                        isPresented: $showingClearConfirmation) {
+                        Button("history.clear.confirmation.clear",
+                               role: nil,
+                               action: clearHistory)
+                        Button("history.clear.confirmation.cancel",
+                               role: .cancel) { }
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: Private
+
+    /// Clears the ScanEntries
+    private func clearHistory() {
+        historyManager.scanEntries.removeAll()
+        Task {
+            do {
+                try await historyManager.save(entries: [])
+            } catch {
+                log.error("Error clearing scan history: \(error)")
+            }
+        }
+    }
+
+    /// Changes `showingClearConfirmation` to true
+    private func showConfirmClear() {
+        showingClearConfirmation = true
     }
 
     @ViewBuilder
-    func statusView(flag: Int) -> some View {
+    private func statusView(flag: Int) -> some View {
         switch flag {
         case 0:
             Image(systemName: "checkmark.circle.fill")
