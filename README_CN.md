@@ -25,11 +25,9 @@
 ```
 sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 ```
-##### Homebrew
-你可以在 终端.app 中运行如下指令
+#### Homebrew
 ```
-brew tap marsanne/homebrew-cask
-brew install --cask virustotal
+brew install marsanne/cask/virustotal
 ```
 ## 功能
 - 将文件和网址上传到 VirusTotal
