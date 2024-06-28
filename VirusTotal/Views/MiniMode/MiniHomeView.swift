@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+@MainActor
 struct MiniHomeView: View {
-    @StateObject private var viewModel = QuotaStatusViewModel()
+    @State private var viewModel = QuotaStatusViewModel()
 
     var body: some View {
         VStack(alignment: .center) {

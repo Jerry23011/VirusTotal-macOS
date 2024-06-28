@@ -7,9 +7,10 @@
 
 import SwiftUI
 
+@MainActor
 struct LaunchView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject private var viewModel = QuotaStatusViewModel.shared
+    private var viewModel = QuotaStatusViewModel.shared
 
     var body: some View {
         VStack(alignment: .center) {

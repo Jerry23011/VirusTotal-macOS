@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Text message indicating the status of service
 struct StatusMessageView: View {
     @Binding var statusSuccess: Bool?
     @Binding var errorMessage: String?

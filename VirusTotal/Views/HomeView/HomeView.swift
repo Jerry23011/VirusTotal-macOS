@@ -9,7 +9,7 @@ import SwiftUI
 import Defaults
 
 struct HomeView: View {
-    @StateObject private var viewModel = QuotaStatusViewModel.shared
+    @State private var viewModel = QuotaStatusViewModel.shared
 
     @Default(.hourlyQuota) private var hourlyQuota
     @Default(.dailyQuota) private var dailyQuota
