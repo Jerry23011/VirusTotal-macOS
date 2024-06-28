@@ -22,6 +22,15 @@ struct SidebarView: View {
                     .tag(item)
                 }
             }
+            Section {
+                NavigationLink(
+                    destination: ScanHistoryView()
+                        .frame(minWidth: 600, minHeight: 500)
+                ) {
+                    Label("sidebar.history",
+                          systemImage: "book.closed")
+                }
+            }
         }
         .listStyle(.sidebar)
         .frame(minWidth: 200)
@@ -51,7 +60,9 @@ struct SidebarView: View {
         if searchText.isEmpty {
             return items
         } else {
-            return items.filter { $0.localizedText.localizedCaseInsensitiveContains(searchText) }
+            return items.filter { $0
+                .localizedText
+                .localizedCaseInsensitiveContains(searchText) }
         }
     }
 }

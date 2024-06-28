@@ -80,6 +80,7 @@ final class FileViewModel: ObservableObject {
             if result.getReportSuccess == true {
                 if self.isValidResponse(responses: result.lastAnalysisStats!) {
                     self.statusMonitor = .success
+                    self.storeScanEntry()
                 } else {
                     await self.retryFileReport(retryCount: self.numberOfRetries)
                 }

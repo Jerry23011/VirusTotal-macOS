@@ -69,6 +69,9 @@
 		C4C34EFA2C00B5E000AB8C13 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C34EF92C00B5E000AB8C13 /* WelcomeView.swift */; };
 		C4C4B39F2C02692D006AAA63 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = C4C4B39E2C02692D006AAA63 /* LaunchAtLogin */; };
 		C4C4B3A12C026C06006AAA63 /* SettingsViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C4B3A02C026C06006AAA63 /* SettingsViewItem.swift */; };
+		C4C611EB2C2F34860027681D /* ScanEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C611EA2C2F34860027681D /* ScanEntry.swift */; };
+		C4C611ED2C2F3EC00027681D /* ScanHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C611EC2C2F3EC00027681D /* ScanHistoryView.swift */; };
+		C4C611EF2C2F40E20027681D /* ViewModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C611EE2C2F40E20027681D /* ViewModelExtensions.swift */; };
 		C4D237A52C0A53720020FB2A /* Int64.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D237A42C0A53720020FB2A /* Int64.swift */; };
 		C4DA01DE2C09F652000EDC3C /* FileUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DA01DD2C09F652000EDC3C /* FileUploadView.swift */; };
 		C4DA01E32C0A3185000EDC3C /* QLThumbnailRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DA01E22C0A3185000EDC3C /* QLThumbnailRepresentation.swift */; };
@@ -145,6 +148,9 @@
 		C4C34EF72C00ACEF00AB8C13 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		C4C34EF92C00B5E000AB8C13 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		C4C4B3A02C026C06006AAA63 /* SettingsViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewItem.swift; sourceTree = "<group>"; };
+		C4C611EA2C2F34860027681D /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
+		C4C611EC2C2F3EC00027681D /* ScanHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHistoryView.swift; sourceTree = "<group>"; };
+		C4C611EE2C2F40E20027681D /* ViewModelExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelExtensions.swift; sourceTree = "<group>"; };
 		C4D237A42C0A53720020FB2A /* Int64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int64.swift; sourceTree = "<group>"; };
 		C4DA01DD2C09F652000EDC3C /* FileUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadView.swift; sourceTree = "<group>"; };
 		C4DA01E22C0A3185000EDC3C /* QLThumbnailRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QLThumbnailRepresentation.swift; sourceTree = "<group>"; };
@@ -223,6 +229,7 @@
 				C47144F42C0F8D2F002D1129 /* NSPasteboard.swift */,
 				C4DA01E22C0A3185000EDC3C /* QLThumbnailRepresentation.swift */,
 				C493D2212C0DAFC9000BD68C /* CustomTypes.swift */,
+				C4C611EE2C2F40E20027681D /* ViewModelExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -232,6 +239,7 @@
 			children = (
 				C47144ED2C0F1A8E002D1129 /* WindowID.swift */,
 				C4509AD32C139E0000FDDCFF /* SparkleUpdates.swift */,
+				C4C611EA2C2F34860027681D /* ScanEntry.swift */,
 				C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */,
 			);
 			path = Utilities;
@@ -400,6 +408,7 @@
 			isa = PBXGroup;
 			children = (
 				C493D2342C0DE5C0000BD68C /* LaunchView.swift */,
+				C4C611EC2C2F3EC00027681D /* ScanHistoryView.swift */,
 				C4F73B262C0F00190047743B /* AboutView.swift */,
 				C4901BCB2C109C8300326947 /* TipsView.swift */,
 			);
@@ -530,6 +539,7 @@
 				C475320F2BFA1E09002EC019 /* GeneralTab.swift in Sources */,
 				C47144F52C0F8D2F002D1129 /* NSPasteboard.swift in Sources */,
 				C47531E42BFA0FFB002EC019 /* ContentView.swift in Sources */,
+				C4C611EB2C2F34860027681D /* ScanEntry.swift in Sources */,
 				C4EB28082C0B954700719CDC /* UploadProgressView.swift in Sources */,
 				C456DF072C1B5178007096F3 /* MiniFileView.swift in Sources */,
 				C456DF092C1B5181007096F3 /* MiniURLView.swift in Sources */,
@@ -568,6 +578,7 @@
 				C47144F72C0F8FBD002D1129 /* DropInfo.swift in Sources */,
 				C48336E12BFCF4D40097BD4F /* QuotaItem.swift in Sources */,
 				C4436AA72C09000B00C9DF65 /* QuotaStatusViewModel.swift in Sources */,
+				C4C611ED2C2F3EC00027681D /* ScanHistoryView.swift in Sources */,
 				C49305CC2C07A65000ABF5BE /* View.swift in Sources */,
 				C4ABCFB82C2D6C0600AF8944 /* ErrorManager.swift in Sources */,
 				C49077A92C03535000AC96D3 /* AppDelegate.swift in Sources */,
@@ -581,6 +592,7 @@
 				C47532152BFA1E62002EC019 /* AdvancedTab.swift in Sources */,
 				C4118DD82C0CBC0500E572C0 /* FileReportView.swift in Sources */,
 				C456DF282C1B7AC7007096F3 /* MiniModeButtonStyle.swift in Sources */,
+				C4C611EF2C2F40E20027681D /* ViewModelExtensions.swift in Sources */,
 				C493D2242C0DB233000BD68C /* Double.swift in Sources */,
 				C4F2440D2C00C0EF00D79F9F /* URLChartView.swift in Sources */,
 			);

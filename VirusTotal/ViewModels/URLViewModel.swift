@@ -62,6 +62,7 @@ final class URLViewModel: ObservableObject {
                self.statusMonitor = .analyzing
                if isValidResponse(result.lastAnalysisStats) {
                    statusMonitor = .success
+                   self.storeScanEntry()
                    return
                }
 
