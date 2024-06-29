@@ -17,7 +17,7 @@ struct VirusTotalApp: App {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.openURL) private var openURL
     @Default(.appFirstLaunch) private var appFirstLaunch: Bool
-    @ObservedObject private var appState = AppState.shared
+    private var appState = AppState.shared
 
     var body: some Scene {
         Window("VirusTotal for macOS", id: WindowID.main.rawValue) {
