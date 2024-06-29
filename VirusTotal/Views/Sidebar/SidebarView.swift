@@ -13,8 +13,8 @@ struct SidebarView: View {
 
     var body: some View {
         List {
-            FeaturesView(searchText: searchText)
-            ToolsView(searchText: searchText)
+            ServiceView(searchText: searchText)
+            ToolView(searchText: searchText)
         }
         .listStyle(.sidebar)
         .frame(minWidth: 200)

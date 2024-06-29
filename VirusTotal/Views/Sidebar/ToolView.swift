@@ -1,5 +1,5 @@
 //
-//  ToolsView.swift
+//  ToolView.swift
 //  VirusTotal
 //
 //  Created by Jerry on 2024-06-30.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-struct ToolsView: View {
+struct ToolView: View {
     var searchText: String
 
     init(searchText: String) {
@@ -65,5 +65,5 @@ struct ToolsView: View {
 }
 
 #Preview {
-    ToolsView(searchText: "")
+    ToolView(searchText: "")
 }

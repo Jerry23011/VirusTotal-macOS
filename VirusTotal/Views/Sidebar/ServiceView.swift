@@ -1,5 +1,5 @@
 //
-//  FeaturesView.swift
+//  ServiceView.swift
 //  VirusTotal
 //
 //  Created by Jerry on 2024-06-30.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-struct FeaturesView: View {
+struct ServiceView: View {
     var searchText: String
 
     init(searchText: String) {
@@ -71,5 +71,5 @@ struct FeaturesView: View {
 }
 
 #Preview {
-    FeaturesView(searchText: "")
+    ServiceView(searchText: "")
 }
