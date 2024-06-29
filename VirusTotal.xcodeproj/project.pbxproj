@@ -306,10 +306,11 @@
 			children = (
 				C4F73B232C0EFF500047743B /* Internal */,
 				C4C34EF42C00AA8300AB8C13 /* Reusable */,
+				C475321A2BFA26CF002EC019 /* Sidebar */,
+				C4A7A8BA2C309E7300E4EDD7 /* ScanHistory */,
 				C48336DF2BFCF1CD0097BD4F /* HomeView */,
 				C49305CD2C07AE9D00ABF5BE /* FileView */,
 				C4C34EF12C00A85400AB8C13 /* URLView */,
-				C475321A2BFA26CF002EC019 /* Sidebar */,
 				C456DEFF2C1B374B007096F3 /* MiniMode */,
 				C475320A2BFA1C8D002EC019 /* SettingsView */,
 			);
@@ -371,6 +372,14 @@
 			path = FileView;
 			sourceTree = "<group>";
 		};
+		C4A7A8BA2C309E7300E4EDD7 /* ScanHistory */ = {
+			isa = PBXGroup;
+			children = (
+				C4C611EC2C2F3EC00027681D /* ScanHistoryView.swift */,
+			);
+			path = ScanHistory;
+			sourceTree = "<group>";
+		};
 		C4B5D8952C038C3100B00550 /* SystemService */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,7 +426,6 @@
 			isa = PBXGroup;
 			children = (
 				C493D2342C0DE5C0000BD68C /* LaunchView.swift */,
-				C4C611EC2C2F3EC00027681D /* ScanHistoryView.swift */,
 				C4F73B262C0F00190047743B /* AboutView.swift */,
 				C4901BCB2C109C8300326947 /* TipsView.swift */,
 			);
