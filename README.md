@@ -40,6 +40,7 @@ brew install --cask virustotal
 - System Service support for both URLs and files
 - Drop URL on app icon to scan
 - Drop file in app to scan
+- Check Scan History
 - Mini mode that swiftly opens VT website after uploads
 - Super light, the app is < 15MB
 - Sandboxed app
