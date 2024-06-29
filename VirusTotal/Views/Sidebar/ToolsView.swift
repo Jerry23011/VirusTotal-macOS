@@ -33,6 +33,9 @@ struct ToolsView: View {
         case .history:
             ScanHistoryView()
                 .frame(minWidth: 600, minHeight: 500)
+        case .log:
+            LogView()
+                .frame(minWidth: 600, minHeight: 500)
         }
     }
 
@@ -42,6 +45,7 @@ struct ToolsView: View {
 
     private enum SidebarItem: String, CaseIterable, Identifiable {
         case history = "sidebar.history"
+        case log = "sidebar.log"
 
         var id: String { self.rawValue }
 
@@ -53,6 +57,8 @@ struct ToolsView: View {
             switch self {
             case .history:
                 return "book.closed"
+            case .log:
+                return "doc.text"
             }
         }
     }

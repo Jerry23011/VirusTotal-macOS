@@ -145,6 +145,9 @@ struct VirusTotalApp: App {
                                       category: "VirusTotal")
         log.addDestination(console)
 
+        // Add LogView() destination
+        log.addDestination(LogViewDestination())
+
         // Add file destination
         let file = FileDestination()
         let logFileName = "VirusTotal.log"

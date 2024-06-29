@@ -1203,6 +1203,22 @@
         }
       }
     },
+    "logview.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Logs Available"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂无日志"
+          }
+        }
+      }
+    },
     "menubar.check.log" : {
       "localizations" : {
         "cs" : {
@@ -1922,6 +1938,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "主页"
+          }
+        }
+      }
+    },
+    "sidebar.log" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logs"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日志"
           }
         }
       }

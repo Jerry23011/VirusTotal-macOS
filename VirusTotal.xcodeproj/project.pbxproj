@@ -60,6 +60,8 @@
 		C493D2312C0DE06C000BD68C /* VTSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493D2302C0DE06C000BD68C /* VTSetupView.swift */; };
 		C493D2352C0DE5C0000BD68C /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493D2342C0DE5C0000BD68C /* LaunchView.swift */; };
 		C493D23A2C0E26A2000BD68C /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C493D2392C0E26A2000BD68C /* InfoPlist.xcstrings */; };
+		C4A7A8BD2C30A1F100E4EDD7 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A7A8BC2C30A1F100E4EDD7 /* LogView.swift */; };
+		C4A7A8BF2C30A44F00E4EDD7 /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A7A8BE2C30A44F00E4EDD7 /* LogEntry.swift */; };
 		C4ABCFB82C2D6C0600AF8944 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */; };
 		C4B5B39C2C0643DC0086728D /* URLInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B5B39B2C0643DC0086728D /* URLInfoView.swift */; };
 		C4B5D8972C038C5900B00550 /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B5D8962C038C5900B00550 /* ServiceProvider.swift */; };
@@ -143,6 +145,8 @@
 		C493D2302C0DE06C000BD68C /* VTSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VTSetupView.swift; sourceTree = "<group>"; };
 		C493D2342C0DE5C0000BD68C /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		C493D2392C0E26A2000BD68C /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		C4A7A8BC2C30A1F100E4EDD7 /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
+		C4A7A8BE2C30A44F00E4EDD7 /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
 		C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C4B5B39B2C0643DC0086728D /* URLInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLInfoView.swift; sourceTree = "<group>"; };
 		C4B5D8962C038C5900B00550 /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
@@ -247,6 +251,7 @@
 				C47144ED2C0F1A8E002D1129 /* WindowID.swift */,
 				C4509AD32C139E0000FDDCFF /* SparkleUpdates.swift */,
 				C4C611EA2C2F34860027681D /* ScanEntry.swift */,
+				C4A7A8BE2C30A44F00E4EDD7 /* LogEntry.swift */,
 				C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */,
 			);
 			path = Utilities;
@@ -311,6 +316,7 @@
 				C49305CD2C07AE9D00ABF5BE /* FileView */,
 				C4C34EF12C00A85400AB8C13 /* URLView */,
 				C4A7A8BA2C309E7300E4EDD7 /* ScanHistory */,
+				C4A7A8BB2C30A1D400E4EDD7 /* LogView */,
 				C456DEFF2C1B374B007096F3 /* MiniMode */,
 				C475320A2BFA1C8D002EC019 /* SettingsView */,
 			);
@@ -378,6 +384,14 @@
 				C4C611EC2C2F3EC00027681D /* ScanHistoryView.swift */,
 			);
 			path = ScanHistory;
+			sourceTree = "<group>";
+		};
+		C4A7A8BB2C30A1D400E4EDD7 /* LogView */ = {
+			isa = PBXGroup;
+			children = (
+				C4A7A8BC2C30A1F100E4EDD7 /* LogView.swift */,
+			);
+			path = LogView;
 			sourceTree = "<group>";
 		};
 		C4B5D8952C038C3100B00550 /* SystemService */ = {
@@ -558,6 +572,7 @@
 				C47144F52C0F8D2F002D1129 /* NSPasteboard.swift in Sources */,
 				C47531E42BFA0FFB002EC019 /* ContentView.swift in Sources */,
 				C4C611EB2C2F34860027681D /* ScanEntry.swift in Sources */,
+				C4A7A8BD2C30A1F100E4EDD7 /* LogView.swift in Sources */,
 				C4EB28082C0B954700719CDC /* UploadProgressView.swift in Sources */,
 				C456DF072C1B5178007096F3 /* MiniFileView.swift in Sources */,
 				C456DF092C1B5181007096F3 /* MiniURLView.swift in Sources */,
@@ -573,6 +588,7 @@
 				C4F73B272C0F00190047743B /* AboutView.swift in Sources */,
 				C4C34EF82C00ACEF00AB8C13 /* ErrorView.swift in Sources */,
 				C4BAEBCC2C1623AF009040C1 /* AppState.swift in Sources */,
+				C4A7A8BF2C30A44F00E4EDD7 /* LogEntry.swift in Sources */,
 				C4B5B39C2C0643DC0086728D /* URLInfoView.swift in Sources */,
 				C4118DDA2C0CEB6B00E572C0 /* FileChartView.swift in Sources */,
 				C4901BCC2C109C8300326947 /* TipsView.swift in Sources */,
