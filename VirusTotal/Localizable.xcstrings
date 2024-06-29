@@ -1887,6 +1887,7 @@
       }
     },
     "sidebar.history" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -72,6 +72,9 @@
 		C4C611EB2C2F34860027681D /* ScanEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C611EA2C2F34860027681D /* ScanEntry.swift */; };
 		C4C611ED2C2F3EC00027681D /* ScanHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C611EC2C2F3EC00027681D /* ScanHistoryView.swift */; };
 		C4C611EF2C2F40E20027681D /* ViewModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C611EE2C2F40E20027681D /* ViewModelExtensions.swift */; };
+		C4D04A572C308C3400AB6A60 /* FeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D04A562C308C3400AB6A60 /* FeaturesView.swift */; };
+		C4D04A592C308E3600AB6A60 /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D04A582C308E3600AB6A60 /* ToolsView.swift */; };
+		C4D04A5B2C3090FF00AB6A60 /* CaseIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D04A5A2C3090FF00AB6A60 /* CaseIterable.swift */; };
 		C4D237A52C0A53720020FB2A /* Int64.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D237A42C0A53720020FB2A /* Int64.swift */; };
 		C4DA01DE2C09F652000EDC3C /* FileUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DA01DD2C09F652000EDC3C /* FileUploadView.swift */; };
 		C4DA01E32C0A3185000EDC3C /* QLThumbnailRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DA01E22C0A3185000EDC3C /* QLThumbnailRepresentation.swift */; };
@@ -151,6 +154,9 @@
 		C4C611EA2C2F34860027681D /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
 		C4C611EC2C2F3EC00027681D /* ScanHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHistoryView.swift; sourceTree = "<group>"; };
 		C4C611EE2C2F40E20027681D /* ViewModelExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelExtensions.swift; sourceTree = "<group>"; };
+		C4D04A562C308C3400AB6A60 /* FeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesView.swift; sourceTree = "<group>"; };
+		C4D04A582C308E3600AB6A60 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
+		C4D04A5A2C3090FF00AB6A60 /* CaseIterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseIterable.swift; sourceTree = "<group>"; };
 		C4D237A42C0A53720020FB2A /* Int64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int64.swift; sourceTree = "<group>"; };
 		C4DA01DD2C09F652000EDC3C /* FileUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadView.swift; sourceTree = "<group>"; };
 		C4DA01E22C0A3185000EDC3C /* QLThumbnailRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QLThumbnailRepresentation.swift; sourceTree = "<group>"; };
@@ -223,6 +229,7 @@
 				C493D2232C0DB233000BD68C /* Double.swift */,
 				C4D237A42C0A53720020FB2A /* Int64.swift */,
 				C493D21F2C0DAF6F000BD68C /* Sequence.swift */,
+				C4D04A5A2C3090FF00AB6A60 /* CaseIterable.swift */,
 				C49305CB2C07A65000ABF5BE /* View.swift */,
 				C47144F62C0F8FBD002D1129 /* DropInfo.swift */,
 				C47144EF2C0F1B65002D1129 /* NSApplication.swift */,
@@ -333,6 +340,8 @@
 			isa = PBXGroup;
 			children = (
 				C475321B2BFA27C3002EC019 /* SidebarView.swift */,
+				C4D04A562C308C3400AB6A60 /* FeaturesView.swift */,
+				C4D04A582C308E3600AB6A60 /* ToolsView.swift */,
 			);
 			path = Sidebar;
 			sourceTree = "<group>";
@@ -536,6 +545,7 @@
 				C4DA01DE2C09F652000EDC3C /* FileUploadView.swift in Sources */,
 				C4C34EFA2C00B5E000AB8C13 /* WelcomeView.swift in Sources */,
 				C4D237A52C0A53720020FB2A /* Int64.swift in Sources */,
+				C4D04A592C308E3600AB6A60 /* ToolsView.swift in Sources */,
 				C475320F2BFA1E09002EC019 /* GeneralTab.swift in Sources */,
 				C47144F52C0F8D2F002D1129 /* NSPasteboard.swift in Sources */,
 				C47531E42BFA0FFB002EC019 /* ContentView.swift in Sources */,
@@ -558,6 +568,7 @@
 				C4B5B39C2C0643DC0086728D /* URLInfoView.swift in Sources */,
 				C4118DDA2C0CEB6B00E572C0 /* FileChartView.swift in Sources */,
 				C4901BCC2C109C8300326947 /* TipsView.swift in Sources */,
+				C4D04A5B2C3090FF00AB6A60 /* CaseIterable.swift in Sources */,
 				C41D969E2BFBBD9D00F2A496 /* StatusMessageView.swift in Sources */,
 				C46013062BFE05D20047E949 /* String.swift in Sources */,
 				C4E91C552BFF8E09003800E7 /* Defaults.swift in Sources */,
@@ -575,6 +586,7 @@
 				C4436AA92C0906C600C9DF65 /* OpenFinderButton.swift in Sources */,
 				C493D2222C0DAFC9000BD68C /* CustomTypes.swift in Sources */,
 				C41D96892BFB27CD00F2A496 /* QuotaStatus.swift in Sources */,
+				C4D04A572C308C3400AB6A60 /* FeaturesView.swift in Sources */,
 				C47144F72C0F8FBD002D1129 /* DropInfo.swift in Sources */,
 				C48336E12BFCF4D40097BD4F /* QuotaItem.swift in Sources */,
 				C4436AA72C09000B00C9DF65 /* QuotaStatusViewModel.swift in Sources */,
