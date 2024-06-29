@@ -62,6 +62,7 @@
 		C493D23A2C0E26A2000BD68C /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C493D2392C0E26A2000BD68C /* InfoPlist.xcstrings */; };
 		C4A7A8BD2C30A1F100E4EDD7 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A7A8BC2C30A1F100E4EDD7 /* LogView.swift */; };
 		C4A7A8BF2C30A44F00E4EDD7 /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A7A8BE2C30A44F00E4EDD7 /* LogEntry.swift */; };
+		C4A7A8C12C30B85C00E4EDD7 /* LogEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A7A8C02C30B85C00E4EDD7 /* LogEmptyView.swift */; };
 		C4ABCFB82C2D6C0600AF8944 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */; };
 		C4B5B39C2C0643DC0086728D /* URLInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B5B39B2C0643DC0086728D /* URLInfoView.swift */; };
 		C4B5D8972C038C5900B00550 /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B5D8962C038C5900B00550 /* ServiceProvider.swift */; };
@@ -147,6 +148,7 @@
 		C493D2392C0E26A2000BD68C /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		C4A7A8BC2C30A1F100E4EDD7 /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
 		C4A7A8BE2C30A44F00E4EDD7 /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
+		C4A7A8C02C30B85C00E4EDD7 /* LogEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEmptyView.swift; sourceTree = "<group>"; };
 		C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C4B5B39B2C0643DC0086728D /* URLInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLInfoView.swift; sourceTree = "<group>"; };
 		C4B5D8962C038C5900B00550 /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 			isa = PBXGroup;
 			children = (
 				C4A7A8BC2C30A1F100E4EDD7 /* LogView.swift */,
+				C4A7A8C02C30B85C00E4EDD7 /* LogEmptyView.swift */,
 			);
 			path = LogView;
 			sourceTree = "<group>";
@@ -580,6 +583,7 @@
 				C493D2312C0DE06C000BD68C /* VTSetupView.swift in Sources */,
 				C47532092BFA1C84002EC019 /* SettingsView.swift in Sources */,
 				C4FFC0AB2C08DC15007AE28D /* FileAnalysis.swift in Sources */,
+				C4A7A8C12C30B85C00E4EDD7 /* LogEmptyView.swift in Sources */,
 				C4C34EF62C00AA8F00AB8C13 /* LoadingView.swift in Sources */,
 				C4FC3BAB2C12163900AF7D24 /* URLAnalysis.swift in Sources */,
 				C41D969C2BFBAA8B00F2A496 /* IndicatorLEDView.swift in Sources */,

@@ -10,13 +10,12 @@ import SwiftUI
 @MainActor
 struct LogView: View {
     @State private var logManager = LogManager.shared
-    @State private var animateSymbol: Bool = false
 
     var body: some View {
         if !logManager.logs.isEmpty {
             logDisplay
         } else {
-            logEmptyDisplay
+            LogEmptyView()
         }
     }
 
@@ -54,13 +53,6 @@ struct LogView: View {
                 }
             }
         }
-    }
-
-    private var logEmptyDisplay: some View {
-        Label("logview.empty.title",
-              systemImage: "pencil.and.scribble")
-        .symbolEffect(.bounce, value: animateSymbol)
-        .task { animateSymbol.toggle() }
     }
 
     // MARK: Private
