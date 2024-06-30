@@ -49,6 +49,7 @@ struct LogView: View {
                         Button(action: clearLogs) {
                             Image(systemName: "trash")
                         }
+                        .keyboardShortcut(.delete, modifiers: [.command, .shift])
                     }
                 }
             }
