@@ -1641,14 +1641,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "zohledňuje-velikost-písmen"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "case-sensitive"
+            "value" : "Case-sensitive"
           }
         },
         "zh-Hans" : {
