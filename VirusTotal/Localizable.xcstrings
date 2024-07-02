@@ -724,13 +724,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Analysis Date"
+            "value" : "Last Analysis"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "分析日期"
+            "value" : "上次分析"
           }
         }
       }
