@@ -16,7 +16,7 @@ struct ToolView: View {
     }
 
     var body: some View {
-        Section {
+        Section("sidebar.section.tools") {
             ForEach(filteredItems) { item in
                 NavigationLink(destination: viewForSidebarItem(item)) {
                     Label(item.localizedText,

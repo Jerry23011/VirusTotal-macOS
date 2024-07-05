@@ -16,7 +16,7 @@ struct ServiceView: View {
     }
 
     var body: some View {
-        Section {
+        Section("sidebar.section.services") {
             ForEach(filteredItems) { item in
                 NavigationLink(destination: viewForSidebarItem(item)) {
                     Label(item.localizedText,
