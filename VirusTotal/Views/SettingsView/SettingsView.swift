@@ -35,5 +35,4 @@ struct SettingsView: View {
     init(updater: SPUUpdater) {
         self.updater = updater
     }
-
 }

@@ -14,6 +14,7 @@
 		C41D968C2BFB280B00F2A496 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C41D968B2BFB280B00F2A496 /* Alamofire */; };
 		C41D969C2BFBAA8B00F2A496 /* IndicatorLEDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41D969B2BFBAA8B00F2A496 /* IndicatorLEDView.swift */; };
 		C41D969E2BFBBD9D00F2A496 /* StatusMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41D969D2BFBBD9D00F2A496 /* StatusMessageView.swift */; };
+		C4213D8F2C395CC000F16F69 /* AnyDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4213D8E2C395CC000F16F69 /* AnyDropDelegate.swift */; };
 		C4436AA22C08F5DF00C9DF65 /* FileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4436AA12C08F5DF00C9DF65 /* FileViewModel.swift */; };
 		C4436AA52C08FC2000C9DF65 /* SharedResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4436AA42C08FC2000C9DF65 /* SharedResponses.swift */; };
 		C4436AA72C09000B00C9DF65 /* QuotaStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4436AA62C09000B00C9DF65 /* QuotaStatusViewModel.swift */; };
@@ -100,6 +101,7 @@
 		C41D96882BFB27CD00F2A496 /* QuotaStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaStatus.swift; sourceTree = "<group>"; };
 		C41D969B2BFBAA8B00F2A496 /* IndicatorLEDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorLEDView.swift; sourceTree = "<group>"; };
 		C41D969D2BFBBD9D00F2A496 /* StatusMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMessageView.swift; sourceTree = "<group>"; };
+		C4213D8E2C395CC000F16F69 /* AnyDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyDropDelegate.swift; sourceTree = "<group>"; };
 		C4436AA12C08F5DF00C9DF65 /* FileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileViewModel.swift; sourceTree = "<group>"; };
 		C4436AA42C08FC2000C9DF65 /* SharedResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedResponses.swift; sourceTree = "<group>"; };
 		C4436AA62C09000B00C9DF65 /* QuotaStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaStatusViewModel.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				C4C611EA2C2F34860027681D /* ScanEntry.swift */,
 				C4A7A8BE2C30A44F00E4EDD7 /* LogEntry.swift */,
 				C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */,
+				C4213D8E2C395CC000F16F69 /* AnyDropDelegate.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -624,6 +627,7 @@
 				C49077A92C03535000AC96D3 /* AppDelegate.swift in Sources */,
 				C47144F02C0F1B65002D1129 /* NSApplication.swift in Sources */,
 				C4509AD42C139E0000FDDCFF /* SparkleUpdates.swift in Sources */,
+				C4213D8F2C395CC000F16F69 /* AnyDropDelegate.swift in Sources */,
 				C45BEB692C0CF0D400E7F856 /* FileTypeView.swift in Sources */,
 				C47144EE2C0F1A8E002D1129 /* WindowID.swift in Sources */,
 				C4C4B3A12C026C06006AAA63 /* SettingsViewItem.swift in Sources */,

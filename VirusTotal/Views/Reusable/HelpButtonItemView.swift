@@ -13,18 +13,18 @@ struct HelpButtonItemView: View {
     let helpHeadline: LocalizedStringKey
     let helpDetails: LocalizedStringKey
     var body: some View {
-            HelpButton {
-                isShowingHelpPopover.toggle()
+        HelpButton {
+            isShowingHelpPopover.toggle()
+        }
+        .popover(isPresented: $isShowingHelpPopover) {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(helpHeadline)
+                    .font(.headline)
+                Text(helpDetails)
             }
-            .popover(isPresented: $isShowingHelpPopover) {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(helpHeadline)
-                        .font(.headline)
-                    Text(helpDetails)
-                }
-                .padding()
-                .frame(width: 300)
-            }
+            .padding()
+            .frame(width: 300)
+        }
     }
 }
 
