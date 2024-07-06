@@ -22,4 +22,9 @@ extension String {
     func replace(_ character: Character, with replacement: Character) -> String {
         return replacingOccurrences(of: String(character), with: String(replacement))
     }
+
+    /// Localize `String` with `NSLocalizedString`
+    var nslocalized: String {
+        return NSLocalizedString(self, comment: self)
+    }
 }

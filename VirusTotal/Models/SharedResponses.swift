@@ -10,7 +10,7 @@ import Foundation
 // MARK: Analysis Status
 
 /// Shows the status of the analysis request
-enum AnalysisStatus {
+enum AnalysisStatus: Codable {
     case empty
     case loading
     case success

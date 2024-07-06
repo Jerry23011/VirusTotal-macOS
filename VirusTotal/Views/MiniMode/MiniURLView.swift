@@ -7,9 +7,11 @@
 
 import SwiftUI
 
+@MainActor
 struct MiniURLView: View {
-    @StateObject private var viewModel = AnalyzeURLViewModel()
+    @State private var viewModel = URLViewModel()
     @FocusState private var isTextFieldFocused: Bool
+    @State private var isURLOpened: Bool = false
     @Environment(\.openURL) private var openURL
 
     var body: some View {
@@ -44,14 +46,14 @@ struct MiniURLView: View {
             }
             .buttonStyle(MiniModeButtonStyle())
             Spacer()
-
         }
         .padding()
         .onChange(of: viewModel.statusMonitor) {
-            switch viewModel.statusMonitor {
-            case .success:
+            switch canOpenURL() {
+            case true:
                 openURL(URL(string: viewModel.vtURL) ?? vtWebsite)
-            default:
+                isURLOpened = true
+            case false:
                 break
             }
         }
@@ -60,9 +62,14 @@ struct MiniURLView: View {
     // MARK: Private
     private let vtWebsite = URL(string: "https://virustotal.com")!
 
-    /// Return true if viewModel.statusMonitor is .success, false otherwise
-    private func isRequestSuccess() -> Bool {
-        return viewModel.statusMonitor == .success
+    /// Return true if viewModel.statusMonitor is .success or .analyzing, false otherwise
+    private func canOpenURL() -> Bool {
+        /// Prevent the URL from being opened the second time if the URL has already
+        /// been opened once when statusMonitor change to .analyzing
+        guard !isURLOpened else {
+            return false
+        }
+        return viewModel.statusMonitor == .success || viewModel.statusMonitor == .analyzing
     }
 
     /// Given an AnalysisStatus, return true if viewModel.statusMonitor is .loading, .uploading, or .analyzing, return false otherwise
@@ -78,6 +85,7 @@ struct MiniURLView: View {
         viewModel.lastAnalysisTime = ""
         viewModel.startURLAnalysis()
         isTextFieldFocused = false
+        isURLOpened = false
     }
 }
 

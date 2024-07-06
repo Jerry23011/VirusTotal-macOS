@@ -17,7 +17,7 @@ struct VirusTotalApp: App {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.openURL) private var openURL
     @Default(.appFirstLaunch) private var appFirstLaunch: Bool
-    @ObservedObject private var appState = AppState.shared
+    private var appState = AppState.shared
 
     var body: some Scene {
         Window("VirusTotal for macOS", id: WindowID.main.rawValue) {
@@ -145,6 +145,9 @@ struct VirusTotalApp: App {
                                       category: "VirusTotal")
         log.addDestination(console)
 
+        // Add LogView() destination
+        log.addDestination(LogViewDestination())
+
         // Add file destination
         let file = FileDestination()
         let logFileName = "VirusTotal.log"
@@ -163,7 +166,7 @@ struct VirusTotalApp: App {
                 let logFileURL = logsDirectory.appendingPathComponent(logFileName)
                 file.logFileURL = logFileURL
                 log.addDestination(file)
-                log.info("App Launched")
+                log.verbose("App Launched")
             } catch {
                 log.error("Failed to create Logs directory: \(error)")
             }

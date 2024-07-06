@@ -24,7 +24,7 @@ struct URLChartView: View {
                     angularInset: 1.5
                 )
                 .cornerRadius(3)
-                .foregroundStyle(by: .value(String("Type"), element.type))
+                .foregroundStyle(by: .value(String("Type"), element.type.nslocalized))
             }
             .chartLegend(position: .leading, alignment: .center)
             .chartBackground { chartProxy in
@@ -42,9 +42,7 @@ struct URLChartView: View {
                 }
             }
             .animation(.smooth, value: animateChart)
-            .onAppear {
-                    animateChart = true
-            }
+            .task { animateChart = true }
         }
     }
 
@@ -52,11 +50,11 @@ struct URLChartView: View {
 
     private var flagStats: [FlagStats] {
         return [
-            .init(type: "Undetected", number: analysisStats.undetected),
-            .init(type: "Harmless", number: analysisStats.harmless),
-            .init(type: "Suspicious", number: analysisStats.suspicious),
-            .init(type: "Timeout", number: analysisStats.timeout),
-            .init(type: "Malicious", number: analysisStats.malicious)
+            .init(type: "flag.undetected", number: analysisStats.undetected),
+            .init(type: "flag.harmless", number: analysisStats.harmless),
+            .init(type: "flag.suspicious", number: analysisStats.suspicious),
+            .init(type: "flag.timeout", number: analysisStats.timeout),
+            .init(type: "flag.malicious", number: analysisStats.malicious)
         ]
     }
 

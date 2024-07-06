@@ -8,10 +8,10 @@
 import SwiftUI
 import TipKit
 
-/// Given a text, create a loading view with a ProgressView and the text in HStack
-struct LoadingView: View {
+@MainActor // TODO: Remove @MainActor in Xcode 16
+struct LoadingView: View, Sendable {
     @State private var elapsedTime: Double = 0.0
-    @State private var timer: Timer?
+    @State private var timerTask: Task<Void, Never>?
 
     var body: some View {
         VStack(alignment: .center) {
@@ -35,15 +35,17 @@ struct LoadingView: View {
     private var tip = FileWaitTimeTip()
 
     private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1,
-                                     repeats: true) { _ in
-            elapsedTime += 0.1
+        timerTask = Task {
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 second
+                elapsedTime += 0.1
+            }
         }
     }
 
     private func resetTimer() {
-        timer?.invalidate()
-        timer = nil
+        timerTask?.cancel()
+        timerTask = nil
         elapsedTime = 0.0
     }
 

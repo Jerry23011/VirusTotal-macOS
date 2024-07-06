@@ -10,8 +10,9 @@ import Alamofire
 import UniformTypeIdentifiers
 import TipKit
 
+@MainActor
 struct FileView: View {
-    @StateObject private var viewModel = AnalyzeFileViewModel.shared
+    @State private var viewModel = FileViewModel.shared
 
     @State private var isFileImporterPresent: Bool = false
     @State private var isFileDropped: Bool = false
@@ -45,7 +46,9 @@ struct FileView: View {
                             switch result {
                             case .success(let urls):
                                 urls.forEach { url in
-                                    viewModel.handleFileImport(url)
+                                    Task {
+                                        await viewModel.handleFileImport(url)
+                                    }
                                 }
                             case .failure(let error):
                                 log.error("File Import Error: \(error.localizedDescription)")
@@ -155,8 +158,10 @@ struct FileView: View {
     }
 
     private func requestReanalyze() {
-        viewModel.statusMonitor = .loading
-        viewModel.requestReanalyze()
+        Task {
+            viewModel.statusMonitor = .loading
+            await viewModel.requestReanalyze()
+        }
     }
 
     /// Return true if viewModel.statusMonitor is .none, .upload, or .success
@@ -185,41 +190,11 @@ struct FileView: View {
             return false
         }
         NSApp.activate(ignoringOtherApps: true)
-        viewModel.setupFileInfo(fileURL: fileURL) {
-            viewModel.getFileReport()
+        Task {
+            await viewModel.setupFileInfo(fileURL: fileURL)
+            await viewModel.getFileReport()
         }
         return true
-    }
-}
-
-struct AnyDropDelegate: DropDelegate {
-    var isTargeted: Binding<Bool>?
-    var onValidate: ((DropInfo) -> Bool)?
-    let onPerform: (DropInfo) -> Bool
-    var onEntered: ((DropInfo) -> Void)?
-    var onExited: ((DropInfo) -> Void)?
-    var onUpdated: ((DropInfo) -> DropProposal?)?
-
-    func performDrop(info: DropInfo) -> Bool {
-        onPerform(info)
-    }
-
-    func validateDrop(info: DropInfo) -> Bool {
-        onValidate?(info) ?? true
-    }
-
-    func dropEntered(info: DropInfo) {
-        isTargeted?.wrappedValue = true
-        onEntered?(info)
-    }
-
-    func dropExited(info: DropInfo) {
-        isTargeted?.wrappedValue = false
-        onExited?(info)
-    }
-
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        onUpdated?(info)
     }
 }
 

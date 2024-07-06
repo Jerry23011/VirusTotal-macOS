@@ -8,8 +8,9 @@
 import SwiftUI
 import Defaults
 
+@MainActor
 struct VTSetupView: View {
-    @ObservedObject private var viewModel = QuotaStatusViewModel()
+    private var viewModel = QuotaStatusViewModel()
 
     @Default(.apiKey) private var apiKey: String
     @Default(.userName) private var userName: String

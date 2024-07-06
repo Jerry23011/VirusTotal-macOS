@@ -9,68 +9,50 @@ import Foundation
 import Alamofire
 import Defaults
 
-final class QuotaStatus {
-
+actor QuotaStatus {
     static let shared = QuotaStatus()
+
+    func performRequest() async throws -> QuotaResult {
+        let quotas = try await fetchQuotas(apiKey: apiKey, userName: userName)
+
+        var quotaResult = QuotaResult(
+            statusSuccess: nil,
+            errorMessage: nil,
+            hourlyQuota: quotas.data.apiRequestsHourly.user,
+            dailyQuota: quotas.data.apiRequestsDaily.user,
+            monthlyQuota: quotas.data.apiRequestsMonthly.user
+        )
+
+        await storeQuotas(quotaResult)
+
+        if await isQuotaExceeded(quotaResult) {
+            quotaResult.statusSuccess = false
+            quotaResult.errorMessage = maxQuotaMessage
+        } else {
+            quotaResult.statusSuccess = true
+        }
+
+        return quotaResult
+    }
+
+    // MARK: Private
 
     private var apiKey: String { Defaults[.apiKey] }
     private var userName: String { Defaults[.userName] }
-
-    func performRequest(completion: @escaping (QuotaResult) -> Void) {
-        let apiEndPoint = "https://www.virustotal.com/api/v3/users/\(userName)/overall_quotas"
-        let headers: HTTPHeaders = [
-            "accept": "application/json",
-            "x-apikey": apiKey
-        ]
-        AF.request(apiEndPoint, method: .get, headers: headers)
-            .validate()
-            .responseDecodable(of: Quotas.self) { [weak self] response in
-                guard let self = self else { return }
-
-                var quotaResult = QuotaResult(statusSuccess: nil,
-                                              errorMessage: nil,
-                                              hourlyQuota: nil,
-                                              dailyQuota: nil,
-                                              monthlyQuota: nil)
-
-                switch response.result {
-                case .success(let quotas):
-                    quotaResult.hourlyQuota = quotas.data.apiRequestsHourly.user
-                    quotaResult.dailyQuota = quotas.data.apiRequestsDaily.user
-                    quotaResult.monthlyQuota = quotas.data.apiRequestsMonthly.user
-                    self.storeQuotas(quotaResult)
-                    guard !isQuotaExceeded(quotaResult) else {
-                        quotaResult.statusSuccess = false
-                        quotaResult.errorMessage = maxQuotaMessage
-                        completion(quotaResult)
-                        return
-                    }
-                    quotaResult.statusSuccess = true
-                    completion(quotaResult)
-
-                case .failure(let error):
-                    log.error(error)
-                    quotaResult.statusSuccess = false
-                    quotaResult.errorMessage = error.localizedDescription
-                    completion(quotaResult)
-                }
-            }
-    }
-
-    // MARK: - Private
-
     private let maxQuotaMessage: String = "Maximum quota exceeded"
 
     /// Given a QuotaResult, return true if hourly or daily quota used
     /// is equal or larger than hourly or daily quota allowed, return false otherwise
-    private func isQuotaExceeded(_ result: QuotaResult) -> Bool {
-        let hourlyQuota = result.hourlyQuota
-        let dailyQuota = result.dailyQuota
-        return hourlyQuota!.used >= hourlyQuota!.allowed || dailyQuota!.used >= dailyQuota!.allowed
+    private func isQuotaExceeded(_ result: QuotaResult) async -> Bool {
+        guard let hourlyQuota = result.hourlyQuota,
+              let dailyQuota = result.dailyQuota else {
+            return false
+        }
+        return hourlyQuota.used >= hourlyQuota.allowed || dailyQuota.used >= dailyQuota.allowed
     }
 
     /// Given a QuotaResult, store hourly, daily, and monthly quotas in Defaults
-    private func storeQuotas(_ result: QuotaResult) {
+    private func storeQuotas(_ result: QuotaResult) async {
         if let hourlyQuota = result.hourlyQuota {
             Defaults[.hourlyQuota] = hourlyQuota
         }
@@ -81,6 +63,23 @@ final class QuotaStatus {
             Defaults[.monthlyQuota] = monthlyQuota
         }
     }
+}
+
+// MARK: - Networking
+
+private func fetchQuotas(apiKey: String, userName: String) async throws -> Quotas {
+    let apiEndPoint = "https://www.virustotal.com/api/v3/users/\(userName)/overall_quotas"
+    let headers: HTTPHeaders = [
+        "accept": "application/json",
+        "x-apikey": apiKey
+    ]
+
+    let quotas = try await AF.request(apiEndPoint, method: .get, headers: headers)
+        .validate()
+        .serializingDecodable(Quotas.self)
+        .value
+
+    return quotas
 }
 
 // MARK: - QuotaResult
@@ -96,11 +95,11 @@ struct QuotaResult {
 // MARK: Quota Response
 
 struct Quotas: Decodable {
-  let data: RequestData
+    let data: RequestData
 
-  enum CodingKeys: String, CodingKey {
-    case data
-  }
+    enum CodingKeys: String, CodingKey {
+        case data
+    }
 }
 
 struct RequestData: Decodable {
@@ -116,20 +115,19 @@ struct RequestData: Decodable {
 }
 
 struct UserQuotaWrapper: Decodable {
-  let user: UserQuota
+    let user: UserQuota
 
-  enum CodingKeys: String, CodingKey {
-    case user
-  }
+    enum CodingKeys: String, CodingKey {
+        case user
+    }
 }
 
 struct UserQuota: Decodable {
     let used: Int
     let allowed: Int
 
-  enum CodingKeys: String, CodingKey {
-      case used
-      case allowed
-
-  }
+    enum CodingKeys: String, CodingKey {
+        case used
+        case allowed
+    }
 }

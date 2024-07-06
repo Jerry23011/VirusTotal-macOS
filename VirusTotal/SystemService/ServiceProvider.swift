@@ -8,9 +8,10 @@
 import Cocoa
 import SwiftUI
 
+@MainActor
 class ServiceProvider: NSObject {
-    private var urlViewModel = AnalyzeURLViewModel.shared
-    private var fileViewModel = AnalyzeFileViewModel.shared
+    private let urlViewModel = URLViewModel.shared
+    private let fileViewModel = FileViewModel.shared
 
     @objc
     func scanURLService(_ pasteboard: NSPasteboard, userData: String, error: NSErrorPointer) {
@@ -18,7 +19,7 @@ class ServiceProvider: NSObject {
             return
         }
 
-        Task { @MainActor in
+        Task {
             WindowManager.showURLWindow()
             urlViewModel.inputURL = url
             urlViewModel.startURLAnalysis()
@@ -31,11 +32,11 @@ class ServiceProvider: NSObject {
             return
         }
 
-        Task { @MainActor in
+        Task {
             WindowManager.showFileWindow()
             let fileURL = URL(string: url)
             let defaultFileURL = URL(string: "file://")!
-            fileViewModel.handleFileImport(fileURL ?? defaultFileURL)
+            await fileViewModel.handleFileImport(fileURL ?? defaultFileURL)
         }
     }
 }
