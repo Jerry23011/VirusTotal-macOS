@@ -14,7 +14,6 @@
 ## Quick Setup
 You can get a free public API key from VirusTotal. Visit [VirusTotal's API page](https://www.virustotal.com/gui/my-apikey) to retrieve it.
 <img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/API.png"/>
-
 #### Downloads
 <img src="https://img.shields.io/badge/macOS-14.0-green"/>
 
@@ -62,3 +61,6 @@ Upload a File and get an analysis report
 ### URL Scanning
 Scan a URL with ease
 <img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/URL_EN.png"/>
+### Scan History
+View scan history
+<img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/ScanHistory_EN.png"/>

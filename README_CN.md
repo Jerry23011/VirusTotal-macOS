@@ -14,7 +14,6 @@
 ## 快速设置
 你可以在 [VirusTotal API 页面](https://www.virustotal.com/gui/my-apikey)获取一个免费的公共 API 密钥。
 <img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/API.png"/>
-
 #### 下载
 <img src="https://img.shields.io/badge/macOS-14.0-green"/>
 
@@ -64,3 +63,6 @@ brew install marsanne/cask/virustotal
 ### URL 分析
 轻松扫描 URL
 <img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/URL_CN.png"/>
+### 扫描历史
+查看扫描历史
+<img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/ScanHistory_CN.png"/>
