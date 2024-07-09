@@ -26,7 +26,13 @@ extension Defaults.Keys {
 
     // General Settings
     static let cleanURL = Key<Bool>("cleanURL", default: false)
+    static let startPage = Key<NavigationItem>("startPage", default: .home)
 
     // Advanced Settings
     static let miniMode = Key<Bool>("miniMode", default: false)
+}
+
+enum NavigationItem: String, CaseIterable, Identifiable, Defaults.Serializable {
+    case home, file, url
+    var id: Self { self }
 }

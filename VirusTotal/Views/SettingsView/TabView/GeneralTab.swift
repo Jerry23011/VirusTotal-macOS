@@ -15,6 +15,7 @@ struct GeneralTab: View {
 
     @State private var autoChecksForUpdates: Bool
     @Default(.cleanURL) private var cleanURL: Bool
+    @Default(.startPage) private var startPage: NavigationItem
 
     var body: some View {
         Form {
@@ -27,6 +28,16 @@ struct GeneralTab: View {
                         labelText: "settings.general.cleanurl"
                     )
                 }
+                Picker(selection: $startPage) {
+                    ForEach(NavigationItem.allCases) { item in
+                        Text(item.rawValue.nslocalized)
+                    }
+                } label: {
+                    SettingsViewItem(color: .blue,
+                                     systemImage: defaultServiceIcon(),
+                                     labelText: "settings.general.startpage")
+                }
+                .controlSize(.regular)
             }
 
             Section {
@@ -73,5 +84,17 @@ struct GeneralTab: View {
     // MARK: Private
     private var currentVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
+
+    /// Observe`startPage` to return a SFSymbol based on the chosen page
+    private func defaultServiceIcon() -> String {
+        switch startPage {
+        case .home:
+            return "house.fill"
+        case .file:
+            return "arrow.up.doc.fill"
+        case .url:
+            return "link"
+        }
     }
 }

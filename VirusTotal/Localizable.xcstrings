@@ -895,6 +895,24 @@
         }
       }
     },
+    "home" : {
+      "comment" : "Home of Default Start Service, should be exactly the same with sidebar.home",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主页"
+          }
+        }
+      }
+    },
     "homepage.quota.daily" : {
       "localizations" : {
         "cs" : {
@@ -1831,6 +1849,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "登录时启动"
+          }
+        }
+      }
+    },
+    "settings.general.startpage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default Service View"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "默认服务页面"
           }
         }
       }
