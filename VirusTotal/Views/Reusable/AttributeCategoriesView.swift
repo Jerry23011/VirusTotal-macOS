@@ -93,6 +93,11 @@ private struct CategoriesViewContent<Data: Collection>: View where Data.Element:
         for element in data {
             let elementSize = elementsSize[element, default: CGSize(width: availableWidth, height: 1)]
 
+            // Remove category names that are too long
+            if elementSize.width > 200 {
+                continue
+            }
+
             if remainingWidth - (elementSize.width + 8) >= 0 {
                 rows[currentRow].append(element)
             } else {
