@@ -1,5 +1,5 @@
 //
-//  AttributeCategoriesView.swift
+//  URLCategoriesView.swift
 //  VirusTotal
 //
 //  Created by Jerry on 2024-07-15.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-struct AttributeCategoriesView: View {
+struct URLCategoriesView: View {
     @State private var isPopupPresented: Bool = false
     private var viewModel = URLViewModel.shared
 

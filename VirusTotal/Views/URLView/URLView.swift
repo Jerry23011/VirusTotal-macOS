@@ -52,7 +52,7 @@ struct URLView: View {
                                 // Final URL Host
                                 URLInfoView(finalURLHost: viewModel.finalURLHost)
                                 // Categories View
-                                AttributeCategoriesView()
+                                URLCategoriesView()
                                     .frame(maxWidth: 300)
                                     .padding(.top, 3)
                                 Spacer()
