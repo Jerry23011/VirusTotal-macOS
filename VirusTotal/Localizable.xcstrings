@@ -767,6 +767,22 @@
         }
       }
     },
+    "history.clear.confirmation.message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can’t undo this action."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此操作无法撤销。"
+          }
+        }
+      }
+    },
     "history.clear.confirmation.title" : {
       "localizations" : {
         "en" : {

@@ -62,6 +62,8 @@ struct ScanHistoryView: View {
                                action: clearHistory)
                         Button("history.clear.confirmation.cancel",
                                role: .cancel) { }
+                    } message: {
+                       Text("history.clear.confirmation.message")
                     }
                 }
             }
