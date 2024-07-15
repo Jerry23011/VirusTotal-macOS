@@ -23,6 +23,7 @@ final class URLViewModel: ObservableObject {
     var communityScore: Int = 0
     var analysisStats: URLAnalysisStats?
     var statusMonitor: AnalysisStatus = .empty
+    var categories: [String] = []
 
     private var retryCount = 0
     private let maxRetries = 10
@@ -91,6 +92,7 @@ final class URLViewModel: ObservableObject {
         finalURLClean = removeURLQuery(result.finalURL ?? "") ?? ""
         communityScore = result.communityScore ?? 0
         analysisStats = result.lastAnalysisStats
+        categories = result.categories ?? []
     }
 
     /// Given an URLAnalysisStats, return true if the sum of the flags is not 0, false otherwise

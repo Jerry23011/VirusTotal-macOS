@@ -28,12 +28,12 @@ actor URLAnalysis {
             let alysAttrs = analyses.data.attributes
             return URLAnalysisResult(
                 getReportSuccess: true,
-//                statusMonitor: .success,
                 vtURL: makeVtURL(from: analyses.data.id),
                 lastAnalysisStats: alysAttrs.lastAnalysisStats,
                 lastAnalysisDate: alysAttrs.lastAnalysisDate?.unixTimestampToDate(),
                 communityScore: alysAttrs.reputation,
-                finalURL: alysAttrs.lastFinalURL
+                finalURL: alysAttrs.lastFinalURL,
+                categories: extractCategory(alysAttrs.categories)
             )
         } catch {
             if let afError = error as? AFError, afError.responseCode == 404 {
@@ -81,6 +81,15 @@ actor URLAnalysis {
     /// to view analysis report on VirusTotal website
     private func makeVtURL(from id: String) -> String {
         return "https://www.virustotal.com/gui/url/\(id)"
+    }
+
+    /// Given a Dict, extract the value of the Dict and store it as a list of String
+    private func extractCategory(_ dictionary: [String: String]) -> [String] {
+        var categories: [String] = []
+        for (_, value) in dictionary {
+            categories.append(value)
+        }
+        return categories
     }
 }
 
@@ -132,6 +141,7 @@ struct URLAnalysisResult {
     var lastAnalysisDate: String?
     var communityScore: Int?
     var finalURL: String?
+    var categories: [String]?
 }
 
 struct URLUploadResult {
@@ -166,12 +176,14 @@ struct AnalysisAttributes: Codable {
     let lastAnalysisDate: Double?
     let lastFinalURL: String
     let reputation: Int
+    let categories: [String: String]
 
     enum CodingKeys: String, CodingKey {
         case lastAnalysisStats = "last_analysis_stats"
         case lastAnalysisDate = "last_analysis_date"
         case lastFinalURL = "last_final_url"
         case reputation = "reputation"
+        case categories = "categories"
     }
 }
 

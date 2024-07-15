@@ -171,6 +171,25 @@
         }
       }
     },
+    "bing.com" : {
+
+    },
+    "categories.number.more %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ %lld more"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ %lld 个更多"
+          }
+        }
+      }
+    },
     "check.for.updates" : {
       "localizations" : {
         "cs" : {

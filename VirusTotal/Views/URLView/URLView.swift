@@ -51,7 +51,10 @@ struct URLView: View {
                             VStack(alignment: .leading) {
                                 // Final URL Host
                                 URLInfoView(finalURLHost: viewModel.finalURLHost)
-                                // Later implement Rescan button here?
+                                // Categories View
+                                AttributeCategoriesView()
+                                    .frame(maxWidth: 300)
+                                    .padding(.top, 3)
                                 Spacer()
                             }
                             .lineLimit(1)
