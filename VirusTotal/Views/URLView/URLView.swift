@@ -152,6 +152,7 @@ struct URLView: View {
         viewModel.finalURL = ""
         viewModel.finalURLHost = ""
         viewModel.lastAnalysisTime = ""
+        viewModel.categories = []
         viewModel.startURLAnalysis()
         isTextFieldFocused = false
     }
