@@ -136,7 +136,12 @@ private extension View {
  #Preview {
      VStack(alignment: .leading) {
          Label("bing.com", systemImage: "clipboard.fill")
-         CategoriesView(data: ["web applications", "computersandsoftware", "Information Technology (alphaMountain.ai)", "social networks", "information technology", "information technology"])
+         CategoriesView(data: ["web applications",
+                               "computersandsoftware",
+                               "Information Technology (alphaMountain.ai)",
+                               "social networks",
+                               "information technology",
+                               "information technology"])
              .padding(.top, 5)
      }
         .frame(width: 300)
