@@ -85,6 +85,7 @@ private struct CategoriesViewContent<Data: Collection>: View where Data.Element:
         }
     }
 
+    /// Computes the layout of category items in rows based on available width
     private func computeRows() -> [[Data.Element]] {
         var rows: [[Data.Element]] = [[]]
         var currentRow = 0
@@ -121,6 +122,7 @@ private struct SizePreferenceKey: PreferenceKey {
 }
 
 private extension View {
+    /// Reads the size of a view and calls the provided closure when the size changes
     func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
         background(
             GeometryReader { geometryProxy in
