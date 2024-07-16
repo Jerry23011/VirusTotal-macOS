@@ -149,10 +149,6 @@ struct URLView: View {
     private func submitScan() {
         viewModel.errorMessage = ""
         viewModel.vtURL = ""
-        viewModel.finalURL = ""
-        viewModel.finalURLHost = ""
-        viewModel.lastAnalysisTime = ""
-        viewModel.categories = []
         viewModel.startURLAnalysis()
         isTextFieldFocused = false
     }
