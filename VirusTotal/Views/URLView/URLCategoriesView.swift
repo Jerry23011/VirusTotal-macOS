@@ -25,8 +25,8 @@ struct URLCategoriesView: View {
                     }
                     .popover(isPresented: $isPopupPresented) {
                         CategoriesView(data: viewModel.categories)
-                        .padding()
-                        .frame(minWidth: 250)
+                            .padding()
+                            .frame(minWidth: 250)
                     }
             }
         }
@@ -143,8 +143,7 @@ private extension View {
                                "social networks",
                                "information technology",
                                "information technology"])
-             .padding(.top, 5)
+         .padding(.top, 5)
      }
-        .frame(width: 300)
-
+     .frame(width: 300)
  }
