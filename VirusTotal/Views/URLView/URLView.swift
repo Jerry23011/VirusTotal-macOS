@@ -51,7 +51,10 @@ struct URLView: View {
                             VStack(alignment: .leading) {
                                 // Final URL Host
                                 URLInfoView(finalURLHost: viewModel.finalURLHost)
-                                // Later implement Rescan button here?
+                                // Categories View
+                                URLCategoriesView()
+                                    .frame(maxWidth: 300)
+                                    .padding(.top, 3)
                                 Spacer()
                             }
                             .lineLimit(1)
@@ -146,9 +149,6 @@ struct URLView: View {
     private func submitScan() {
         viewModel.errorMessage = ""
         viewModel.vtURL = ""
-        viewModel.finalURL = ""
-        viewModel.finalURLHost = ""
-        viewModel.lastAnalysisTime = ""
         viewModel.startURLAnalysis()
         isTextFieldFocused = false
     }

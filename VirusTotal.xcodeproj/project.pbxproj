@@ -82,6 +82,7 @@
 		C4D237A52C0A53720020FB2A /* Int64.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D237A42C0A53720020FB2A /* Int64.swift */; };
 		C4DA01DE2C09F652000EDC3C /* FileUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DA01DD2C09F652000EDC3C /* FileUploadView.swift */; };
 		C4DA01E32C0A3185000EDC3C /* QLThumbnailRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DA01E22C0A3185000EDC3C /* QLThumbnailRepresentation.swift */; };
+		C4DE60402C44E36800D1DE46 /* URLCategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DE603F2C44E36800D1DE46 /* URLCategoriesView.swift */; };
 		C4E91C552BFF8E09003800E7 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E91C542BFF8E09003800E7 /* Defaults.swift */; };
 		C4E91C572BFF9051003800E7 /* DefaultsBridges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E91C562BFF9051003800E7 /* DefaultsBridges.swift */; };
 		C4EB28082C0B954700719CDC /* UploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EB28072C0B954700719CDC /* UploadProgressView.swift */; };
@@ -168,6 +169,7 @@
 		C4D237A42C0A53720020FB2A /* Int64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int64.swift; sourceTree = "<group>"; };
 		C4DA01DD2C09F652000EDC3C /* FileUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadView.swift; sourceTree = "<group>"; };
 		C4DA01E22C0A3185000EDC3C /* QLThumbnailRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QLThumbnailRepresentation.swift; sourceTree = "<group>"; };
+		C4DE603F2C44E36800D1DE46 /* URLCategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLCategoriesView.swift; sourceTree = "<group>"; };
 		C4E91C542BFF8E09003800E7 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		C4E91C562BFF9051003800E7 /* DefaultsBridges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsBridges.swift; sourceTree = "<group>"; };
 		C4EB28072C0B954700719CDC /* UploadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressView.swift; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 				C4B5B39B2C0643DC0086728D /* URLInfoView.swift */,
 				C4C34EF92C00B5E000AB8C13 /* WelcomeView.swift */,
 				C40FBC262C118F5000EE7F5B /* FinalURLView.swift */,
+				C4DE603F2C44E36800D1DE46 /* URLCategoriesView.swift */,
 			);
 			path = URLView;
 			sourceTree = "<group>";
@@ -601,6 +604,7 @@
 				C4901BCC2C109C8300326947 /* TipsView.swift in Sources */,
 				C4D04A5B2C3090FF00AB6A60 /* CaseIterable.swift in Sources */,
 				C41D969E2BFBBD9D00F2A496 /* StatusMessageView.swift in Sources */,
+				C4DE60402C44E36800D1DE46 /* URLCategoriesView.swift in Sources */,
 				C46013062BFE05D20047E949 /* String.swift in Sources */,
 				C4E91C552BFF8E09003800E7 /* Defaults.swift in Sources */,
 				C47532112BFA1E1B002EC019 /* APITab.swift in Sources */,
