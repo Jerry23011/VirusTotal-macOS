@@ -22,7 +22,7 @@ struct URLView: View {
             HStack(alignment: .center) {
                 TextField("urlview.textfield.placeholder", text: $viewModel.inputURL)
                     .lineLimit(1)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .textFieldStyle(.roundedBorder)
                     .focused($isTextFieldFocused, key: "l", modifiers: .command)
                     .onSubmit {
                         submitScan()
