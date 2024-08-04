@@ -19,7 +19,7 @@ You can get a free public API key from VirusTotal. Visit [VirusTotal's API page]
 
 Please head to [Releases](https://github.com/Jerry23011/VirusTotal-macOS/releases) to get the latest dmg.
 #### Bypassing macOS notarization
-In case you got a popup saying "VirusTotal.app” will damage your computer. You should move it to the Bin", execute the following code in your Terminal.app. I don't have an Apple Developer membership. The app is open-source, feel free to compile it from source.
+In case you get a popup saying "VirusTotal.app” will damage your computer. You should move it to the Bin", execute the following code in your Terminal.app. This is because I don't have an Apple Developer membership. Since the app is open-source, feel free to compile it from source if you have any concerns.
 
 ```
 sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
@@ -29,14 +29,14 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 brew install marsanne/cask/virustotal
 ```
 ## Features
-- Uploade files and URLs to VirusTotal
+- Upload files and URLs to VirusTotal
 - View Analysis Report on VirusTotal
-- View Analysis Report in app
+- View the Analysis Report in app
 - Check API quota
 - Remove tracking query in URL
 - System Service support for both URLs and files
-- Drop URL on app icon to scan
-- Drop file in app to scan
+- Drop an URL on the app icon to scan
+- Drop a file in app to scan
 - View Scan History
 - Mini mode that swiftly opens VT website after uploads
 - Super light, the app is < 15MB
@@ -44,7 +44,7 @@ brew install marsanne/cask/virustotal
 - Auto-updates via Sparkle
 ## Privacy
 This app is sandboxed and only contacts VirusTotal and GitHub (for downloading updates).
-Note that this is NOT an official app from VirusTotal. However, all source code is available, so feel free to compile it yourself.
+Note that this is NOT an official product of VirusTotal. However, all source code is available, so feel free to compile it yourself.
 Logs are stored locally and never sent anywhere else.
 The data the app sends to VirusTotal conforms to VirusTotal's [Privacy Policy](https://docs.virustotal.com/docs/privacy-policy)
 ## Contributing
