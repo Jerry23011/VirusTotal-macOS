@@ -58,7 +58,7 @@ struct URLView: View {
                                 Spacer()
                             }
                             .lineLimit(1)
-                            .padding(.top, 31)
+                            .padding(.top, 20)
                             .padding(.leading, 19)
 
                             Spacer()
