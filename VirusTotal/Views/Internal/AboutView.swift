@@ -64,7 +64,7 @@ struct AboutView: View {
                             }
 
                             Button {
-                                openURL(URL(string: "https://github.com/Jerry23011/VirusTotal-macOS/blob/main/ACKNOWLEDGEMENTS.md")!)
+                                openURL(URL(string: "https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/ACKNOWLEDGEMENTS.md")!)
                             } label: {
                                 Label("about.contributor.link", systemImage: "bookmark.fill")
                                     .frame(width: 135, height: 20)
