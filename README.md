@@ -7,8 +7,7 @@
 <p align="center"> An elegant VirusTotal client built with Swift and SwiftUI</p>
 
 <p align="center">
-<a href="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/README.md">English</a>,
-<a href="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/README_CN.md">简体中文</a>
+<a href="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/README.md">English</a> · <a href="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/README_CN.md">简体中文</a>
 </p>
 
 ## Quick Setup
@@ -31,7 +30,7 @@ brew install marsanne/cask/virustotal
 ## Features
 - Upload files and URLs to VirusTotal
 - View Analysis Report on VirusTotal
-- View the Analysis Report in app
+- View Analysis Reports in app
 - Check API quota
 - Remove tracking query in URL
 - System Service support for both URLs and files
@@ -45,7 +44,9 @@ brew install marsanne/cask/virustotal
 ## Privacy
 This app is sandboxed and only contacts VirusTotal and GitHub (for downloading updates).
 Note that this is NOT an official product of VirusTotal. However, all source code is available, so feel free to compile it yourself.
+
 Logs are stored locally and never sent anywhere else.
+
 The data the app sends to VirusTotal conforms to VirusTotal's [Privacy Policy](https://docs.virustotal.com/docs/privacy-policy)
 ## Contributing
 Issues and PRs are welcomed! If you'd like to contribute to localization, please refer to [this guide](https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/Docs/Localization-Guide_EN.md)
