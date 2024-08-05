@@ -36,7 +36,7 @@ struct FileChartView: View {
                         Text(String(analysisStats?.malicious ?? 0))
                             .font(.largeTitle.bold())
                             .foregroundStyle(getFontColor())
-                        Text(String("/ \(numOfFlags(analysisStats: analysisStats ?? defaultAnalysisStats))"))
+                        Text(verbatim: "/ \(numOfFlags(analysisStats: analysisStats ?? defaultAnalysisStats))")
                             .font(.title2)
                             .foregroundColor(.secondary)
                     }

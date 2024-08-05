@@ -34,7 +34,7 @@ struct URLChartView: View {
                         Text(String(analysisStats.malicious))
                             .font(.largeTitle.bold())
                             .foregroundStyle(getFontColor())
-                        Text(String("/ \(numOfFlags(analysisStats: analysisStats))"))
+                        Text(verbatim: "/ \(numOfFlags(analysisStats: analysisStats))")
                             .font(.title2)
                             .foregroundColor(.secondary)
                     }
