@@ -13,7 +13,7 @@ struct SidebarView: View {
     @State private var searchText = ""
 
     var body: some View {
-        List {
+        List(selection: $appState.selectedSidebarItem) {
             ServiceView(searchText: searchText)
             ToolView(searchText: searchText)
         }

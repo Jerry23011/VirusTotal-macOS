@@ -28,7 +28,7 @@ struct ServiceView: View {
     }
 
     @ViewBuilder
-    private func viewForSidebarItem(_ item: SidebarItem) -> some View {
+    private func viewForSidebarItem(_ item: ServiceSidebarItem) -> some View {
         switch item {
         case .home:
             HomeView()
@@ -42,30 +42,30 @@ struct ServiceView: View {
         }
     }
 
-    private var filteredItems: [SidebarItem] {
-        SidebarItem.filtered(by: searchText, using: \.localizedText)
+    private var filteredItems: [ServiceSidebarItem] {
+        ServiceSidebarItem.filtered(by: searchText, using: \.localizedText)
+    }
+}
+
+enum ServiceSidebarItem: String, CaseIterable, Identifiable {
+    case home = "sidebar.home"
+    case fileUpload = "sidebar.file"
+    case urlLookup = "sidebar.url"
+
+    var id: String { self.rawValue }
+
+    var localizedText: String {
+        NSLocalizedString(self.rawValue, comment: "")
     }
 
-    private enum SidebarItem: String, CaseIterable, Identifiable {
-        case home = "sidebar.home"
-        case fileUpload = "sidebar.file"
-        case urlLookup = "sidebar.url"
-
-        var id: String { self.rawValue }
-
-        var localizedText: String {
-            NSLocalizedString(self.rawValue, comment: "")
-        }
-
-        var systemImageName: String {
-            switch self {
-            case .home:
-                return "house"
-            case .fileUpload:
-                return "arrow.up.doc"
-            case .urlLookup:
-                return "link"
-            }
+    var systemImageName: String {
+        switch self {
+        case .home:
+            return "house"
+        case .fileUpload:
+            return "arrow.up.doc"
+        case .urlLookup:
+            return "link"
         }
     }
 }
