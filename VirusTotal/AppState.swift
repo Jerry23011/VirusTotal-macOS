@@ -14,6 +14,4 @@ final class AppState {
 
     var sidebarSearchFocused: Bool = false
     var selectedSidebarItem: ServiceSidebarItem?
-
-    private init() {}
 }
