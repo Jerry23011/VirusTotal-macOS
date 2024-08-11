@@ -28,17 +28,13 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 brew install marsanne/cask/virustotal
 ```
 ## 功能
-- 将文件和网址上传到 VirusTotal
-- 在 VirusTotal 网站查看分析报告
-- 在 App 中查看分析报告
+- 文件分析
+- 网址分析
 - 检查 API 用量
 - 移除 URL 中的追踪链接
 - 集成 macOS 系统服务
-- 将 URL 拖放到应用程序图标进行扫描
-- 将文件拖放到应用程序中进行扫描
-- 查看扫描历史
-- 迷你模式，上传文件后立即打开 VT 网站
-- 超轻量，App 本身小于 15MB
+- 扫描历史记录
+- 迷你模式
 - 沙盒 App
 - Sparkle 自动更新
 ## 隐私
