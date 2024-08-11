@@ -28,17 +28,12 @@ sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 brew install marsanne/cask/virustotal
 ```
 ## Features
-- Upload files and URLs to VirusTotal
-- View Analysis Report on VirusTotal
-- View Analysis Reports in app
-- Check API quota
+- File Analysis
+- URL Analysis
 - Remove tracking query in URL
-- System Service support for both URLs and files
-- Drop an URL on the app icon to scan
-- Drop a file in app to scan
-- View Scan History
-- Mini mode that swiftly opens VT website after uploads
-- Super light, the app is < 15MB
+- macOS System Service support
+- Scan History
+- Mini mode
 - Sandboxed app
 - Auto-updates via Sparkle
 ## Privacy
