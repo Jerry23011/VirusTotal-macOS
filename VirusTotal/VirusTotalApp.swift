@@ -123,6 +123,7 @@ struct VirusTotalApp: App {
             Text("menubar.go.home")
         }
         .keyboardShortcut("1")
+        .disabled(miniMode)
 
         Button {
             appState.selectedSidebarItem = .fileUpload
@@ -130,6 +131,7 @@ struct VirusTotalApp: App {
             Text("menubar.go.file")
         }
         .keyboardShortcut("2")
+        .disabled(miniMode)
 
         Button {
             appState.selectedSidebarItem = .urlLookup
@@ -137,6 +139,7 @@ struct VirusTotalApp: App {
             Text("menubar.go.url")
         }
         .keyboardShortcut("3")
+        .disabled(miniMode)
     }
 
     // MARK: Internal
