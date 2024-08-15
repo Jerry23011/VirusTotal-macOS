@@ -160,7 +160,7 @@ struct URLReanalyzeResult {
 struct AnalysisResponse: Decodable {
     let data: AnalysisData
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case data
     }
 }
@@ -178,7 +178,7 @@ struct AnalysisAttributes: Codable {
     let reputation: Int
     let categories: [String: String]
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case lastAnalysisStats = "last_analysis_stats"
         case lastAnalysisDate = "last_analysis_date"
         case lastFinalURL = "last_final_url"

@@ -97,7 +97,7 @@ struct QuotaResult {
 struct Quotas: Decodable {
     let data: RequestData
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case data
     }
 }
@@ -107,7 +107,7 @@ struct RequestData: Decodable {
     let apiRequestsDaily: UserQuotaWrapper
     let apiRequestsMonthly: UserQuotaWrapper
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case apiRequestsHourly = "api_requests_hourly"
         case apiRequestsDaily = "api_requests_daily"
         case apiRequestsMonthly = "api_requests_monthly"
@@ -117,7 +117,7 @@ struct RequestData: Decodable {
 struct UserQuotaWrapper: Decodable {
     let user: UserQuota
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case user
     }
 }
@@ -126,7 +126,7 @@ struct UserQuota: Decodable {
     let used: Int
     let allowed: Int
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case used
         case allowed
     }

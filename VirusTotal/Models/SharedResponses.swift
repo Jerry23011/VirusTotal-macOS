@@ -26,7 +26,7 @@ enum AnalysisStatus: Codable {
 struct ScanResponse: Decodable {
     let data: ScanData
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case data
     }
 }

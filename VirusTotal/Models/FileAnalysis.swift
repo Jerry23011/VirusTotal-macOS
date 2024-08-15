@@ -216,7 +216,7 @@ struct FileGetEndpointResult {
 struct FileAnalysisResponse: Decodable {
     let data: FileAnalysisData
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case data
     }
 }
@@ -234,7 +234,7 @@ struct FileAnalysisAttributes: Codable {
     let typeDescription: String
     let uniqueSources: Int?
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case lastAnalysisStats = "last_analysis_stats"
         case lastAnalysisDate = "last_analysis_date"
         case reputation = "reputation"
@@ -253,7 +253,7 @@ struct FileAnalysisStats: Codable {
     let failure: Int
     let typeUnsupported: Int
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case malicious = "malicious"
         case suspicious = "suspicious"
         case undetected = "undetected"
@@ -270,7 +270,7 @@ struct FileAnalysisStats: Codable {
 struct FileUploadResponse: Decodable {
     let data: UploadResponse
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case data
     }
 }
