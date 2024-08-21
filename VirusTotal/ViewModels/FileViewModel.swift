@@ -68,6 +68,7 @@ final class FileViewModel {
     /// Given a file sha256, get the report of the file
     func getFileReport() async {
         guard !self.cancellationRequested else { return }
+        guard self.statusMonitor != .fail else { return }
         do {
             let result = try await FileAnalysis.shared.getFileReport(sha256: inputSHA256)
             self.statusMonitor = result.statusMonitor
