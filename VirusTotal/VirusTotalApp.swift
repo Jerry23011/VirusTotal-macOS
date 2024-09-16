@@ -143,10 +143,13 @@ struct VirusTotalApp: App {
         let console = ConsoleDestination()
         console.logPrintWay = .logger(subsystem: "org.eu.moyuapp.VirusTotal",
                                       category: "VirusTotal")
+        console.asynchronously = true
         log.addDestination(console)
 
         // Add LogView() destination
-        log.addDestination(LogViewDestination())
+        let logView = LogViewDestination()
+        logView.asynchronously = true
+        log.addDestination(logView)
 
         // Add file destination
         let file = FileDestination()
@@ -166,6 +169,7 @@ struct VirusTotalApp: App {
                 let logFileURL = logsDirectory.appendingPathComponent(logFileName)
                 file.logFileURL = logFileURL
                 file.format = "$Dyyyy-MM-dd HH:mm:ss.SSS$d $C$L$c $N.$F:$l - $M"
+                file.asynchronously = true
                 log.addDestination(file)
                 log.verbose("App Launched")
             } catch {
