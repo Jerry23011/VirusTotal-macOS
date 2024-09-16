@@ -134,7 +134,7 @@ struct VirusTotalApp: App {
     private var miniMode: Bool { Defaults[.miniMode] }
     private var logDirectory: URL {
         let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
-        return homeDirectory.appendingPathComponent("Library/Caches/Logs", isDirectory: true)
+        return homeDirectory.appendingPathComponent("Library/Logs", isDirectory: true)
     }
 
     /// Configure logging with SwiftyBeaver
@@ -153,7 +153,7 @@ struct VirusTotalApp: App {
         let logFileName = "VirusTotal.log"
         let fileManager = FileManager.default
         if let logsDirectory = fileManager.urls(
-            for: .cachesDirectory,
+            for: .libraryDirectory,
             in: .userDomainMask
         ).first?.appendingPathComponent("Logs") {
             do {
