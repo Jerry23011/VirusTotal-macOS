@@ -165,6 +165,7 @@ struct VirusTotalApp: App {
                 )
                 let logFileURL = logsDirectory.appendingPathComponent(logFileName)
                 file.logFileURL = logFileURL
+                file.format = "$Dyyyy-MM-dd HH:mm:ss.SSS$d $C$L$c $N.$F:$l - $M"
                 log.addDestination(file)
                 log.verbose("App Launched")
             } catch {
