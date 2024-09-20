@@ -9,7 +9,6 @@ import SwiftUI
 import Defaults
 import TipKit
 import Sparkle
-import SwiftyBeaver
 
 @main
 struct VirusTotalApp: App {
@@ -155,7 +154,7 @@ struct VirusTotalApp: App {
             updaterDelegate: nil,
             userDriverDelegate: nil)
         // Logging
-        configureLogging()
+        LogManager.configureLogging()
     }
 
     // MARK: Private
@@ -166,49 +165,4 @@ struct VirusTotalApp: App {
         let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
         return homeDirectory.appendingPathComponent("Library/Logs", isDirectory: true)
     }
-
-    /// Configure logging with SwiftyBeaver
-    private func configureLogging() {
-        // Add console destination
-        let console = ConsoleDestination()
-        console.logPrintWay = .logger(subsystem: "org.eu.moyuapp.VirusTotal",
-                                      category: "VirusTotal")
-        console.asynchronously = true
-        log.addDestination(console)
-
-        // Add LogView() destination
-        let logView = LogViewDestination()
-        logView.asynchronously = true
-        log.addDestination(logView)
-
-        // Add file destination
-        let file = FileDestination()
-        let logFileName = "VirusTotal.log"
-        let fileManager = FileManager.default
-        if let logsDirectory = fileManager.urls(
-            for: .libraryDirectory,
-            in: .userDomainMask
-        ).first?.appendingPathComponent("Logs") {
-            do {
-                // Ensure the Logs directory exists
-                try fileManager.createDirectory(
-                    at: logsDirectory,
-                    withIntermediateDirectories: true,
-                    attributes: nil
-                )
-                let logFileURL = logsDirectory.appendingPathComponent(logFileName)
-                file.logFileURL = logFileURL
-                file.format = "$Dyyyy-MM-dd HH:mm:ss.SSS$d $C$L$c $N.$F:$l - $M"
-                file.asynchronously = true
-                log.addDestination(file)
-                log.verbose("App Launched")
-            } catch {
-                log.error("Failed to create Logs directory: \(error)")
-            }
-        } else {
-            log.error("Failed to set log file URL.")
-        }
-    }
 }
-
-let log = SwiftyBeaver.self
