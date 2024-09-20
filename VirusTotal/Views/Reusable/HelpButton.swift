@@ -34,7 +34,7 @@ struct HelpButton: NSViewRepresentable {
             self.parent = parent
         }
 
-        @objc func handleButtonClick(_ sender: Any?) {
+        @MainActor @objc func handleButtonClick(_ sender: Any?) {
             parent.action()
         }
     }
