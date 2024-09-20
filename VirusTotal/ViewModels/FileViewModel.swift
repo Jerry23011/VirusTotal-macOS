@@ -255,16 +255,20 @@ final class FileViewModel {
                                                    representationTypes: .icon)
 
         do {
-            let thumbnail = try await withCheckedThrowingContinuation { continuation in
+            let imageData = try await withCheckedThrowingContinuation { continuation in
                 QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { thumbnail, error in
-                    if let thumbnail = thumbnail {
-                        continuation.resume(returning: thumbnail)
+                    if let thumbnail = thumbnail,
+                       let imageData = thumbnail.nsImage.tiffRepresentation {
+                        continuation.resume(returning: imageData)
                     } else {
                         continuation.resume(throwing: error ?? VTError.local("Unknown error generating Thumbnail."))
                     }
                 }
             }
-            self.thumbnailImage = thumbnail.thumbnailImage
+
+            if let image = NSImage(data: imageData) {
+                self.thumbnailImage = image
+            }
         } catch {
             log.error("Thumbnail Error: \(error)")
         }
