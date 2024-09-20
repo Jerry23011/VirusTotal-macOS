@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct LogView: View {
     @State private var logManager = LogManager.shared
 

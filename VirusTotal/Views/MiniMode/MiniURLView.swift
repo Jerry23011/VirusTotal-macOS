@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct MiniURLView: View {
     @State private var viewModel = URLViewModel()
     @FocusState private var isTextFieldFocused: Bool

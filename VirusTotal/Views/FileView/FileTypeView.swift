@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct FileTypeView: View {
     private var viewModel = FileViewModel.shared
 

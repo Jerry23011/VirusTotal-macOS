@@ -10,7 +10,6 @@ import Alamofire
 import UniformTypeIdentifiers
 import TipKit
 
-@MainActor
 struct FileView: View {
     @State private var viewModel = FileViewModel.shared
 

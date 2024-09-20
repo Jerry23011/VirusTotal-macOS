@@ -8,7 +8,6 @@
 import SwiftUI
 import TipKit
 
-@MainActor // TODO: Remove @MainActor in Xcode 16
 struct LoadingView: View, Sendable {
     @State private var elapsedTime: Double = 0.0
     @State private var timerTask: Task<Void, Never>?

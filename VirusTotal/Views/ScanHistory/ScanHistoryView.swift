@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct ScanHistoryView: View {
     @State private var historyManager = ScanHistoryManager.shared
     @State private var tableSelection: Set<ScanEntry.ID> = []

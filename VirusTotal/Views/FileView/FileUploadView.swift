@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct FileUploadView: View {
     private var viewModel = FileViewModel.shared
 

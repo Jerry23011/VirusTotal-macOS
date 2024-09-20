@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct UploadProgressView: View {
     private var viewModel = FileViewModel.shared
 

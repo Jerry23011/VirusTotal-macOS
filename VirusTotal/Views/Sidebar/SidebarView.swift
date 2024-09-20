@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct SidebarView: View {
     @Bindable private var appState = AppState.shared
     @State private var searchText = ""

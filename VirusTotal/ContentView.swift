@@ -8,7 +8,6 @@
 import SwiftUI
 import Defaults
 
-@MainActor
 struct ContentView: View {
     @State private var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
 

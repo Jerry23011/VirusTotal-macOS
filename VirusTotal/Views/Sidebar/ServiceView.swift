@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct ServiceView: View {
     var searchText: String
 

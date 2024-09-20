@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct LaunchView: View {
     @Environment(\.dismiss) var dismiss
     private var viewModel = QuotaStatusViewModel.shared

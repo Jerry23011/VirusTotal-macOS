@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct MiniHomeView: View {
     @State private var viewModel = QuotaStatusViewModel()
 

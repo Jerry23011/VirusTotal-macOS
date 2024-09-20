@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct URLView: View {
     @State private var viewModel = URLViewModel.shared
     @FocusState private var isTextFieldFocused: Bool

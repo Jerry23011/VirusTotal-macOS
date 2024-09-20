@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct FileReportView: View {
     private var viewModel = FileViewModel.shared
 

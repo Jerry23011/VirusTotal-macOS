@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct ToolView: View {
     var searchText: String
 

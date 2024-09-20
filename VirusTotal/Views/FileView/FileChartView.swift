@@ -8,7 +8,6 @@
 import SwiftUI
 import Charts
 
-@MainActor
 struct FileChartView: View {
     private var viewModel = FileViewModel.shared
 

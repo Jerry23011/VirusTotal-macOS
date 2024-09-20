@@ -8,7 +8,6 @@
 import SwiftUI
 import Defaults
 
-@MainActor
 struct FinalURLView: View {
     private var viewModel = URLViewModel.shared
 

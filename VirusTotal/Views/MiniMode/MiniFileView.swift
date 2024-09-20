@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct MiniFileView: View {
     @State private var viewModel = FileViewModel()
     @Environment(\.openURL) private var openURL

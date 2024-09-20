@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct URLCategoriesView: View {
     @State private var isPopupPresented: Bool = false
     private var viewModel = URLViewModel.shared

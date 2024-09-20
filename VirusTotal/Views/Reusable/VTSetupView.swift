@@ -8,7 +8,6 @@
 import SwiftUI
 import Defaults
 
-@MainActor
 struct VTSetupView: View {
     private var viewModel = QuotaStatusViewModel()
 
