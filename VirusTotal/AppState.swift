@@ -13,6 +13,5 @@ final class AppState {
     static let shared = AppState()
 
     var sidebarSearchFocused: Bool = false
-
-    private init() {}
+    var selectedSidebarItem: ServiceSidebarItem?
 }

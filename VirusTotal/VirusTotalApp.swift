@@ -67,6 +67,9 @@ struct VirusTotalApp: App {
             CommandGroup(before: .textEditing) {
                 openSidebarSearch
             }
+            CommandMenu("menubar.go.title") {
+                menubarGo
+            }
         }
     }
 
@@ -110,6 +113,33 @@ struct VirusTotalApp: App {
         } label: {
             Text("menubar.help.feedback")
         }
+    }
+
+    @ViewBuilder
+    var menubarGo: some View {
+        Button {
+            appState.selectedSidebarItem = .home
+        } label: {
+            Text("menubar.go.home")
+        }
+        .keyboardShortcut("1")
+        .disabled(miniMode)
+
+        Button {
+            appState.selectedSidebarItem = .fileUpload
+        } label: {
+            Text("menubar.go.file")
+        }
+        .keyboardShortcut("2")
+        .disabled(miniMode)
+
+        Button {
+            appState.selectedSidebarItem = .urlLookup
+        } label: {
+            Text("menubar.go.url")
+        }
+        .keyboardShortcut("3")
+        .disabled(miniMode)
     }
 
     // MARK: Internal
