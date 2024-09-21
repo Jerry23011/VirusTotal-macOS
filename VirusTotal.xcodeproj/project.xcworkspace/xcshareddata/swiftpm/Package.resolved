@@ -1,5 +1,5 @@
 {
-  "originHash" : "bd81964cf885e5a421ab795f5673ac541013395f8039c2c81363b9bb856509de",
+  "originHash" : "50bd1142b52749c3cc158a1fe0a43b1b88040658ba77c144d90ad76dd5c835fa",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -25,6 +25,15 @@
       "location" : "https://github.com/sindresorhus/LaunchAtLogin-Modern",
       "state" : {
         "revision" : "a04ec1c363be3627734f6dad757d82f5d4fa8fcc",
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "notchnotification",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Lakr233/NotchNotification.git",
+      "state" : {
+        "revision" : "4b2c9a8b3610dabc79939a8382323a8deb33ce07",
         "version" : "1.1.0"
       }
     },

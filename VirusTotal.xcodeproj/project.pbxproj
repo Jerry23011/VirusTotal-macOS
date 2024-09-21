@@ -83,6 +83,7 @@
 		C4DA01DE2C09F652000EDC3C /* FileUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DA01DD2C09F652000EDC3C /* FileUploadView.swift */; };
 		C4DA01E32C0A3185000EDC3C /* QLThumbnailRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DA01E22C0A3185000EDC3C /* QLThumbnailRepresentation.swift */; };
 		C4DE60402C44E36800D1DE46 /* URLCategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DE603F2C44E36800D1DE46 /* URLCategoriesView.swift */; };
+		C4DE6AC42C9D45A80094DC34 /* NotchNotification in Frameworks */ = {isa = PBXBuildFile; productRef = C4DE6AC32C9D45A80094DC34 /* NotchNotification */; };
 		C4E91C552BFF8E09003800E7 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E91C542BFF8E09003800E7 /* Defaults.swift */; };
 		C4E91C572BFF9051003800E7 /* DefaultsBridges.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E91C562BFF9051003800E7 /* DefaultsBridges.swift */; };
 		C4EB28082C0B954700719CDC /* UploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EB28072C0B954700719CDC /* UploadProgressView.swift */; };
@@ -192,6 +193,7 @@
 				C4F73B2A2C0F020C0047743B /* Vortex in Frameworks */,
 				C41D968C2BFB280B00F2A496 /* Alamofire in Frameworks */,
 				C461739E2C1A1F070006FDAC /* SwiftyBeaver in Frameworks */,
+				C4DE6AC42C9D45A80094DC34 /* NotchNotification in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,6 +481,7 @@
 				C4F73B292C0F020C0047743B /* Vortex */,
 				C46849F62C1391FB0073CFEE /* Sparkle */,
 				C461739D2C1A1F070006FDAC /* SwiftyBeaver */,
+				C4DE6AC32C9D45A80094DC34 /* NotchNotification */,
 			);
 			productName = VirusTotal;
 			productReference = C47531DE2BFA0FFB002EC019 /* VirusTotal.app */;
@@ -516,6 +519,7 @@
 				C4F73B282C0F020C0047743B /* XCRemoteSwiftPackageReference "Vortex" */,
 				C46849F52C1391FB0073CFEE /* XCRemoteSwiftPackageReference "Sparkle" */,
 				C461739C2C1A1F070006FDAC /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
+				C4DE6AC22C9D45A80094DC34 /* XCRemoteSwiftPackageReference "NotchNotification" */,
 			);
 			productRefGroup = C47531DF2BFA0FFB002EC019 /* Products */;
 			projectDirPath = "";
@@ -899,6 +903,14 @@
 				minimumVersion = 1.1.0;
 			};
 		};
+		C4DE6AC22C9D45A80094DC34 /* XCRemoteSwiftPackageReference "NotchNotification" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lakr233/NotchNotification.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 		C4F73B282C0F020C0047743B /* XCRemoteSwiftPackageReference "Vortex" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/twostraws/Vortex";
@@ -934,6 +946,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C4C4B39D2C02692D006AAA63 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
 			productName = LaunchAtLogin;
+		};
+		C4DE6AC32C9D45A80094DC34 /* NotchNotification */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4DE6AC22C9D45A80094DC34 /* XCRemoteSwiftPackageReference "NotchNotification" */;
+			productName = NotchNotification;
 		};
 		C4F73B292C0F020C0047743B /* Vortex */ = {
 			isa = XCSwiftPackageProductDependency;
