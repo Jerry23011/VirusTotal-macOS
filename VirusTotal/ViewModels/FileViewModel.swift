@@ -251,7 +251,7 @@ final class FileViewModel {
     }
 
     /// Given a fileURL, generate a thumbnail icon and pass it to the viewModel
-    private func getThumbnailImage(for fileURL: URL) async {
+    nonisolated private func getThumbnailImage(for fileURL: URL) async {
         let selectedFileURL: URL = fileURL
         let size = CGSize(width: 50, height: 50)
         let scale = NSScreen.main?.backingScaleFactor ?? 1.0
@@ -271,9 +271,10 @@ final class FileViewModel {
                     }
                 }
             }
-
-            if let image = NSImage(data: imageData) {
-                self.thumbnailImage = image
+            await MainActor.run {
+                if let image = NSImage(data: imageData) {
+                    self.thumbnailImage = image
+                }
             }
         } catch {
             log.error("Thumbnail Error: \(error)")
