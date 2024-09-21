@@ -68,6 +68,7 @@
 		C4B5B39C2C0643DC0086728D /* URLInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B5B39B2C0643DC0086728D /* URLInfoView.swift */; };
 		C4B5D8972C038C5900B00550 /* ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B5D8962C038C5900B00550 /* ServiceProvider.swift */; };
 		C4BAEBCC2C1623AF009040C1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BAEBCB2C1623AF009040C1 /* AppState.swift */; };
+		C4BB3B6A2C9EADF6009798B5 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BB3B692C9EADF0009798B5 /* NotificationManager.swift */; };
 		C4C34EF62C00AA8F00AB8C13 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C34EF52C00AA8F00AB8C13 /* LoadingView.swift */; };
 		C4C34EF82C00ACEF00AB8C13 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C34EF72C00ACEF00AB8C13 /* ErrorView.swift */; };
 		C4C34EFA2C00B5E000AB8C13 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C34EF92C00B5E000AB8C13 /* WelcomeView.swift */; };
@@ -157,6 +158,7 @@
 		C4B5B39B2C0643DC0086728D /* URLInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLInfoView.swift; sourceTree = "<group>"; };
 		C4B5D8962C038C5900B00550 /* ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceProvider.swift; sourceTree = "<group>"; };
 		C4BAEBCB2C1623AF009040C1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		C4BB3B692C9EADF0009798B5 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		C4C34EF52C00AA8F00AB8C13 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		C4C34EF72C00ACEF00AB8C13 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		C4C34EF92C00B5E000AB8C13 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				C4C611EA2C2F34860027681D /* ScanEntry.swift */,
 				C4A7A8BE2C30A44F00E4EDD7 /* LogEntry.swift */,
 				C4ABCFB72C2D6C0600AF8944 /* ErrorManager.swift */,
+				C4BB3B692C9EADF0009798B5 /* NotificationManager.swift */,
 				C4213D8E2C395CC000F16F69 /* AnyDropDelegate.swift */,
 			);
 			path = Utilities;
@@ -606,6 +609,7 @@
 				C4B5B39C2C0643DC0086728D /* URLInfoView.swift in Sources */,
 				C4118DDA2C0CEB6B00E572C0 /* FileChartView.swift in Sources */,
 				C4901BCC2C109C8300326947 /* TipsView.swift in Sources */,
+				C4BB3B6A2C9EADF6009798B5 /* NotificationManager.swift in Sources */,
 				C4D04A5B2C3090FF00AB6A60 /* CaseIterable.swift in Sources */,
 				C41D969E2BFBBD9D00F2A496 /* StatusMessageView.swift in Sources */,
 				C4DE60402C44E36800D1DE46 /* URLCategoriesView.swift in Sources */,

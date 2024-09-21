@@ -82,6 +82,7 @@ final class FileViewModel {
             if result.getReportSuccess == true {
                 if self.isValidResponse(responses: result.lastAnalysisStats!) {
                     self.statusMonitor = .success
+                    NotificationManager.success("notification.file.success")
                     self.storeScanEntry()
                 } else {
                     await self.retryFileReport(retryCount: self.numberOfRetries)
@@ -92,6 +93,8 @@ final class FileViewModel {
         } catch {
             self.errorMessage = error.localizedDescription
             self.statusMonitor = .fail
+            NotificationManager.stringError(errorMessage ?? "File Analysis Failed")
+            log.error(errorMessage ?? "File Analysis Failed")
         }
     }
 
@@ -182,6 +185,8 @@ final class FileViewModel {
             }
         } catch {
             self.errorMessage = error.localizedDescription
+            NotificationManager.stringError(error.localizedDescription)
+            log.error(error.localizedDescription)
             self.statusMonitor = .fail
         }
     }
@@ -194,6 +199,7 @@ final class FileViewModel {
             await getNewFileReport()
             self.errorMessage = nil
         } catch {
+            NotificationManager.stringError(error.localizedDescription)
             log.error(error.localizedDescription)
             self.statusMonitor = .fail
             self.errorMessage = error.localizedDescription

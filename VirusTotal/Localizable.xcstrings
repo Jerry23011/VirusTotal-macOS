@@ -1465,6 +1465,38 @@
         }
       }
     },
+    "notification.file.success" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Analysis Succeeded"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件分析完成"
+          }
+        }
+      }
+    },
+    "notification.url.success" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL Analysis Succeeded"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "网址分析完成"
+          }
+        }
+      }
+    },
     "settings.advanced" : {
       "localizations" : {
         "cs" : {

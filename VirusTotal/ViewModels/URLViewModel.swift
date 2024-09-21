@@ -45,6 +45,7 @@ final class URLViewModel: ObservableObject {
             } catch {
                 statusMonitor = .fail
                 errorMessage = error.localizedDescription
+                NotificationManager.stringError(errorMessage ?? "")
                 log.error(error)
             }
         }
@@ -64,6 +65,7 @@ final class URLViewModel: ObservableObject {
                self.statusMonitor = .analyzing
                if isValidResponse(result.lastAnalysisStats) {
                    statusMonitor = .success
+                   NotificationManager.success("notification.url.success")
                    self.storeScanEntry()
                    return
                }
@@ -73,11 +75,13 @@ final class URLViewModel: ObservableObject {
                try await Task.sleep(nanoseconds: 5_000_000_000)
            }
            let timeoutError = VTError.timeout("Request timeout: too many requests")
+           NotificationManager.error(timeoutError)
            log.error(timeoutError)
            throw timeoutError
        } catch {
            statusMonitor = .fail
            errorMessage = error.localizedDescription
+           NotificationManager.stringError(errorMessage ?? "")
            log.error(error)
        }
    }
