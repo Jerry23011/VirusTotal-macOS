@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import CryptoKit
-import QuickLookThumbnailing
+@preconcurrency import QuickLookThumbnailing
 
 @MainActor
 @Observable
@@ -255,20 +255,8 @@ final class FileViewModel {
                                                    representationTypes: .icon)
 
         do {
-            let imageData = try await withCheckedThrowingContinuation { continuation in
-                QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { thumbnail, error in
-                    if let thumbnail = thumbnail,
-                       let imageData = thumbnail.nsImage.tiffRepresentation {
-                        continuation.resume(returning: imageData)
-                    } else {
-                        continuation.resume(throwing: error ?? VTError.local("Unknown error generating Thumbnail."))
-                    }
-                }
-            }
-
-            if let image = NSImage(data: imageData) {
-                self.thumbnailImage = image
-            }
+            let thumbnail = try await QLThumbnailGenerator.shared.generateBestRepresentation(for: request)
+            self.thumbnailImage = thumbnail.nsImage
         } catch {
             log.error("Thumbnail Error: \(error)")
         }
