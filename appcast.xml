@@ -3,6 +3,15 @@
     <channel>
         <title>VirusTotal</title>
         <item>
+            <title>1.4.1</title>
+            <pubDate>Sat, 28 Sep 2024 18:53:02 -0700</pubDate>
+            <sparkle:version>10</sparkle:version>
+            <sparkle:shortVersionString>1.4.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.4.1/VirusTotal.dmg" length="4822156" type="application/octet-stream" sparkle:edSignature="VNaTEYPWnaAQp1XHWf2k066ApPYA4zenL9PYAuAYCNuSn2pY/JXqs5o4s44guu8xRD+XPaArWhh6i/7C+jY+Cg=="/>
+        </item>
+        <item>
             <title>1.4</title>
             <pubDate>Fri, 27 Sep 2024 23:19:11 -0700</pubDate>
             <sparkle:version>9</sparkle:version>
@@ -19,15 +28,6 @@
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases</sparkle:releaseNotesLink>
             <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.3.1/VirusTotal.dmg" length="4785771" type="application/octet-stream" sparkle:edSignature="GIyXNC4v7uDxL4BlNEaOusjmydo6OCIEhtyatgq+96bD5qOtxCVag1Rco/hDL2VGcN3g23vKljbpo6g90kr0Dg=="/>
-        </item>
-        <item>
-            <title>1.3</title>
-            <pubDate>Sun, 11 Aug 2024 19:43:26 +0800</pubDate>
-            <sparkle:version>7</sparkle:version>
-            <sparkle:shortVersionString>1.3</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases</sparkle:releaseNotesLink>
-            <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.3/VirusTotal.dmg" length="4785490" type="application/octet-stream" sparkle:edSignature="ZIKmIWBnAPGf8NS4zjk9KGrxN34OIciY8CZE8dddVTtHAt1m4iPAgIqxc9MT42tp8RHv0mY5QLivDZHwMMc2Aw=="/>
         </item>
     </channel>
 </rss>
