@@ -16,6 +16,7 @@ struct VirusTotalApp: App {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.openURL) private var openURL
     @Default(.appFirstLaunch) private var appFirstLaunch: Bool
+    @State private var scanHistoryManager = ScanHistoryManager.shared
     private var appState = AppState.shared
 
     var body: some Scene {
@@ -28,6 +29,13 @@ struct VirusTotalApp: App {
                         LaunchView()
                             .frame(width: 400, height: 430)
                     })
+                    .task(priority: .background) {
+                        do {
+                            try await scanHistoryManager.load()
+                        } catch {
+                            log.error("Error loading scan entries: \(error)")
+                        }
+                    }
             } else {
                 MiniModeView()
                     .frame(width: 245, height: 180)

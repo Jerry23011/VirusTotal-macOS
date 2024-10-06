@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ScanHistoryView: View {
-    @State private var historyManager = ScanHistoryManager.shared
     @State private var tableSelection: Set<ScanEntry.ID> = []
     @State private var showingClearConfirmation = false
+    private var historyManager = ScanHistoryManager.shared
 
     var body: some View {
         Table(historyManager.scanEntries, selection: $tableSelection) {
@@ -38,13 +38,6 @@ struct ScanHistoryView: View {
                     .foregroundStyle(entry.result.reputation < 0 ? .orange : .primary)
             }
             .width(min: 80, ideal: 80)
-        }
-        .task {
-            do {
-                try await historyManager.load()
-            } catch {
-                log.error("Error loading scan entries: \(error)")
-            }
         }
         .toolbar {
             ToolbarItem(placement: .automatic) {
