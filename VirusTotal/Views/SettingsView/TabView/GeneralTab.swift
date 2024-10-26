@@ -16,6 +16,7 @@ struct GeneralTab: View {
     @State private var autoChecksForUpdates: Bool
     @Default(.cleanURL) private var cleanURL: Bool
     @Default(.startPage) private var startPage: NavigationItem
+    @Default(.enableNotification) private var enableNotification: Bool
 
     var body: some View {
         Form {
@@ -26,6 +27,13 @@ struct GeneralTab: View {
                         color: .blue,
                         systemImage: "hand.raised.fill",
                         labelText: "settings.general.cleanurl"
+                    )
+                }
+                Toggle(isOn: $enableNotification) {
+                    SettingsViewItem(
+                        color: .blue,
+                        systemImage: getNotificationIcon(),
+                        labelText: "settings.general.notification"
                     )
                 }
                 Picker(selection: $startPage) {
@@ -96,5 +104,10 @@ struct GeneralTab: View {
         case .url:
             return "link"
         }
+    }
+
+    /// Returns "bell.badge.fill" if enableNotification is true, returns "bell.slash.fill" otherwise
+    private func getNotificationIcon() -> String {
+        return enableNotification ? "bell.badge.fill" : "bell.slash.fill"
     }
 }

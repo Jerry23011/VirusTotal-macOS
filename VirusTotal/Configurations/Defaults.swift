@@ -27,6 +27,7 @@ extension Defaults.Keys {
     // General Settings
     static let cleanURL = Key<Bool>("cleanURL", default: false)
     static let startPage = Key<NavigationItem>("startPage", default: .home)
+    static let enableNotification = Key<Bool>("enableNotification", default: true)
 
     // Advanced Settings
     static let miniMode = Key<Bool>("miniMode", default: false)

@@ -6,6 +6,7 @@
 //
 
 import UserNotifications
+import Defaults
 
 final actor NotificationManager {
     /// Requests user permission to display notifications with sounds, badges, and alerts.
@@ -14,16 +15,22 @@ final actor NotificationManager {
 
         do {
             _ = try await center.requestAuthorization(options: [.alert, .badge, .sound])
-            self.isAuthorized = true
-            log.info("Notification Authorization: \(self.isAuthorized)")
+            log.info("Notification authorization succeeded")
         } catch {
-            self.isAuthorized = false
-            log.warning("Notification Authorization: \(self.isAuthorized)")
+            log.warning("Notification authorization failed")
         }
     }
 
     /// Given a title, optional subtitle, and optional body, pushes a local notification
     static func pushNotification(title: String, subtitle: String? = nil, body: String? = nil) async {
+        guard await isAuthorized else {
+            log.info("Notification not authorized")
+            return
+        }
+        guard enableNotification else {
+            log.info("Notification disabled in app settings")
+            return
+        }
         do {
             let content = UNMutableNotificationContent()
 
@@ -50,5 +57,14 @@ final actor NotificationManager {
     }
 
     // MARK: Private
-    private static var isAuthorized: Bool = false
+    private static var isAuthorized: Bool {
+        get async {
+            let center = UNUserNotificationCenter.current()
+            let settings = await center.notificationSettings()
+            return settings.authorizationStatus == .authorized
+        }
+    }
+    private static var enableNotification: Bool {
+        Defaults[.enableNotification]
+    }
 }

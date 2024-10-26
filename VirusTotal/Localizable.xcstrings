@@ -1997,6 +1997,22 @@
         }
       }
     },
+    "settings.general.notification" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Notifications"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用通知"
+          }
+        }
+      }
+    },
     "settings.general.startpage" : {
       "localizations" : {
         "en" : {
