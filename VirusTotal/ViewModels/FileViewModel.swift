@@ -82,6 +82,7 @@ final class FileViewModel {
             if result.getReportSuccess == true {
                 if self.isValidResponse(responses: result.lastAnalysisStats!) {
                     self.statusMonitor = .success
+                    await NotificationManager.pushNotification(title: String(localized: "notification.analysis.complete.title"))
                     self.storeScanEntry()
                 } else {
                     await self.retryFileReport(retryCount: self.numberOfRetries)
@@ -91,6 +92,7 @@ final class FileViewModel {
             }
         } catch {
             self.errorMessage = error.localizedDescription
+            await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
             self.statusMonitor = .fail
         }
     }
@@ -123,6 +125,7 @@ final class FileViewModel {
             }
         } catch {
             self.errorMessage = error.localizedDescription
+            await NotificationManager.pushNotification(title: String(localized: "notification.upload.fail.title"))
             self.statusMonitor = .fail
             return false
         }

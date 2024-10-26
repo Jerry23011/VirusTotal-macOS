@@ -64,6 +64,7 @@ final class URLViewModel: ObservableObject {
                self.statusMonitor = .analyzing
                if isValidResponse(result.lastAnalysisStats) {
                    statusMonitor = .success
+                   await NotificationManager.pushNotification(title: String(localized: "notification.analysis.complete.title"))
                    self.storeScanEntry()
                    return
                }
@@ -78,6 +79,7 @@ final class URLViewModel: ObservableObject {
        } catch {
            statusMonitor = .fail
            errorMessage = error.localizedDescription
+           await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
            log.error(error)
        }
    }
