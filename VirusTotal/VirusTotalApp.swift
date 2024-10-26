@@ -35,6 +35,7 @@ struct VirusTotalApp: App {
                         } catch {
                             log.error("Error loading scan entries: \(error)")
                         }
+                        await NotificationManager.requestAuthorization()
                     }
             } else {
                 MiniModeView()
