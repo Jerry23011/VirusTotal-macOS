@@ -23,22 +23,30 @@ final actor NotificationManager {
     }
 
     /// Given a title, optional subtitle, and optional body, pushes a local notification
-    static func pushNotification(title: String, subtitle: String? = nil, body: String? = nil) {
-        let content = UNMutableNotificationContent()
-        content.title = title
-        if let subtitle {
-            content.subtitle = subtitle
-        }
-        if let body {
-            content.body = body
-        }
-        content.sound = UNNotificationSound.default
+    static func pushNotification(title: String, subtitle: String? = nil, body: String? = nil) async {
+        do {
+            let content = UNMutableNotificationContent()
 
-        let request = UNNotificationRequest(identifier: UUID().uuidString,
-                                            content: content,
-                                            trigger: nil)
+            content.title = title
+            content.sound = UNNotificationSound.default
 
-        UNUserNotificationCenter.current().add(request)
+            if let subtitle {
+                content.subtitle = subtitle
+            }
+            if let body {
+                content.body = body
+            }
+
+            let request = UNNotificationRequest(
+                identifier: UUID().uuidString,
+                content: content,
+                trigger: nil
+            )
+
+            try await UNUserNotificationCenter.current().add(request)
+        } catch {
+            log.error(error.localizedDescription)
+        }
     }
 
     // MARK: Private
