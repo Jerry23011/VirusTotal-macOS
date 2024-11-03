@@ -44,7 +44,7 @@ struct AboutView: View {
                             Text(appName)
                                 .font(.system(size: 35, weight: .medium))
 
-                            Text("about.current.version \(version)")
+                            Text("about.current.version \(version) (\(buildNumber))")
                                 .font(.system(size: 13))
                                 .foregroundColor(.gray)
 
@@ -99,6 +99,9 @@ struct AboutView: View {
     private let appName: LocalizedStringResource = "VirusTotal for macOS"
     private var version: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
+    private var buildNumber: String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
     }
     private var copyrightInfo: String {
         Bundle.main.localizedString(
