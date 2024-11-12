@@ -1121,6 +1121,54 @@
         }
       }
     },
+    "intent.file.descr" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyze a file with VirusTotal"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用 VirusTotal 分析文件"
+          }
+        }
+      }
+    },
+    "intent.file.short.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyze File"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分析文件"
+          }
+        }
+      }
+    },
+    "intent.file.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyze File"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分析文件"
+          }
+        }
+      }
+    },
     "launchview.button.done" : {
       "localizations" : {
         "cs" : {
