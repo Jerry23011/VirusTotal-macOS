@@ -34,6 +34,7 @@ struct URLView: View {
                 Button(action: submitScan) {
                     Text("urlview.button.scan")
                 }
+                .disabled(viewModel.inputURL.isEmpty)
             }
             switch viewModel.statusMonitor {
             case .empty:
