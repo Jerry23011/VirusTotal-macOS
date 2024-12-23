@@ -27,7 +27,7 @@ final actor NotificationManager {
             log.info("Notification not authorized")
             return
         }
-        guard enableNotification else {
+        guard canPushNotification else {
             log.info("Notification disabled in app settings")
             return
         }
@@ -64,7 +64,7 @@ final actor NotificationManager {
             return settings.authorizationStatus == .authorized
         }
     }
-    private static var enableNotification: Bool {
-        Defaults[.enableNotification]
+    private static var canPushNotification: Bool {
+        Defaults[.enableNotification] && !Defaults[.miniMode]
     }
 }
