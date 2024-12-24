@@ -32,7 +32,7 @@ struct URLCategoriesView: View {
     }
 }
 
-private struct CategoriesView<Data: Collection>: View where Data.Element: Hashable & StringProtocol {
+private struct CategoriesView<Data: Collection>: View where Data.Element: Hashable & StringProtocol & Sendable {
     let data: Data
 
     @State private var availableWidth: CGFloat = 0
@@ -54,7 +54,7 @@ private struct CategoriesView<Data: Collection>: View where Data.Element: Hashab
     }
 }
 
-private struct CategoriesViewContent<Data: Collection>: View where Data.Element: Hashable & StringProtocol {
+private struct CategoriesViewContent<Data: Collection>: View where Data.Element: Hashable & StringProtocol & Sendable {
     let availableWidth: CGFloat
     let data: Data
 
