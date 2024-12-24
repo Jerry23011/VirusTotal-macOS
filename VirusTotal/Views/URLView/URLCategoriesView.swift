@@ -43,7 +43,7 @@ private struct CategoriesView<Data: Collection>: View where Data.Element: Hashab
             Color.clear
                 .frame(height: 1)
                 .readSize { size in
-                    availableWidth = size.width
+                    _availableWidth.wrappedValue = size.width
                 }
 
             CategoriesViewContent(
@@ -76,7 +76,7 @@ private struct CategoriesViewContent<Data: Collection>: View where Data.Element:
                                 .stroke(.blue.opacity(0.2), lineWidth: 1))
                             .fixedSize()
                             .readSize { size in
-                                elementsSize[element] = size
+                                _elementsSize.wrappedValue[element] = size
                             }
                     }
                 }
@@ -122,7 +122,7 @@ private struct SizePreferenceKey: PreferenceKey {
 
 private extension View {
     /// Reads the size of a view and calls the provided closure when the size changes
-    func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
+    func readSize(onChange: @Sendable @escaping (CGSize) -> Void) -> some View {
         background(
             GeometryReader { geometryProxy in
                 Color.clear
