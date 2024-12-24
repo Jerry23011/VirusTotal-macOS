@@ -134,15 +134,15 @@ private extension View {
     }
 }
 
- #Preview {
-     VStack(alignment: .leading) {
-         CategoriesView(data: ["web applications",
-                               "computersandsoftware",
-                               "Information Technology (alphaMountain.ai)",
-                               "social networks",
-                               "information technology",
-                               "information technology"])
-         .padding(.top, 5)
-     }
-     .frame(width: 300)
- }
+#Preview {
+    VStack(alignment: .leading) {
+        CategoriesView(data: ["web applications",
+                              "computersandsoftware",
+                              "Information Technology (alphaMountain.ai)",
+                              "social networks",
+                              "information technology",
+                              "information technology"])
+        .padding(.top, 5)
+    }
+    .frame(width: 300)
+}
