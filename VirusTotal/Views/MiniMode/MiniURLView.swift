@@ -43,6 +43,7 @@ struct MiniURLView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
             }
+            .disabled(viewModel.inputURL.isEmpty)
             .buttonStyle(MiniModeButtonStyle())
             Spacer()
         }
