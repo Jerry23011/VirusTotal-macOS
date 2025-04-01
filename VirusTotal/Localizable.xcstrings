@@ -2294,14 +2294,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Konečná URL je adresa, která je na konci všech přesměrování. Může pomoci proti phishingovým útokům."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Last final URL is the URL that a redirection chain lands on. This can be helpful in detecting phishing attempts or other malicious websites trying to mask their true destination."
+            "value" : "Final URL is the URL that a redirection chain lands on. This can be helpful in detecting phishing attempts or other malicious websites trying to mask their true destination."
           }
         },
         "zh-Hans" : {
@@ -2316,14 +2316,14 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Konečná URL"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Last Final URL"
+            "value" : "Final URL"
           }
         },
         "zh-Hans" : {
