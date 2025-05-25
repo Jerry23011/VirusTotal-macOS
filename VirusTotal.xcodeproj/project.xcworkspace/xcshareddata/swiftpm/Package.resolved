@@ -1,5 +1,5 @@
 {
-  "originHash" : "bd81964cf885e5a421ab795f5673ac541013395f8039c2c81363b9bb856509de",
+  "originHash" : "a2d27d586c39005cc320b27624499d40b8e412b22ce1833fa7fcae57d420d28b",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sparkle-project/Sparkle",
       "state" : {
-        "revision" : "b456fd404954a9e13f55aa0c88cd5a40b8399638",
-        "version" : "2.6.3"
+        "revision" : "0ca3004e98712ea2b39dd881d28448630cce1c99",
+        "version" : "2.7.0"
       }
     },
     {
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/twostraws/Vortex",
       "state" : {
-        "revision" : "bb48b128d3c13c68c68e83833c622eec9f6c701f",
-        "version" : "1.0.1"
+        "revision" : "26e036c4f04efcc019c95d43bfeffeaefbef3c99",
+        "version" : "1.0.3"
       }
     }
   ],
