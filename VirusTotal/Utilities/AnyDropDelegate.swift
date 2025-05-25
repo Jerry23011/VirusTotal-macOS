@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Used to handle the dropped file in File Analysis
 struct AnyDropDelegate: DropDelegate {
     var isTargeted: Binding<Bool>?
     var onValidate: ((DropInfo) -> Bool)?

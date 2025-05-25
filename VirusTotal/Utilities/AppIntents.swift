@@ -7,6 +7,7 @@
 
 import AppIntents
 
+// Takes in a fileURL and launch the app. Then run handleFileImport() in ViewModel.
 struct ScanFileIntent: AppIntent {
 
     static let title: LocalizedStringResource = "intent.file.title"
@@ -36,6 +37,7 @@ struct ScanFileIntent: AppIntent {
     }
 }
 
+// Register custom shortcuts for the app
 struct VTShortcutsProvider: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
         AppShortcut(
