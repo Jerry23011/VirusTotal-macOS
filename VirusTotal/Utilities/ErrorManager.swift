@@ -14,4 +14,6 @@ enum VTError: Error {
     case timeout(_ message: String)
     /// Local Errors with no impact by network connection
     case local(_ message: String)
+    /// Errors occured in AppIntents
+    case intent(_ message: String)
 }
