@@ -37,9 +37,6 @@ final class FileViewModel {
     /// Handle the File Import modifier, run setupFileInfo and getFileReport
     func handleFileImport(_ url: URL) async {
         _ = url.startAccessingSecurityScopedResource()
-        defer {
-            url.stopAccessingSecurityScopedResource()
-        }
         await setupFileInfo(fileURL: url)
         await getFileReport()
     }
