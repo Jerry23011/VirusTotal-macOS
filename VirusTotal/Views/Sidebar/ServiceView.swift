@@ -38,6 +38,9 @@ struct ServiceView: View {
         case .urlLookup:
             URLView()
                 .frame(minWidth: 600, minHeight: 500)
+        case .fileBatch:
+            FileBatchView()
+                .frame(minWidth: 600, minHeight: 500)
         }
     }
 
@@ -50,6 +53,7 @@ enum ServiceSidebarItem: String, CaseIterable, Identifiable {
     case home = "sidebar.home"
     case fileUpload = "sidebar.file"
     case urlLookup = "sidebar.url"
+    case fileBatch = "sidebar.batch"
 
     var id: String { self.rawValue }
 
@@ -65,6 +69,8 @@ enum ServiceSidebarItem: String, CaseIterable, Identifiable {
             return "arrow.up.doc"
         case .urlLookup:
             return "link"
+        case .fileBatch:
+            return "arrow.up.page.on.clipboard"
         }
     }
 }

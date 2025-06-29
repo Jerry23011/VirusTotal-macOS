@@ -148,6 +148,14 @@ struct VirusTotalApp: App {
         }
         .keyboardShortcut("3")
         .disabled(miniMode)
+
+        Button {
+            appState.selectedSidebarItem = .fileBatch
+        } label: {
+            Text("menubar.go.fileBatch")
+        }
+        .keyboardShortcut("4")
+        .disabled(miniMode)
     }
 
     // MARK: Internal

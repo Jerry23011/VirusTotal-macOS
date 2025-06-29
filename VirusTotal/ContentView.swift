@@ -31,6 +31,8 @@ struct ContentView: View {
             FileView()
         case .url:
             URLView()
+        case .fileBatch:
+            FileBatchView()
         }
     }
 

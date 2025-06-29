@@ -14,6 +14,7 @@ import CryptoKit
 @Observable
 final class FileViewModel {
     static let shared = FileViewModel()
+    static let batch = FileViewModel()
 
     var statusMonitor: AnalysisStatus?
     var errorMessage: String?

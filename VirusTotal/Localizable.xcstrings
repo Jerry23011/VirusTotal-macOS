@@ -149,6 +149,22 @@
         }
       }
     },
+    "Add Files" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Files"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加文件"
+          }
+        }
+      }
+    },
     "analysis.date.label %@" : {
       "localizations" : {
         "cs" : {
@@ -167,6 +183,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "上次分析于: %@"
+          }
+        }
+      }
+    },
+    "Batch Upload" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batch Upload"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "批量文件"
           }
         }
       }
@@ -205,6 +237,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "检查更新..."
+          }
+        }
+      }
+    },
+    "Clear" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除"
           }
         }
       }
@@ -1377,6 +1425,22 @@
         }
       }
     },
+    "menubar.go.fileBatch" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Batch"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "批量文件"
+          }
+        }
+      }
+    },
     "menubar.go.home" : {
       "localizations" : {
         "en" : {
@@ -2121,6 +2185,23 @@
         }
       }
     },
+    "sidebar.batch" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Batch"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "批量文件"
+          }
+        }
+      }
+    },
     "sidebar.file" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2274,6 +2355,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请求重新扫描"
+          }
+        }
+      }
+    },
+    "Upload All" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload All"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全部上传"
           }
         }
       }

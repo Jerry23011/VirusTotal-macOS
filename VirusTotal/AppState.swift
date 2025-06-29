@@ -40,6 +40,8 @@ final class AppState {
                 .fileUpload
         case .url:
                 .urlLookup
+        case .fileBatch:
+                .fileBatch
         }
     }
 }

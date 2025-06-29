@@ -34,6 +34,6 @@ extension Defaults.Keys {
 }
 
 enum NavigationItem: String, CaseIterable, Identifiable, Defaults.Serializable {
-    case home, file, url
+    case home, file, url, fileBatch
     var id: Self { self }
 }

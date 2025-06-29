@@ -103,6 +103,8 @@ struct GeneralTab: View {
             return "arrow.up.doc.fill"
         case .url:
             return "link"
+        case .fileBatch:
+            return "arrow.up.page.on.clipboard"
         }
     }
 
