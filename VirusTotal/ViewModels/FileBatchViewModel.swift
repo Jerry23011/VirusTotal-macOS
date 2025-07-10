@@ -154,9 +154,6 @@ final class FileBatchViewModel {
         }
 
         isProcessing = false
-        await NotificationManager.pushNotification(
-            title: String(localized: "Batch analysis completed")
-        )
     }
 
     func cancelAllProcessing() {
@@ -201,6 +198,7 @@ final class FileBatchViewModel {
                 // File exists, update with results
                 updateBatchFileWithResults(batchFile, reportResult)
                 batchFile.status = .success
+                await NotificationManager.pushNotification(title: String(localized: "notification.analysis.complete.title"))
                 updateCompletedCount()
                 return
             }
@@ -230,6 +228,7 @@ final class FileBatchViewModel {
                 await getAnalysisResults(batchFile)
             } else {
                 batchFile.status = .failed
+                await NotificationManager.pushNotification(title: String(localized: "notification.upload.fail.title"))
                 updateCompletedCount()
             }
 
@@ -291,6 +290,7 @@ final class FileBatchViewModel {
                    isValidResponse(stats) {
                     updateBatchFileWithResults(batchFile, reportResult)
                     batchFile.status = .success
+                    await NotificationManager.pushNotification(title: String(localized: "notification.analysis.complete.title"))
                     updateCompletedCount()
                     return
                 }
@@ -301,6 +301,7 @@ final class FileBatchViewModel {
 
             } catch {
                 batchFile.status = .failed
+                await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
                 batchFile.errorMessage = error.localizedDescription
                 updateCompletedCount()
                 return
@@ -309,6 +310,7 @@ final class FileBatchViewModel {
 
         // Timeout
         batchFile.status = .failed
+        await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
         batchFile.errorMessage = "Analysis timeout"
         updateCompletedCount()
     }
