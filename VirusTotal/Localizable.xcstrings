@@ -61,6 +61,22 @@
         }
       }
     },
+    "%lld/%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "%lld%%" : {
+
+    },
+    "• %@" : {
+
+    },
     "About VirusTotal" : {
       "localizations" : {
         "cs" : {
@@ -149,21 +165,8 @@
         }
       }
     },
-    "Add Files" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add Files"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "添加文件"
-          }
-        }
-      }
+    "Add More Files" : {
+
     },
     "analysis.date.label %@" : {
       "localizations" : {
@@ -187,21 +190,14 @@
         }
       }
     },
-    "Batch Upload" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Batch Upload"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "批量文件"
-          }
-        }
-      }
+    "Analyzing" : {
+
+    },
+    "Batch analysis completed" : {
+
+    },
+    "Cancel All" : {
+
     },
     "categories.number.more %lld" : {
       "localizations" : {
@@ -241,21 +237,14 @@
         }
       }
     },
-    "Clear" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clear"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "清除"
-          }
-        }
-      }
+    "Choose multiple files to analyze them all at once" : {
+
+    },
+    "Clean" : {
+
+    },
+    "Clear all files" : {
+
     },
     "community.score.label %lld" : {
       "localizations" : {
@@ -313,6 +302,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "文件"
+          }
+        }
+      }
+    },
+    "filebatchview.header.number.selected %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld files selected"
+          }
+        }
+      }
+    },
+    "filebatchview.header.progress %lld/%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progress: %1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "filebatchview.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Batch Analysis"
           }
         }
       }
@@ -782,6 +801,9 @@
           }
         }
       }
+    },
+    "Go back to single file view" : {
+
     },
     "history.analysis.date" : {
       "localizations" : {
@@ -1365,6 +1387,9 @@
         }
       }
     },
+    "Malicious" : {
+
+    },
     "menubar.check.log" : {
       "localizations" : {
         "cs" : {
@@ -1624,6 +1649,15 @@
           }
         }
       }
+    },
+    "Or drag and drop files here" : {
+
+    },
+    "Ready" : {
+
+    },
+    "Select Multiple Files for Batch Analysis" : {
+
     },
     "settings.advanced" : {
       "localizations" : {
@@ -2337,6 +2371,9 @@
         }
       }
     },
+    "Start Batch Analysis" : {
+
+    },
     "toolbar.button.rescan" : {
       "localizations" : {
         "cs" : {
@@ -2355,22 +2392,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请求重新扫描"
-          }
-        }
-      }
-    },
-    "Upload All" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upload All"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "全部上传"
           }
         }
       }
