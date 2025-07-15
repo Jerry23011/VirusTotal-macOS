@@ -33,10 +33,10 @@ struct UploadProgressView: View {
                 .fill(.regularMaterial)
                 .frame(width: 260, height: 40)
                 .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
-                .overlay(
+                .overlay(alignment: .center) {
                     RoundedRectangle(cornerRadius: 13)
                         .stroke(.gray, lineWidth: 0.2)
-                )
+                }
             HStack {
                 ProgressView()
                     .controlSize(.small)
