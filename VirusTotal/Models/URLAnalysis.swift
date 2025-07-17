@@ -96,7 +96,7 @@ actor URLAnalysis {
 // MARK: Networking
 
 /// Helper function to fetch analysis for analyzeURL() and reanalyzeURL()
-private func fetchAnalysis<T: Decodable>(
+private func fetchAnalysis<T: Decodable & Sendable>(
     url: String,
     method: HTTPMethod,
     headers: HTTPHeaders

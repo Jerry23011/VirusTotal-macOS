@@ -23,6 +23,8 @@ In case you get a popup saying "VirusTotal.app” will damage your computer. You
 ```
 sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 ```
+
+Alternatively, you can do this in System Settings.app. You can find the instructions on this [Apple Support page](https://support.apple.com/102445#openanyway).
 #### Homebrew
 ```
 brew install marsanne/cask/virustotal

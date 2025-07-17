@@ -3,6 +3,15 @@
     <channel>
         <title>VirusTotal</title>
         <item>
+            <title>1.4.5</title>
+            <pubDate>Thu, 17 Jul 2025 19:56:02 +0800</pubDate>
+            <sparkle:version>14</sparkle:version>
+            <sparkle:shortVersionString>1.4.5</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases#:~:text=Compare-,1.4.5,-Latest</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.4.5/VirusTotal.dmg" length="4885105" type="application/octet-stream" sparkle:edSignature="Rpy5WzCaQ6S5O5/jhWfFJ8RU9AKmqFhJeWtmkl43reajnX2jdMAUsOKmcBw056oZWQgJPppnUliFSkY+jm1QBA=="/>
+        </item>
+        <item>
             <title>1.4.4</title>
             <pubDate>Sun, 25 May 2025 19:23:30 +0800</pubDate>
             <sparkle:version>13</sparkle:version>
@@ -19,15 +28,6 @@
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases</sparkle:releaseNotesLink>
             <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.4.3/VirusTotal.dmg" length="4835261" type="application/octet-stream" sparkle:edSignature="0MyPgkhoBKyc7ijQQgLtaHSKMZiAbDa9Tre7LxyUZ44nTVeM6F2/eYYL+WCivsxX9ti8NafRAxMttsBNJTdeDA=="/>
-        </item>
-        <item>
-            <title>1.4.2</title>
-            <pubDate>Sun, 03 Nov 2024 01:48:45 -0700</pubDate>
-            <sparkle:version>11</sparkle:version>
-            <sparkle:shortVersionString>1.4.2</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases</sparkle:releaseNotesLink>
-            <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.4.2/VirusTotal.dmg" length="4826291" type="application/octet-stream" sparkle:edSignature="3KmWsoccvTVZIwETO2oyFP2rM64ENxnBhXzLGPPv08glT3CbujTfamHIWCwnTCpsUnu81eGd8SY7nWrznx7mAQ=="/>
         </item>
     </channel>
 </rss>

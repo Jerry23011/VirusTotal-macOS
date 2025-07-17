@@ -141,10 +141,10 @@ private struct CategoryChip: View {
             .background(.blue.opacity(0.1))
             .foregroundColor(.blue)
             .clipShape(Capsule())
-            .overlay(
+            .overlay(alignment: .center) {
                 Capsule()
                     .stroke(.blue.opacity(0.2), lineWidth: 1)
-            )
+            }
             .fixedSize()
             .readSize(onChange: onSizeChange)
     }

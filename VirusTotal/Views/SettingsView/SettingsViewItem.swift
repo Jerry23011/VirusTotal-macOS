@@ -19,11 +19,11 @@ struct SettingsViewItem: View {
                 .fill(color)
                 .frame(width: 20, height: 20, alignment: .center)
                 .clipShape(RoundedRectangle(cornerRadius: 4))
-                .overlay(
+                .overlay(alignment: .center) {
                     Image(systemName: systemImage)
                         .font(.system(size: 12))
                         .foregroundColor(.white)
-                )
+                }
             VStack(alignment: .leading) {
                 Text(labelText)
                 if let subtitleText {

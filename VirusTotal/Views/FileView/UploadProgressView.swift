@@ -11,13 +11,32 @@ struct UploadProgressView: View {
     private var viewModel = FileViewModel.shared
 
     var body: some View {
+        GeometryReader { geometry in
+            if viewModel.statusMonitor == .uploading {
+                content
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, geometry.safeAreaInsets.top + 65)
+                    .transition(
+                        .move(edge: .top)
+                        .combined(with: .opacity)
+                    )
+                    .zIndex(999)
+            }
+        }
+        .ignoresSafeArea(edges: .top)
+        .animation(.bouncy, value: viewModel.statusMonitor)
+    }
+
+    private var content: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 13)
                 .fill(.regularMaterial)
                 .frame(width: 260, height: 40)
                 .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
-                .overlay(RoundedRectangle(cornerRadius: 13)
-                        .stroke(.gray, lineWidth: 0.2))
+                .overlay(alignment: .center) {
+                    RoundedRectangle(cornerRadius: 13)
+                        .stroke(.gray, lineWidth: 0.2)
+                }
             HStack {
                 ProgressView()
                     .controlSize(.small)
@@ -29,9 +48,6 @@ struct UploadProgressView: View {
                     .padding(.leading, 3)
             }
         }
-        .offset(y: viewModel.statusMonitor == .uploading ? -245 : -345)
-        .opacity(viewModel.statusMonitor == .uploading ? 1 : 0)
-        .animation(.bouncy, value: viewModel.statusMonitor)
     }
 }
 
