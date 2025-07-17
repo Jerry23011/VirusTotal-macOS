@@ -23,6 +23,8 @@
 ```
 sudo xattr -rd com.apple.quarantine /Applications/VirusTotal.app
 ```
+
+或者你可以在 系统设置.app 中操作这步，你可以在这个[Apple 支持页面](https://support.apple.com/102445#openanyway)上找到对应步骤
 #### Homebrew
 ```
 brew install marsanne/cask/virustotal
