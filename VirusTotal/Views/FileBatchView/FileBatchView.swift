@@ -216,12 +216,14 @@ struct BatchFileRowView: View {
             if let thumbnailImage = batchFile.thumbnailImage {
                 Image(nsImage: thumbnailImage)
                     .resizable()
-                    .frame(width: 32, height: 32)
+                    .frame(width: 30, height: 35)
+                    .clipShape(RoundedRectangle(cornerRadius: 2))
+                    .shadow(radius: 0.75, y: 1)
             } else {
                 Image(systemName: "doc")
                     .font(.system(size: 20))
                     .foregroundStyle(.secondary)
-                    .frame(width: 32, height: 32)
+                    .frame(width: 30, height: 35)
             }
 
             // File Info
