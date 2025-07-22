@@ -72,10 +72,15 @@
       }
     },
     "%lld%%" : {
-
-    },
-    "• %@" : {
-
+      "comment" : "Percentage indicator in File Batch Analysis",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
+          }
+        }
+      }
     },
     "About VirusTotal" : {
       "localizations" : {
@@ -165,9 +170,6 @@
         }
       }
     },
-    "Add More Files" : {
-
-    },
     "analysis.date.label %@" : {
       "localizations" : {
         "cs" : {
@@ -189,12 +191,6 @@
           }
         }
       }
-    },
-    "Analyzing" : {
-
-    },
-    "Cancel All" : {
-
     },
     "categories.number.more %lld" : {
       "localizations" : {
@@ -233,15 +229,6 @@
           }
         }
       }
-    },
-    "Choose multiple files to analyze them all at once" : {
-
-    },
-    "Clean" : {
-
-    },
-    "Clear all files" : {
-
     },
     "community.score.label %lld" : {
       "localizations" : {
@@ -303,6 +290,66 @@
         }
       }
     },
+    "filebatchview.back.help.headline" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back to Selection Page"
+          }
+        }
+      }
+    },
+    "filebatchview.button.add.files" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add More Files"
+          }
+        }
+      }
+    },
+    "filebatchview.button.cancle.all" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel All"
+          }
+        }
+      }
+    },
+    "filebatchview.button.open.caption" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Or drag and drop files here"
+          }
+        }
+      }
+    },
+    "filebatchview.button.start.analysis" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Batch Analysis"
+          }
+        }
+      }
+    },
+    "filebatchview.clear.help.headline" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear all files"
+          }
+        }
+      }
+    },
     "filebatchview.header.number.selected %lld" : {
       "localizations" : {
         "en" : {
@@ -323,12 +370,62 @@
         }
       }
     },
+    "filebatchview.text.analyzing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyzing"
+          }
+        }
+      }
+    },
+    "filebatchview.text.clean" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clean"
+          }
+        }
+      }
+    },
+    "filebatchview.text.malicious" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Malicious"
+          }
+        }
+      }
+    },
+    "filebatchview.text.ready" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ready"
+          }
+        }
+      }
+    },
     "filebatchview.title" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "File Batch Analysis"
+          }
+        }
+      }
+    },
+    "filebatchview.type.description %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• %@"
           }
         }
       }
@@ -798,9 +895,6 @@
           }
         }
       }
-    },
-    "Go back to single file view" : {
-
     },
     "history.analysis.date" : {
       "localizations" : {
@@ -1384,9 +1478,6 @@
         }
       }
     },
-    "Malicious" : {
-
-    },
     "menubar.check.log" : {
       "localizations" : {
         "cs" : {
@@ -1646,15 +1737,6 @@
           }
         }
       }
-    },
-    "Or drag and drop files here" : {
-
-    },
-    "Ready" : {
-
-    },
-    "Select Multiple Files for Batch Analysis" : {
-
     },
     "settings.advanced" : {
       "localizations" : {
@@ -2367,9 +2449,6 @@
           }
         }
       }
-    },
-    "Start Batch Analysis" : {
-
     },
     "toolbar.button.rescan" : {
       "localizations" : {

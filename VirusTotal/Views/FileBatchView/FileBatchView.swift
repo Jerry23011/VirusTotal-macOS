@@ -44,7 +44,7 @@ struct FileBatchView: View {
                     Button(action: backToMainView) {
                         Image(systemName: "chevron.left")
                     }
-                    .help("Go back to single file view")
+                    .help("filebatchview.back.help.headline")
                     .keyboardShortcut("k", modifiers: [.command, .shift])
                 }
 
@@ -54,7 +54,7 @@ struct FileBatchView: View {
                     Button(action: clearAllFiles) {
                         Image(systemName: "trash")
                     }
-                    .help("Clear all files")
+                    .help("filebatchview.clear.help.headline")
                 }
             }
         }
@@ -72,27 +72,18 @@ struct FileBatchView: View {
     }
 
     private var emptyStateView: some View {
-        VStack(spacing: 20) {
+        VStack(alignment: .center) {
             Spacer()
 
-            Image(systemName: "doc.text.magnifyingglass")
+            Image(systemName: "document.on.document")
                 .font(.system(size: 80))
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Color.accentColor)
 
-            VStack(spacing: 12) {
-                Text("Select Multiple Files for Batch Analysis")
-                    .font(.title2)
-                    .multilineTextAlignment(.center)
-
-                Text("Choose multiple files to analyze them all at once")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-            }
             OpenFinderButton(title: "fileview.button.open.finder",
                              systemImage: "folder") {isFileImporterPresent = true}
                 .frame(width: 200)
+                .padding(.top)
                 .scaleEffect(isFileDropped ? 1.05 : 1)
                 .animation(.spring, value: isFileDropped)
                 .keyboardShortcut("o", modifiers: .command)
@@ -104,9 +95,9 @@ struct FileBatchView: View {
                     handleFileImporterResult(result)
                 }
 
-            Text("Or drag and drop files here")
-                .font(.caption)
-                .foregroundStyle(.tertiary)
+            Text("filebatchview.button.open.caption")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
 
             Spacer()
         }
@@ -116,7 +107,7 @@ struct FileBatchView: View {
         ScrollView {
             LazyVStack(spacing: 8) {
                 ForEach(viewModel.batchFiles) { batchFile in
-                    BatchFileRowView(batchFile: batchFile) {
+                    FileBatchRowView(batchFile: batchFile) {
                         viewModel.removeFile(batchFile)
                     }
                 }
@@ -129,7 +120,7 @@ struct FileBatchView: View {
     private var bottomActionsView: some View {
         HStack {
             if !viewModel.batchFiles.isEmpty {
-                Button("Add More Files", systemImage: "plus") {isFileImporterPresent = true}
+                Button("filebatchview.button.add.files", systemImage: "plus") {isFileImporterPresent = true}
                 .disabled(viewModel.isProcessing)
                 .fileImporter(
                     isPresented: $isFileImporterPresent,
@@ -144,10 +135,9 @@ struct FileBatchView: View {
 
             if !viewModel.batchFiles.isEmpty {
                 if viewModel.isProcessing {
-                    Button("Cancel All", action: cancelAllProcessing)
-                        .foregroundColor(.red)
+                    Button("filebatchview.button.cancle.all", action: cancelAllProcessing)
                 } else {
-                    Button("Start Batch Analysis", action: startBatchAnalysis)
+                    Button("filebatchview.button.start.analysis", action: startBatchAnalysis)
                         .buttonStyle(.borderedProminent)
                         .keyboardShortcut(.return, modifiers: .command)
                 }
@@ -201,124 +191,6 @@ struct FileBatchView: View {
             await viewModel.addFiles(fileURLs)
         }
         return true
-    }
-}
-
-// MARK: - BatchFileRowView
-
-struct BatchFileRowView: View {
-    let batchFile: BatchFile
-    let onRemove: () -> Void
-
-    var body: some View {
-        HStack(spacing: 12) {
-            // File Icon
-            if let thumbnailImage = batchFile.thumbnailImage {
-                Image(nsImage: thumbnailImage)
-                    .resizable()
-                    .frame(width: 30, height: 35)
-                    .clipShape(RoundedRectangle(cornerRadius: 2))
-                    .shadow(radius: 0.75, y: 1)
-            } else {
-                Image(systemName: "doc")
-                    .font(.system(size: 20))
-                    .foregroundStyle(.secondary)
-                    .frame(width: 30, height: 35)
-            }
-
-            // File Info
-            VStack(alignment: .leading, spacing: 4) {
-                Text(batchFile.fileName)
-                    .font(.headline)
-                    .lineLimit(1)
-
-                HStack {
-                    Text(formatFileSize(batchFile.fileSize))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-
-                    if let typeDescription = batchFile.typeDescription {
-                        Text("• \(typeDescription)")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            }
-
-            Spacer()
-
-            // Status & Progress
-            statusView
-
-            // Remove Button
-            Button(action: onRemove) {
-                Image(systemName: "xmark.circle.fill")
-                    .foregroundColor(.secondary)
-            }
-            .buttonStyle(.plain)
-            .disabled(batchFile.status == .uploading || batchFile.status == .analyzing)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(Color(NSColor.controlBackgroundColor))
-        .cornerRadius(8)
-    }
-
-    @ViewBuilder
-    private var statusView: some View {
-        switch batchFile.status {
-        case .pending:
-            Image(systemName: "clock")
-                .foregroundStyle(.secondary)
-        case .uploading:
-            VStack(alignment: .trailing, spacing: 4) {
-                ProgressView(value: batchFile.uploadProgress)
-                    .frame(width: 60)
-                Text("\(Int(batchFile.uploadProgress * 100))%")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
-        case .analyzing:
-            HStack(spacing: 4) {
-                ProgressView()
-                    .scaleEffect(0.7)
-                Text("Analyzing")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        case .success:
-            if let stats = batchFile.analysisStats {
-                VStack(alignment: .trailing, spacing: 2) {
-                    HStack(spacing: 4) {
-                        Circle()
-                            .fill(stats.malicious > 0 ? .red : .green)
-                            .frame(width: 8, height: 8)
-                        Text(stats.malicious > 0 ? "Malicious" : "Clean")
-                            .font(.caption)
-                            .foregroundStyle(stats.malicious > 0 ? .red : .green)
-                    }
-                    Text("\(stats.malicious + stats.suspicious)/\(stats.allFlags.sum { $0 })")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
-            } else {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.green)
-            }
-        case .failed:
-            Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(.red)
-        case .upload:
-            Text("Ready")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-        }
-    }
-
-    private func formatFileSize(_ size: Int64) -> String {
-        let formatter = ByteCountFormatter()
-        formatter.countStyle = .file
-        return formatter.string(fromByteCount: size)
     }
 }
 
