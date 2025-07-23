@@ -370,7 +370,7 @@ final class FileBatchViewModel {
             let thumbnail = try await QLThumbnailGenerator.shared.generateBestRepresentation(for: request)
             batchFile.thumbnailImage = thumbnail.nsImage
         } catch {
-            log.error("Thumbnail generation failed for \(batchFile.fileName): \(error)")
+            log.warning("Thumbnail generation failed for \(batchFile.fileName): \(error)")
         }
     }
 

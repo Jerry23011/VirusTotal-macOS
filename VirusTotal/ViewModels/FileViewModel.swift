@@ -261,7 +261,7 @@ final class FileViewModel {
             let thumbnail = try await QLThumbnailGenerator.shared.generateBestRepresentation(for: request)
             self.thumbnailImage = thumbnail.nsImage
         } catch {
-            log.error("Thumbnail Error: \(error)")
+            log.warning("Thumbnail Error: \(error)")
         }
     }
 
