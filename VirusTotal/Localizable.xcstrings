@@ -68,6 +68,12 @@
             "state" : "new",
             "value" : "%1$lld/%2$lld"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld/%2$lld"
+          }
         }
       }
     },
@@ -75,6 +81,12 @@
       "comment" : "Percentage indicator in File Batch Analysis",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
+          }
+        },
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld%%"
@@ -290,12 +302,35 @@
         }
       }
     },
+    "fileBatch" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Batch"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件批量"
+          }
+        }
+      }
+    },
     "filebatchview.back.help.headline" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Back to Selection Page"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "返回选择页面"
           }
         }
       }
@@ -307,6 +342,12 @@
             "state" : "translated",
             "value" : "Add More Files"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加文件"
+          }
         }
       }
     },
@@ -316,6 +357,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel All"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全部取消"
           }
         }
       }
@@ -327,6 +374,12 @@
             "state" : "translated",
             "value" : "Or drag and drop files here"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "或者拖拽文件至窗口以分析"
+          }
         }
       }
     },
@@ -336,6 +389,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start Batch Analysis"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始批量分析"
           }
         }
       }
@@ -347,6 +406,12 @@
             "state" : "translated",
             "value" : "Clear all files"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除所有文件"
+          }
         }
       }
     },
@@ -356,6 +421,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld files selected"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已选择 %lld 个文件"
           }
         }
       }
@@ -367,6 +438,12 @@
             "state" : "translated",
             "value" : "Progress: %1$lld/%2$lld"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "进度: %1$lld/%2$lld"
+          }
         }
       }
     },
@@ -376,6 +453,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Analyzing"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分析中"
           }
         }
       }
@@ -387,6 +470,12 @@
             "state" : "translated",
             "value" : "Clean"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除"
+          }
         }
       }
     },
@@ -396,6 +485,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Malicious"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恶意"
           }
         }
       }
@@ -407,6 +502,12 @@
             "state" : "translated",
             "value" : "Ready"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已就绪"
+          }
         }
       }
     },
@@ -417,12 +518,24 @@
             "state" : "translated",
             "value" : "File Batch Analysis"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件批量分析"
+          }
         }
       }
     },
     "filebatchview.type.description %@" : {
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• %@"
+          }
+        },
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "• %@"
