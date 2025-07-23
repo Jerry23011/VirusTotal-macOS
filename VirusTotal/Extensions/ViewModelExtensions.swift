@@ -44,3 +44,27 @@ extension URLViewModel {
         }
     }
 }
+
+extension FileBatchViewModel {
+    /// Creates and stores a scan entry for a specific batch file
+    func storeScanEntry(for batchFile: BatchFile) {
+        guard batchFile.status == .success,
+              let stats = batchFile.analysisStats else { return }
+
+        let result = ScanResult(
+            malicious: stats.malicious,
+            analysisDate: batchFile.lastAnalysisDate ?? "n/a",
+            reputation: batchFile.reputation ?? -999
+        )
+
+        let entry = ScanEntry(
+            scanType: .file,
+            target: batchFile.fileName,
+            result: result
+        )
+
+        Task { @MainActor in
+            ScanHistoryManager.shared.addScanEntry(entry)
+        }
+    }
+}

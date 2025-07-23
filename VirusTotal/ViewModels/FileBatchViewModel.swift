@@ -198,6 +198,9 @@ final class FileBatchViewModel {
                 // File exists, update with results
                 updateBatchFileWithResults(batchFile, reportResult)
                 batchFile.status = .success
+
+                storeScanEntry(for: batchFile)
+
                 await NotificationManager.pushNotification(title: String(localized: "notification.analysis.complete.title"))
                 updateCompletedCount()
                 return
@@ -290,6 +293,9 @@ final class FileBatchViewModel {
                    isValidResponse(stats) {
                     updateBatchFileWithResults(batchFile, reportResult)
                     batchFile.status = .success
+
+                    storeScanEntry(for: batchFile)
+
                     await NotificationManager.pushNotification(title: String(localized: "notification.analysis.complete.title"))
                     updateCompletedCount()
                     return
