@@ -80,7 +80,7 @@ struct FileBatchView: View {
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Color.accentColor)
 
-            OpenFinderButton(title: "fileview.button.open.finder",
+            OpenFinderButton(title: "filebatchview.button.open.finder",
                              systemImage: "folder") {isFileImporterPresent = true}
                 .frame(width: 200)
                 .padding(.top)

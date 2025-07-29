@@ -383,6 +383,22 @@
         }
       }
     },
+    "filebatchview.button.open.finder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Files in Finder..."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在访达中打开..."
+          }
+        }
+      }
+    },
     "filebatchview.button.start.analysis" : {
       "localizations" : {
         "en" : {
