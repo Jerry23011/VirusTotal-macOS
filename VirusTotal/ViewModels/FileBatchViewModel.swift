@@ -39,6 +39,7 @@ final class BatchFile: Identifiable {
 
 enum BatchFileStatus {
     case pending
+    case preparing
     case upload
     case uploading
     case analyzing
@@ -191,7 +192,7 @@ final class FileBatchViewModel {
     private func processFileInternal(_ batchFile: BatchFile) async {
         do {
             // First, check if file already exists in VirusTotal
-            batchFile.status = .analyzing
+            batchFile.status = .preparing
             let reportResult = try await FileAnalysis.shared.getFileReport(sha256: batchFile.sha256)
 
             if reportResult.getReportSuccess == true {

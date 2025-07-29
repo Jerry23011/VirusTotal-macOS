@@ -52,7 +52,9 @@ struct FileBatchRowView: View {
             statusView
 
             // Remove Button
-            if batchFile.status != .uploading && batchFile.status != .analyzing && batchFile.status != .success {
+            if batchFile.status == .preparing {
+                EmptyView()
+            } else if batchFile.status != .uploading && batchFile.status != .analyzing && batchFile.status != .success {
                 Button(action: onRemove) {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundColor(.secondary)
@@ -121,6 +123,14 @@ struct FileBatchRowView: View {
             Text("filebatchview.text.ready")
                 .font(.caption)
                 .foregroundStyle(.secondary)
+        case .preparing:
+            HStack(spacing: 4) {
+                ProgressView()
+                    .scaleEffect(0.7)
+                Text("filebatchview.text.analyzing")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 
