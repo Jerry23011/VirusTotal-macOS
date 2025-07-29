@@ -6,3 +6,4 @@ line_length:
 disabled_rules:
     - todo
     - type_body_length
+    - file_length
