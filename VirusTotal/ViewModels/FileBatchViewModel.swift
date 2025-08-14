@@ -197,7 +197,7 @@ final class FileBatchViewModel {
             guard reportResult.statusMonitor != .fail else {
                 batchFile.status = .failed
                 batchFile.errorMessage = reportResult.errorMessage
-                log.error(String(describing: batchFile.errorMessage))
+                log.error(batchFile.errorMessage ?? "Unkown Error")
                 return
             }
             if reportResult.getReportSuccess == true {
@@ -237,6 +237,7 @@ final class FileBatchViewModel {
                 await getAnalysisResults(batchFile)
             } else {
                 batchFile.status = .failed
+                log.error("Upload Failed")
                 await NotificationManager.pushNotification(title: String(localized: "notification.upload.fail.title"))
                 updateCompletedCount()
             }
@@ -245,6 +246,7 @@ final class FileBatchViewModel {
             currentConcurrentUploads = max(0, currentConcurrentUploads - 1)
             batchFile.status = .failed
             batchFile.errorMessage = error.localizedDescription
+            log.error(batchFile.errorMessage ?? "Unknown Error")
             updateCompletedCount()
         }
     }
@@ -321,6 +323,7 @@ final class FileBatchViewModel {
                 batchFile.status = .failed
                 await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
                 batchFile.errorMessage = error.localizedDescription
+                log.error(batchFile.errorMessage ?? "Unknown Error")
                 updateCompletedCount()
                 return
             }
@@ -330,6 +333,7 @@ final class FileBatchViewModel {
         batchFile.status = .failed
         await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
         batchFile.errorMessage = "Analysis timeout"
+        log.error(batchFile.errorMessage ?? "Unknown Error")
         updateCompletedCount()
     }
 
