@@ -302,6 +302,12 @@ final class FileBatchViewModel {
                     return
                 }
 
+                if reportResult.getReportSuccess != true {
+                    batchFile.status = .failed
+                    batchFile.errorMessage = reportResult.errorMessage
+                    return
+                }
+
                 // If analysis is still in progress, wait and retry
                 try await Task.sleep(nanoseconds: 10_000_000_000) // 10 seconds
                 retryCount += 1
