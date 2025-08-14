@@ -194,7 +194,12 @@ final class FileBatchViewModel {
             // First, check if file already exists in VirusTotal
             batchFile.status = .preparing
             let reportResult = try await FileAnalysis.shared.getFileReport(sha256: batchFile.sha256)
-
+            guard reportResult.statusMonitor != .fail else {
+                batchFile.status = .failed
+                batchFile.errorMessage = reportResult.errorMessage
+                log.error(String(describing: batchFile.errorMessage))
+                return
+            }
             if reportResult.getReportSuccess == true {
                 // File exists, update with results
                 updateBatchFileWithResults(batchFile, reportResult)
