@@ -197,7 +197,7 @@ final class FileBatchViewModel {
             guard reportResult.statusMonitor != .fail else {
                 batchFile.status = .failed
                 batchFile.errorMessage = reportResult.errorMessage
-                log.error(batchFile.errorMessage ?? "Unkown Error")
+                log.error(batchFile.errorMessage ?? "Unknown Error")
                 return
             }
             if reportResult.getReportSuccess == true {
