@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FileBatchRowView: View {
+    @State private var showErrorPopover = false
     let batchFile: BatchFile
     let onRemove: () -> Void
 
@@ -119,6 +120,23 @@ struct FileBatchRowView: View {
         case .failed:
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundStyle(.red)
+                .popover(isPresented: $showErrorPopover) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("filebatchview.error.title")
+                            .font(.headline)
+                        Text(batchFile.errorMessage ?? "Unknown error")
+                            .font(.caption)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Button("filebatchview.error.dismiss") {
+                            showErrorPopover = false
+                        }
+                    }
+                    .padding(.vertical)
+                    .frame(width: 200)
+                }
+                .onTapGesture {
+                    showErrorPopover.toggle()
+                }
         case .upload:
             Text("filebatchview.text.ready")
                 .font(.caption)
