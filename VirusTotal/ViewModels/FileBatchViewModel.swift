@@ -246,6 +246,7 @@ final class FileBatchViewModel {
                 await getAnalysisResults(batchFile)
             } else {
                 batchFile.status = .failed
+                batchFile.errorMessage = "Upload Failed"
                 log.error("Upload Failed")
                 await NotificationManager.pushNotification(title: String(localized: "notification.upload.fail.title"))
                 updateCompletedCount()
