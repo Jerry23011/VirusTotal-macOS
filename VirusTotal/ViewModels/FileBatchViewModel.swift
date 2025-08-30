@@ -81,6 +81,15 @@ final class FileBatchViewModel {
             let fileSize = getFileSize(for: url)
             guard fileSize > 0 && fileSize < 681_574_400 else {
                 log.error("File \(fileName) exceeds size limit or is invalid")
+                let batchFile = BatchFile(
+                    fileURL: URL(filePath: ""),
+                    fileName: fileName,
+                    fileSize: fileSize,
+                    sha256: ""
+                )
+                batchFile.errorMessage = "File size exceeds 650 MB or is invalid"
+                batchFile.status = .failed
+                batchFiles.append(batchFile)
                 continue
             }
 
