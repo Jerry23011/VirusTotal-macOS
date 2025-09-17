@@ -189,6 +189,10 @@ struct FileBatchView: View {
         NSApp.activate(ignoringOtherApps: true)
         Task {
             await viewModel.addFiles(fileURLs)
+            /// On macOS 26, AnyDropDelegate will not trigger `dropExited()` when releasing the cursor after dropping a file.
+            if #available(macOS 26, *) {
+                isFileDropped = false
+            }
         }
         return true
     }
