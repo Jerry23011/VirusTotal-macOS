@@ -210,6 +210,11 @@ final class FileBatchViewModel {
                 return
             }
             if reportResult.getReportSuccess == true {
+                // For manually canceled and restarted scans, if response is empty then start getAnalysisResults
+                guard let stats = reportResult.lastAnalysisStats, isValidResponse(stats) else {
+                    await getAnalysisResults(batchFile)
+                    return
+                }
                 // File exists, update with results
                 updateBatchFileWithResults(batchFile, reportResult)
                 batchFile.status = .success
