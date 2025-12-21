@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import CryptoKit
-@preconcurrency import QuickLookThumbnailing
+import QuickLookThumbnailing
 
 @MainActor
 @Observable
