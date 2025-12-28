@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/twostraws/Vortex",
       "state" : {
-        "revision" : "26e036c4f04efcc019c95d43bfeffeaefbef3c99",
-        "version" : "1.0.3"
+        "revision" : "9d9d9016ceace579455f01f8e0bd59facae7d252",
+        "version" : "1.0.4"
       }
     }
   ],
