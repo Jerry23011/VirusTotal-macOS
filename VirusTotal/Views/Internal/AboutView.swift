@@ -106,7 +106,7 @@ struct AboutView: View {
     private var copyrightInfo: String {
         Bundle.main.localizedString(
             forKey: "NSHumanReadableCopyright",
-            value: "Copyright © 2024-2025 Jerry Zhang. All rights reserved.",
+            value: "Copyright © 2024-2026 Jerry Zhang. All rights reserved.",
             table: "InfoPlist"
         )
     }

@@ -328,7 +328,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VirusTotal/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024-2025 Jerry Zhang. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024-2026 Jerry Zhang. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -362,7 +362,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VirusTotal/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024-2025 Jerry Zhang. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024-2026 Jerry Zhang. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

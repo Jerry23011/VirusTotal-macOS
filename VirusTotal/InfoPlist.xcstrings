@@ -32,19 +32,19 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copyright © 2024-2025 Jerry Zhang. Všechna práva vyhrazena."
+            "value" : "Copyright © 2024-2026 Jerry Zhang. Všechna práva vyhrazena."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Copyright © 2024-2025 Jerry Zhang. All rights reserved."
+            "value" : "Copyright © 2024-2026 Jerry Zhang. All rights reserved."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copyright © 2024-2025 Jerry Zhang. 保留一切权利。"
+            "value" : "Copyright © 2024-2026 Jerry Zhang. 保留一切权利。"
           }
         }
       }
