@@ -59,6 +59,9 @@ Upload a File and get an analysis report
 ### URL Scanning
 Scan a URL with ease
 <img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/URL_EN.png"/>
+### File Batch Scanning
+Upload multiple files
+<img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/FileBatch_EN.png"/>
 ### Scan History
 View scan history
 <img src="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/ScanHistory_EN.png"/>
