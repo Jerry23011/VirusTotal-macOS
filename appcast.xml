@@ -3,6 +3,15 @@
     <channel>
         <title>VirusTotal</title>
         <item>
+            <title>1.5.2</title>
+            <pubDate>Sat, 03 Jan 2026 23:15:37 -0800</pubDate>
+            <sparkle:version>17</sparkle:version>
+            <sparkle:shortVersionString>1.5.2</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases#:~:text=Compare-,1.5.2,-Latest</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/latest/download/VirusTotal.dmg" length="5549866" type="application/octet-stream" sparkle:edSignature="ejaXW5ik7EKVI7zAk9WlK79U4Ob5pVA3NdKmBwbK8z/sIYrt6Kf2IKiR7KgpSYzAIgIOvVGaMEtd2NcA53YZDA=="/>
+        </item>
+        <item>
             <title>1.5.1</title>
             <pubDate>Wed, 17 Sep 2025 09:33:52 -0700</pubDate>
             <sparkle:version>16</sparkle:version>
@@ -19,15 +28,6 @@
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases#:~:text=Compare-,1.5,-Latest</sparkle:releaseNotesLink>
             <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.5/VirusTotal.dmg" length="5019569" type="application/octet-stream" sparkle:edSignature="cdL6t28oQutw7SJtPvZQNeuQGAdBTDEy+JlG5+mjQa5Ih4Wf9IxXMWZKfzh2rWDCMIbU8UjXtX5srzVnkINUCA=="/>
-        </item>
-        <item>
-            <title>1.4.5</title>
-            <pubDate>Thu, 17 Jul 2025 19:56:02 +0800</pubDate>
-            <sparkle:version>14</sparkle:version>
-            <sparkle:shortVersionString>1.4.5</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <sparkle:releaseNotesLink>https://github.com/Jerry23011/VirusTotal-macOS/releases#:~:text=Compare-,1.4.5,-Latest</sparkle:releaseNotesLink>
-            <enclosure url="https://github.com/Jerry23011/VirusTotal-macOS/releases/download/1.4.5/VirusTotal.dmg" length="4885105" type="application/octet-stream" sparkle:edSignature="Rpy5WzCaQ6S5O5/jhWfFJ8RU9AKmqFhJeWtmkl43reajnX2jdMAUsOKmcBw056oZWQgJPppnUliFSkY+jm1QBA=="/>
         </item>
     </channel>
 </rss>
