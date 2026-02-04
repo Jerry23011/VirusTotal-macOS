@@ -47,6 +47,12 @@
     },
     "%lld" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63,6 +69,12 @@
     },
     "%lld/%lld" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld/%2$lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
@@ -80,6 +92,12 @@
     "%lld%%" : {
       "comment" : "Percentage indicator in File Batch Analysis",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -206,6 +224,12 @@
     },
     "categories.number.more %lld" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ %lld více"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -288,6 +312,12 @@
     },
     "file" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soubor"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -305,6 +335,12 @@
     "fileBatch" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hromadná analýza"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -321,6 +357,12 @@
     },
     "filebatchview.back.help.headline" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zpět na stránku výběru"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -337,6 +379,12 @@
     },
     "filebatchview.button.add.files" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidat další soubory"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -353,6 +401,12 @@
     },
     "filebatchview.button.cancle.all" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit vše"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -369,6 +423,12 @@
     },
     "filebatchview.button.open.caption" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nebo sem přetáhněte soubory"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -385,6 +445,12 @@
     },
     "filebatchview.button.open.finder" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otevřít soubory ve Finderu…"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -401,6 +467,12 @@
     },
     "filebatchview.button.start.analysis" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spustit hromadnou analýzu"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -417,6 +489,12 @@
     },
     "filebatchview.clear.help.headline" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vymazat všechny soubory"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -433,6 +511,12 @@
     },
     "filebatchview.error.dismiss" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zavřít"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -449,6 +533,12 @@
     },
     "filebatchview.error.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podrobnosti chyby"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -465,6 +555,12 @@
     },
     "filebatchview.header.number.selected %lld" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vybráno %lld souborů"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -481,6 +577,12 @@
     },
     "filebatchview.header.progress %lld/%lld" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Průběh: %1$lld/%2$lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -497,6 +599,12 @@
     },
     "filebatchview.text.analyzing" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probíhá analýza"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -513,6 +621,12 @@
     },
     "filebatchview.text.clean" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čistý"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -529,6 +643,12 @@
     },
     "filebatchview.text.malicious" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Škodlivý"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -545,6 +665,12 @@
     },
     "filebatchview.text.ready" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připraveno"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -561,6 +687,12 @@
     },
     "filebatchview.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hromadná analýza souborů"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -577,6 +709,12 @@
     },
     "filebatchview.type.description %@" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -727,7 +865,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Zde se můžete kdykoliv vrátit na stránku Nahrát"
           }
         },
@@ -749,7 +887,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Zpět na stránku Nahrát"
           }
         },
@@ -837,7 +975,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Zpět na stránku Nahrát"
           }
         },
@@ -924,6 +1062,12 @@
     "flag.confirmed.timeout" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potvrzený timeout"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -941,6 +1085,12 @@
     "flag.failure" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selhání"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -958,6 +1108,12 @@
     "flag.harmless" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neškodné"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -975,6 +1131,12 @@
     "flag.malicious" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Škodlivé"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -992,6 +1154,12 @@
     "flag.suspicious" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podezřelé"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1009,6 +1177,12 @@
     "flag.timeout" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Časový limit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1026,6 +1200,12 @@
     "flag.type.unsupported" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nepodporovaný typ"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1043,6 +1223,12 @@
     "flag.undetected" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nedetekováno"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1059,6 +1245,12 @@
     },
     "history.analysis.date" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poslední analýza"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1075,6 +1267,12 @@
     },
     "history.clear.confirmation.cancel" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1091,6 +1289,12 @@
     },
     "history.clear.confirmation.clear" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vymazat"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1107,6 +1311,12 @@
     },
     "history.clear.confirmation.message" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuto akci nelze vrátit zpět."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1123,6 +1333,12 @@
     },
     "history.clear.confirmation.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opravdu chcete vymazat celou historii skenování?"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1139,6 +1355,12 @@
     },
     "history.community.score" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komunitní hodnocení"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1155,6 +1377,12 @@
     },
     "history.malicious" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Škodlivé"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1171,6 +1399,12 @@
     },
     "history.status" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stav"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1187,6 +1421,12 @@
     },
     "history.target" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cíl"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1203,6 +1443,12 @@
     },
     "history.toolbar.clear" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vymazat historii"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1219,6 +1465,12 @@
     },
     "history.toolbar.clear.help" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vymazat historii skenování"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1235,6 +1487,12 @@
     },
     "history.type" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Typ"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1253,6 +1511,12 @@
       "comment" : "Home of Default Start Service, should be exactly the same with sidebar.home",
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stav"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1445,6 +1709,12 @@
     },
     "intent.file.descr" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyzovat soubor pomocí VirusTotal"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1461,6 +1731,12 @@
     },
     "intent.file.short.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyzovat soubor"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1477,6 +1753,12 @@
     },
     "intent.file.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyzovat soubor"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1625,6 +1907,12 @@
     },
     "logview.empty.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žádné záznamy nejsou k dispozici"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1685,6 +1973,12 @@
     },
     "menubar.go.file" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soubor"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1701,6 +1995,12 @@
     },
     "menubar.go.fileBatch" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hromadná analýza"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1717,6 +2017,12 @@
     },
     "menubar.go.home" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stav"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1733,6 +2039,12 @@
     },
     "menubar.go.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přejít"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1749,6 +2061,12 @@
     },
     "menubar.go.url" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1853,6 +2171,12 @@
     },
     "notification.analysis.complete.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analýza dokončena"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1869,6 +2193,12 @@
     },
     "notification.analysis.fail.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analýza selhala"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1885,6 +2215,12 @@
     },
     "notification.upload.fail.title" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nahrávání selhalo"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2189,7 +2525,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "zohledňuje-velikost-písmen"
           }
         },
@@ -2385,6 +2721,12 @@
     },
     "settings.general.notification" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povolit oznámení"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2401,6 +2743,12 @@
     },
     "settings.general.startpage" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Výchozí zobrazení služby"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2462,6 +2810,12 @@
     "sidebar.batch" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hromadná analýza"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2502,6 +2856,12 @@
     "sidebar.history" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historie skenování"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2542,6 +2902,12 @@
     "sidebar.log" : {
       "extractionState" : "manual",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logy"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2558,6 +2924,12 @@
     },
     "sidebar.section.services" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Služby"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2574,6 +2946,12 @@
     },
     "sidebar.section.tools" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nástroje"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2635,6 +3013,12 @@
     },
     "url" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2697,7 +3081,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Konečná URL je adresa, která je na konci všech přesměrování. Může pomoci proti phishingovým útokům."
           }
         },
@@ -2719,7 +3103,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Konečná URL"
           }
         },
