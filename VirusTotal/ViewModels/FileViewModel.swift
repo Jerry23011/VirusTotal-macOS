@@ -196,7 +196,7 @@ final class FileViewModel {
                     try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
                     await getNewFileReport()
                 }
-            case (ScanPolicy.largeUploadThreshold + 1)..<ScanPolicy.maxUploadSize:
+            case (ScanPolicy.largeUploadThreshold + 1)...ScanPolicy.maxUploadSize:
                 if try await fetchLargeFileEndpoint() {
                     if try await uploadFile() {
                         try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds

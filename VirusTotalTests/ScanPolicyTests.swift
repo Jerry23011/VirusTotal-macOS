@@ -43,7 +43,7 @@ struct ScanPolicyTests {
     func uploadSizeLimitIsEnforced() {
         #expect(!ScanPolicy.isSupportedFileSize(0))
         #expect(ScanPolicy.isSupportedFileSize(ScanPolicy.maxUploadSize - 1))
-        #expect(!ScanPolicy.isSupportedFileSize(ScanPolicy.maxUploadSize))
+        #expect(ScanPolicy.isSupportedFileSize(ScanPolicy.maxUploadSize))
         #expect(!ScanPolicy.isSupportedFileSize(ScanPolicy.maxUploadSize + 1))
     }
 
@@ -56,7 +56,12 @@ struct ScanPolicyTests {
             forFileSize: ScanPolicy.largeUploadThreshold + 1,
             largeFileEndpoint: "https://upload.example.test"
         ) == "https://upload.example.test")
-        #expect(ScanPolicy.uploadEndpoint(forFileSize: ScanPolicy.maxUploadSize) == "")
+        #expect(ScanPolicy.requiresLargeUploadEndpoint(fileSize: ScanPolicy.maxUploadSize))
+        #expect(ScanPolicy.uploadEndpoint(
+            forFileSize: ScanPolicy.maxUploadSize,
+            largeFileEndpoint: "https://upload.example.test"
+        ) == "https://upload.example.test")
+        #expect(ScanPolicy.uploadEndpoint(forFileSize: ScanPolicy.maxUploadSize + 1) == "")
     }
 
     @Test("Polling stops after configured retry count")

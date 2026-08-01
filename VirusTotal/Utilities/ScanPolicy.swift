@@ -14,7 +14,7 @@ enum ScanPolicy {
     static let activeDownloadExtensions: Set<String> = ["download", "crdownload", "part", "tmp", "aria2"]
 
     static func isSupportedFileSize(_ fileSize: Int64) -> Bool {
-        fileSize > 0 && fileSize < maxUploadSize
+        fileSize > 0 && fileSize <= maxUploadSize
     }
 
     static func requiresLargeUploadEndpoint(fileSize: Int64) -> Bool {

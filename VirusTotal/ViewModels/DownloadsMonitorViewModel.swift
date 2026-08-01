@@ -12,7 +12,8 @@ import UniformTypeIdentifiers
 @Observable
 final class DownloadScanItem: Identifiable {
     let id = UUID()
-    let fileURL: URL
+    let originalFileURL: URL
+    let preparedFileURL: URL
     let fileName: String
     let fileSize: Int64
     let sha256: String
@@ -22,9 +23,10 @@ final class DownloadScanItem: Identifiable {
     var analysisStats: FileAnalysisStats?
     var errorMessage: String?
 
-    init(fileURL: URL, fileSize: Int64, sha256: String) {
-        self.fileURL = fileURL
-        self.fileName = fileURL.lastPathComponent
+    init(originalFileURL: URL, preparedFileURL: URL, fileSize: Int64, sha256: String) {
+        self.originalFileURL = originalFileURL
+        self.preparedFileURL = preparedFileURL
+        self.fileName = originalFileURL.lastPathComponent
         self.fileSize = fileSize
         self.sha256 = sha256
     }
@@ -133,7 +135,7 @@ final class DownloadsMonitorViewModel {
         guard let filePath else { return }
         selectedFilePath = filePath
 
-        if let index = scanItems.firstIndex(where: { $0.fileURL.path == filePath }) {
+        if let index = scanItems.firstIndex(where: { $0.originalFileURL.path == filePath }) {
             let item = scanItems.remove(at: index)
             scanItems.insert(item, at: 0)
         }
@@ -150,7 +152,7 @@ final class DownloadsMonitorViewModel {
     }
 
     func clearResults() {
-        scanItems.forEach { FilePreparation.cleanupPreparedFile(at: $0.fileURL) }
+        scanItems.forEach { FilePreparation.cleanupPreparedFile(at: $0.preparedFileURL) }
         scanItems.removeAll()
     }
 
@@ -240,7 +242,7 @@ final class DownloadsMonitorViewModel {
 
         let fileSize = fileSize(for: preparedURL)
         guard ScanPolicy.isSupportedFileSize(fileSize) else {
-            appendFailedItem(url: preparedURL, message: "File size exceeds 650 MB or is invalid")
+            appendFailedItem(originalURL: stableURL, preparedURL: preparedURL, message: "File size exceeds 650 MB or is invalid")
             FilePreparation.cleanupPreparedFile(at: preparedURL)
             return true
         }
@@ -254,11 +256,19 @@ final class DownloadsMonitorViewModel {
 
             queuedFileFingerprints.insert(fingerprint)
             queuedFileHashes.insert(sha256)
-            scanItems.insert(DownloadScanItem(fileURL: preparedURL, fileSize: fileSize, sha256: sha256), at: 0)
+            scanItems.insert(
+                DownloadScanItem(
+                    originalFileURL: stableURL,
+                    preparedFileURL: preparedURL,
+                    fileSize: fileSize,
+                    sha256: sha256
+                ),
+                at: 0
+            )
             statusMessage = queuedMessage(for: stableURL)
             return true
         } catch {
-            appendFailedItem(url: preparedURL, message: "Failed to calculate SHA256")
+            appendFailedItem(originalURL: stableURL, preparedURL: preparedURL, message: "Failed to calculate SHA256")
             FilePreparation.cleanupPreparedFile(at: preparedURL)
             return true
         }
@@ -286,7 +296,7 @@ final class DownloadsMonitorViewModel {
 
     private func process(_ item: DownloadScanItem) async {
         defer {
-            FilePreparation.cleanupPreparedFile(at: item.fileURL)
+            FilePreparation.cleanupPreparedFile(at: item.preparedFileURL)
         }
 
         item.status = .preparing
@@ -337,7 +347,7 @@ final class DownloadsMonitorViewModel {
         }
 
         let uploadResult = try await FileAnalysis.shared.uploadFile(
-            fileURL: item.fileURL,
+            fileURL: item.preparedFileURL,
             apiEndPoint: endpoint,
             progressHandler: progressHandler
         )
@@ -414,13 +424,22 @@ final class DownloadsMonitorViewModel {
     private func notificationUserInfo(for item: DownloadScanItem) -> [String: String] {
         [
             "destination": "downloadsMonitor",
-            "filePath": item.fileURL.path,
+            "filePath": item.originalFileURL.path,
             "sha256": item.sha256
         ]
     }
 
     private func appendFailedItem(url: URL, message: String) {
-        let item = DownloadScanItem(fileURL: url, fileSize: fileSize(for: url), sha256: "")
+        appendFailedItem(originalURL: url, preparedURL: url, message: message)
+    }
+
+    private func appendFailedItem(originalURL: URL, preparedURL: URL, message: String) {
+        let item = DownloadScanItem(
+            originalFileURL: originalURL,
+            preparedFileURL: preparedURL,
+            fileSize: fileSize(for: preparedURL),
+            sha256: ""
+        )
         item.status = .failed
         item.errorMessage = message
         scanItems.insert(item, at: 0)

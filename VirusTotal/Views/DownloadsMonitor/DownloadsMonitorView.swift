@@ -156,7 +156,7 @@ struct DownloadsMonitorView: View {
             List(viewModel.scanItems) { item in
                 DownloadsMonitorRowView(
                     item: item,
-                    isSelected: viewModel.selectedFilePath == item.fileURL.path
+                    isSelected: viewModel.selectedFilePath == item.originalFileURL.path
                 )
             }
             .listStyle(.plain)
@@ -313,7 +313,7 @@ private struct DownloadsMonitorRowView: View {
     }
 
     private func openInFinder() {
-        NSWorkspace.shared.activateFileViewerSelecting([item.fileURL])
+        NSWorkspace.shared.activateFileViewerSelecting([item.originalFileURL])
     }
 
     private func openOnVirusTotal() {

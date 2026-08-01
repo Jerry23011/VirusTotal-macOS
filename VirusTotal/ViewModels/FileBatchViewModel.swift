@@ -13,7 +13,8 @@ import QuickLookThumbnailing
 @Observable
 final class BatchFile: Identifiable {
     let id = UUID()
-    var fileURL: URL
+    let originalFileURL: URL
+    var preparedFileURL: URL
     var fileName: String
     var fileSize: Int64
     var sha256: String
@@ -29,7 +30,8 @@ final class BatchFile: Identifiable {
     var thumbnailImage: NSImage?
 
     init(fileURL: URL, fileName: String, fileSize: Int64, sha256: String) {
-        self.fileURL = fileURL
+        self.originalFileURL = fileURL
+        self.preparedFileURL = fileURL
         self.fileName = fileName
         self.fileSize = fileSize
         self.sha256 = sha256
@@ -83,14 +85,14 @@ final class FileBatchViewModel {
             processingTasks.removeValue(forKey: batchFile.id)
         }
 
-        FilePreparation.cleanupPreparedFile(at: batchFile.fileURL)
+        FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
         batchFiles.removeAll { $0.id == batchFile.id }
         updateProgress()
     }
 
     func clearAllFiles() {
         cancelAllProcessing()
-        batchFiles.forEach { FilePreparation.cleanupPreparedFile(at: $0.fileURL) }
+        batchFiles.forEach { FilePreparation.cleanupPreparedFile(at: $0.preparedFileURL) }
         batchFiles.removeAll()
         resetProgress()
         resetAllFileStatuses()
@@ -114,6 +116,7 @@ final class FileBatchViewModel {
         for batchFile in batchFiles {
             batchFile.status = .pending
             batchFile.errorMessage = nil
+            batchFile.uploadProgress = 0.0
         }
 
         // Start processing files with concurrency control
@@ -309,7 +312,7 @@ final class FileBatchViewModel {
             batchFiles.append(batchFile)
         }
 
-        batchFile.fileURL = fileURL
+        batchFile.preparedFileURL = fileURL
         batchFile.fileName = fileName
         batchFile.fileSize = fileSize
         batchFile.sha256 = sha256
@@ -346,11 +349,12 @@ final class FileBatchViewModel {
     }
 
     private func processFileInternal(_ batchFile: BatchFile) async {
-        defer {
-            FilePreparation.cleanupPreparedFile(at: batchFile.fileURL)
-        }
-
         do {
+            try await refreshPreparedFile(for: batchFile)
+            defer {
+                FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
+            }
+
             // First, check if file already exists in VirusTotal
             batchFile.status = .preparing
             let reportResult = try await FileAnalysis.shared.getFileReport(sha256: batchFile.sha256)
@@ -423,6 +427,39 @@ final class FileBatchViewModel {
         }
     }
 
+    private func refreshPreparedFile(for batchFile: BatchFile) async throws {
+        if try FilePreparation.needsZipArchive(for: batchFile.originalFileURL) {
+            batchFile.status = .preparingArchive
+        }
+
+        let scanFileURL = try await FilePreparation.scanFileURL(for: batchFile.originalFileURL)
+        let fileName = scanFileURL.lastPathComponent
+        let fileSize = getFileSize(for: scanFileURL)
+        guard ScanPolicy.isSupportedFileSize(fileSize) else {
+            FilePreparation.cleanupPreparedFile(at: scanFileURL)
+            throw NSError(
+                domain: "VirusTotal.FileBatchViewModel",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "File size exceeds 650 MB or is invalid"]
+            )
+        }
+
+        guard let sha256 = getFileSHA256(for: scanFileURL) else {
+            FilePreparation.cleanupPreparedFile(at: scanFileURL)
+            throw NSError(
+                domain: "VirusTotal.FileBatchViewModel",
+                code: 2,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to calculate SHA256"]
+            )
+        }
+
+        FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
+        batchFile.preparedFileURL = scanFileURL
+        batchFile.fileName = fileName
+        batchFile.fileSize = fileSize
+        batchFile.sha256 = sha256
+    }
+
     private func uploadFile(_ batchFile: BatchFile) async throws -> Bool {
         var apiEndpoint = chooseUploadEndpoint(for: batchFile)
 
@@ -444,7 +481,7 @@ final class FileBatchViewModel {
         }
 
         let uploadResult = try await FileAnalysis.shared.uploadFile(
-            fileURL: batchFile.fileURL,
+            fileURL: batchFile.preparedFileURL,
             apiEndPoint: apiEndpoint,
             progressHandler: progressHandler
         )
@@ -544,7 +581,7 @@ final class FileBatchViewModel {
         let size = CGSize(width: 32, height: 32)
         let scale = NSScreen.main?.backingScaleFactor ?? 1.0
         let request = QLThumbnailGenerator.Request(
-            fileAt: batchFile.fileURL,
+            fileAt: batchFile.preparedFileURL,
             size: size,
             scale: scale,
             representationTypes: .lowQualityThumbnail

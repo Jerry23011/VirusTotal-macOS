@@ -75,13 +75,23 @@ struct AppBehaviorTests {
             viewModel.selectedFilePath = nil
         }
 
-        let first = DownloadScanItem(fileURL: URL(filePath: "/tmp/first.zip"), fileSize: 1, sha256: "1")
-        let second = DownloadScanItem(fileURL: URL(filePath: "/tmp/second.zip"), fileSize: 1, sha256: "2")
+        let first = DownloadScanItem(
+            originalFileURL: URL(filePath: "/tmp/first.zip"),
+            preparedFileURL: URL(filePath: "/tmp/first.zip"),
+            fileSize: 1,
+            sha256: "1"
+        )
+        let second = DownloadScanItem(
+            originalFileURL: URL(filePath: "/tmp/second.zip"),
+            preparedFileURL: URL(filePath: "/tmp/second.zip"),
+            fileSize: 1,
+            sha256: "2"
+        )
         viewModel.scanItems = [first, second]
 
-        viewModel.handleNotificationSelection(filePath: second.fileURL.path)
+        viewModel.handleNotificationSelection(filePath: second.originalFileURL.path)
 
-        #expect(viewModel.selectedFilePath == second.fileURL.path)
+        #expect(viewModel.selectedFilePath == second.originalFileURL.path)
         #expect(viewModel.scanItems.first?.id == second.id)
     }
 
