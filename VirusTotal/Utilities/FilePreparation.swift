@@ -6,12 +6,23 @@
 import Foundation
 
 enum FilePreparation {
+    private static let archiveRootDirectory = FileManager.default.temporaryDirectory
+        .appendingPathComponent("VirusTotalAppArchives", isDirectory: true)
+
     static func scanFileURL(for fileURL: URL) async throws -> URL {
         guard try needsZipArchive(for: fileURL) else {
             return fileURL
         }
 
+        cleanupOldTemporaryArchives()
         return try await makeZipArchive(for: fileURL)
+    }
+
+    static func cleanupPreparedFile(at fileURL: URL) {
+        guard temporaryArchiveDirectory(for: fileURL) != nil else { return }
+
+        let directoryURL = fileURL.deletingLastPathComponent()
+        try? FileManager.default.removeItem(at: directoryURL)
     }
 
     static func needsZipArchive(for fileURL: URL) throws -> Bool {
@@ -26,14 +37,24 @@ enum FilePreparation {
 
     private static func makeZipArchive(for appBundleURL: URL) async throws -> URL {
         try await Task.detached(priority: .userInitiated) {
-            let archiveDirectory = FileManager.default.temporaryDirectory
-                .appendingPathComponent("VirusTotalAppArchives", isDirectory: true)
+            let archiveDirectory = archiveRootDirectory
                 .appendingPathComponent(UUID().uuidString, isDirectory: true)
-            try FileManager.default.createDirectory(at: archiveDirectory, withIntermediateDirectories: true)
+            do {
+                try FileManager.default.createDirectory(at: archiveDirectory, withIntermediateDirectories: true)
+            } catch {
+                try? FileManager.default.removeItem(at: archiveDirectory)
+                throw error
+            }
 
             let archiveURL = archiveDirectory
                 .appendingPathComponent(appBundleURL.lastPathComponent)
                 .appendingPathExtension("zip")
+            var shouldKeepArchive = false
+            defer {
+                if !shouldKeepArchive {
+                    try? FileManager.default.removeItem(at: archiveDirectory)
+                }
+            }
 
             let process = Process()
             process.executableURL = URL(filePath: "/usr/bin/ditto")
@@ -64,8 +85,33 @@ enum FilePreparation {
                 )
             }
 
+            shouldKeepArchive = true
             return archiveURL
         }.value
+    }
+
+    private static func cleanupOldTemporaryArchives() {
+        guard let archiveDirectories = try? FileManager.default.contentsOfDirectory(
+            at: archiveRootDirectory,
+            includingPropertiesForKeys: [.creationDateKey],
+            options: [.skipsHiddenFiles]
+        ) else { return }
+
+        let expirationDate = Date().addingTimeInterval(-24 * 60 * 60)
+        for archiveDirectory in archiveDirectories {
+            let creationDate = (try? archiveDirectory.resourceValues(forKeys: [.creationDateKey]))?.creationDate ?? .distantPast
+            if creationDate < expirationDate {
+                try? FileManager.default.removeItem(at: archiveDirectory)
+            }
+        }
+    }
+
+    private static func temporaryArchiveDirectory(for fileURL: URL) -> URL? {
+        let standardizedRoot = archiveRootDirectory.standardizedFileURL.path
+        let standardizedURL = fileURL.standardizedFileURL
+        guard standardizedURL.path.hasPrefix(standardizedRoot + "/") else { return nil }
+
+        return standardizedURL.deletingLastPathComponent()
     }
 }
 

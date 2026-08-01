@@ -1,66 +1,66 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "CFBundleName" : {
-      "comment" : "Bundle name",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "VirusTotal"
+  "sourceLanguage": "en",
+  "strings": {
+    "CFBundleName": {
+      "comment": "Bundle name",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VirusTotal"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "VirusTotal"
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "VirusTotal"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "VirusTotal"
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VirusTotal"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "VirusTotal"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VirusTotal"
           }
         }
       }
     },
-    "NSHumanReadableCopyright" : {
-      "comment" : "Copyright (human-readable)",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copyright © 2024-2026 Jerry Zhang. Všechna práva vyhrazena."
+    "NSHumanReadableCopyright": {
+      "comment": "Copyright (human-readable)",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright © 2024-2026 Jerry Zhang. Všechna práva vyhrazena."
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Copyright © 2024-2026 Jerry Zhang. All rights reserved."
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Copyright © 2024-2026 Jerry Zhang. All rights reserved."
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Copyright © 2024-2026 Jerry Zhang. Все права защищены."
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright © 2024-2026 Jerry Zhang. Все права защищены."
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copyright © 2024-2026 Jerry Zhang. 保留一切权利。"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright © 2024-2026 Jerry Zhang. 保留一切权利。"
           }
         }
       }
     }
   },
-  "version" : "1.3"
+  "version": "1.3"
 }

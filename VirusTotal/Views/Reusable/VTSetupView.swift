@@ -11,12 +11,14 @@ import Defaults
 struct VTSetupView: View {
     private var viewModel = QuotaStatusViewModel()
 
-    @Default(.apiKey) private var apiKey: String
     @Default(.userName) private var userName: String
 
+    @AppStorage("didShowAPIKeychainNotice") private var didShowAPIKeychainNotice = false
+    @State private var apiKey: String = ""
     @State private var showSecret: Bool = false
     @State private var buttonIsLoading: Bool = false
     @State private var isAlertPresented: Bool = false
+    @State private var isKeychainNoticePresented = false
     @State private var alertTitle: LocalizedStringKey?
     @State private var alertMessage: LocalizedStringKey?
 
@@ -38,6 +40,15 @@ struct VTSetupView: View {
             } message: {
                 Text(alertMessage ?? "settings.api.message.unkown")
             }
+            .alert("settings.api.keychain.notice.title", isPresented: $isKeychainNoticePresented) {
+                Button("settings.api.keychain.notice.cancel", role: .cancel) {}
+                Button("settings.api.keychain.notice.continue") {
+                    didShowAPIKeychainNotice = true
+                    saveAndVerifyAPIKey()
+                }
+            } message: {
+                Text("settings.api.keychain.notice.message")
+            }
             .onChange(of: viewModel.statusSuccess) { _, newValue in
                 switch newValue {
                 case true:
@@ -57,6 +68,9 @@ struct VTSetupView: View {
         }
         .formStyle(.grouped)
         .scrollDisabled(true)
+        .onAppear {
+            apiKey = APIKeychain.apiKey
+        }
     }
 
     // MARK: ViewBuilder
@@ -115,8 +129,37 @@ struct VTSetupView: View {
 
     /// Triggers verification
     private func verifyInput() {
+        if shouldShowKeychainNotice() {
+            isKeychainNoticePresented = true
+            return
+        }
+
+        saveAndVerifyAPIKey()
+    }
+
+    private func saveAndVerifyAPIKey() {
+        guard saveAPIKey(apiKey) else { return }
         buttonIsLoading = true
         viewModel.retryRequest()
+    }
+
+    @discardableResult
+    private func saveAPIKey(_ newValue: String) -> Bool {
+        do {
+            try APIKeychain.saveAPIKey(newValue)
+            return true
+        } catch {
+            log.error(error)
+            alertTitle = "settings.api.verify.failed"
+            alertMessage = "settings.api.message.failed"
+            buttonIsLoading = false
+            isAlertPresented = true
+            return false
+        }
+    }
+
+    private func shouldShowKeychainNotice() -> Bool {
+        !didShowAPIKeychainNotice && !apiKey.isEmpty
     }
 
     /// Reset after button is pressed in alert

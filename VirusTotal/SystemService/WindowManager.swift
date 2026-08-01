@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AppKit
+import Defaults
 
 class WindowManager {
     @MainActor static func showURLWindow() {
@@ -21,7 +22,10 @@ class WindowManager {
         window.isReleasedWhenClosed = false
         window.isOpaque = true
         window.center()
-        window.contentView = NSHostingView(rootView: URLView())
+        window.contentView = NSHostingView(
+            rootView: URLView()
+                .environment(\.locale, Defaults[.appLanguage].locale)
+        )
         window.makeKeyAndOrderFront(nil)
     }
 
@@ -37,7 +41,10 @@ class WindowManager {
         window.isReleasedWhenClosed = false
         window.isOpaque = true
         window.center()
-        window.contentView = NSHostingView(rootView: FileView())
+        window.contentView = NSHostingView(
+            rootView: FileView()
+                .environment(\.locale, Defaults[.appLanguage].locale)
+        )
         window.makeKeyAndOrderFront(nil)
     }
 }

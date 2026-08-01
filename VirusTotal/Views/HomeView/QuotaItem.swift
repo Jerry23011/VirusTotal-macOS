@@ -31,13 +31,13 @@ struct QuotaItem: View {
             }
             Spacer()
             Chart(quotaUsage, id: \.name) { element in
-              SectorMark(
-                angle: .value(String("Usage"), element.usage),
-                innerRadius: .ratio(0.618),
-                angularInset: 0.5
-              )
-              .cornerRadius(1)
-              .foregroundStyle(by: .value(String("Name"), element.name))
+                SectorMark(
+                    angle: .value(String("Usage"), element.usage),
+                    innerRadius: .ratio(0.618),
+                    angularInset: 0.5
+                )
+                .cornerRadius(1)
+                .foregroundStyle(by: .value(String("Name"), element.name))
             }
             .chartLegend(.hidden)
             .frame(maxWidth: 30, maxHeight: 30)
@@ -50,7 +50,7 @@ struct QuotaItem: View {
     // MARK: Private
 
     private var unusedQuota: Int {
-        return quotaItem.allowed - quotaItem.used
+        max(quotaItem.allowed - quotaItem.used, 0)
     }
 
     private var quotaUsage: [QuotaUsage] {

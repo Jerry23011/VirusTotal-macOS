@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct ServiceView: View {
     var searchText: String
@@ -18,8 +19,7 @@ struct ServiceView: View {
         Section("sidebar.section.services") {
             ForEach(filteredItems) { item in
                 NavigationLink(destination: viewForSidebarItem(item)) {
-                    Label(item.localizedText,
-                          systemImage: item.systemImageName)
+                    Label(item.titleKey, systemImage: item.systemImageName)
                 }
                 .tag(item)
             }
@@ -44,11 +44,20 @@ struct ServiceView: View {
         case .downloadsMonitor:
             DownloadsMonitorView()
                 .frame(minWidth: 600, minHeight: 500)
+        case .history:
+            ScanHistoryView()
+                .frame(minWidth: 600, minHeight: 500)
+        case .log:
+            LogView()
+                .frame(minWidth: 600, minHeight: 500)
         }
     }
 
     private var filteredItems: [ServiceSidebarItem] {
-        ServiceSidebarItem.filtered(by: searchText, using: \.localizedText)
+        guard !searchText.isEmpty else { return ServiceSidebarItem.serviceItems }
+        return ServiceSidebarItem.serviceItems.filter {
+            $0.localizedText.localizedCaseInsensitiveContains(searchText)
+        }
     }
 }
 
@@ -57,12 +66,21 @@ enum ServiceSidebarItem: String, CaseIterable, Identifiable {
     case fileUpload = "sidebar.file"
     case urlLookup = "sidebar.url"
     case fileBatch = "sidebar.batch"
-    case downloadsMonitor = "Downloads Monitor"
+    case downloadsMonitor = "sidebar.downloadsmonitor"
+    case history = "sidebar.history"
+    case log = "sidebar.log"
 
     var id: String { self.rawValue }
 
+    static let serviceItems: [ServiceSidebarItem] = [.home, .fileUpload, .urlLookup, .fileBatch, .downloadsMonitor]
+    static let toolItems: [ServiceSidebarItem] = [.history, .log]
+
+    var titleKey: LocalizedStringKey {
+        LocalizedStringKey(rawValue)
+    }
+
     var localizedText: String {
-        NSLocalizedString(self.rawValue, comment: "")
+        Defaults[.appLanguage].localizedString(forKey: rawValue)
     }
 
     var systemImageName: String {
@@ -77,6 +95,10 @@ enum ServiceSidebarItem: String, CaseIterable, Identifiable {
             return "arrow.up.page.on.clipboard"
         case .downloadsMonitor:
             return "folder.badge.gearshape"
+        case .history:
+            return "book.closed"
+        case .log:
+            return "doc.text"
         }
     }
 }

@@ -3,7 +3,6 @@
 //  VirusTotal
 //
 
-import CryptoKit
 import Defaults
 import Foundation
 import SwiftUI
@@ -48,7 +47,7 @@ final class DownloadsMonitorViewModel {
     var scanItems: [DownloadScanItem] = []
     var isEnabled: Bool = Defaults[.autoScanDownloadsEnabled]
     var folderURL: URL = DownloadsMonitorViewModel.savedFolderURL
-    var statusMessage: String = "Monitoring is off"
+    var statusMessage: String = Defaults[.appLanguage].localizedString(forKey: "downloadsmonitor.status.off")
     var selectedFilePath: String?
     var selectedFileCategories: Set<DownloadMonitorFileCategory> = Set(Defaults[.downloadMonitorFileCategories])
 
@@ -60,9 +59,9 @@ final class DownloadsMonitorViewModel {
     private var scanTask: Task<Void, Never>?
     private var knownFileFingerprints: [String: String] = [:]
     private var queuedFileFingerprints: Set<String> = []
+    private var queuedFileHashes: Set<String> = []
     private var securityScopedFolderURL: URL?
-    private let maxFileSize: Int64 = 681_574_400
-    private let defaultUploadURL = "https://www.virustotal.com/api/v3/files"
+    private let defaultUploadURL = ScanPolicy.defaultUploadEndpoint
 
     private init() {}
 
@@ -82,7 +81,7 @@ final class DownloadsMonitorViewModel {
         guard !enabled || hasSavedFolderAccess else {
             isEnabled = false
             Defaults[.autoScanDownloadsEnabled] = false
-            statusMessage = "Choose a folder to start monitoring"
+            statusMessage = localizedString("downloadsmonitor.status.choose_folder")
             return
         }
 
@@ -103,6 +102,7 @@ final class DownloadsMonitorViewModel {
         activateFolderAccess(for: url)
         knownFileFingerprints.removeAll()
         queuedFileFingerprints.removeAll()
+        queuedFileHashes.removeAll()
 
         if isEnabled {
             startMonitoring()
@@ -143,13 +143,14 @@ final class DownloadsMonitorViewModel {
         do {
             return try eligibleFileURLs().count
         } catch {
-            statusMessage = "Cannot read folder: \(error.localizedDescription)"
+            statusMessage = cannotReadFolderMessage(error)
             log.error("Downloads monitor failed to count folder files: \(error)")
             return 0
         }
     }
 
     func clearResults() {
+        scanItems.forEach { FilePreparation.cleanupPreparedFile(at: $0.fileURL) }
         scanItems.removeAll()
     }
 
@@ -158,7 +159,7 @@ final class DownloadsMonitorViewModel {
     private func startMonitoring() {
         stopMonitoring()
         activateFolderAccess(for: folderURL)
-        statusMessage = "Monitoring new files in \(folderURL.path)"
+        statusMessage = monitoringMessage(for: folderURL)
 
         Task {
             await NotificationManager.requestAuthorization()
@@ -181,7 +182,7 @@ final class DownloadsMonitorViewModel {
         monitorTask = nil
         securityScopedFolderURL?.stopAccessingSecurityScopedResource()
         securityScopedFolderURL = nil
-        statusMessage = "Monitoring is off"
+        statusMessage = localizedString("downloadsmonitor.status.off")
     }
 
     private func snapshotCurrentFiles() {
@@ -190,10 +191,10 @@ final class DownloadsMonitorViewModel {
                 uniqueKeysWithValues: try eligibleFileURLs().map { ($0.path, fileFingerprint(for: $0)) }
             )
             if isEnabled {
-                statusMessage = "Monitoring new files in \(folderURL.path)"
+                statusMessage = monitoringMessage(for: folderURL)
             }
         } catch {
-            statusMessage = "Cannot read folder: \(error.localizedDescription)"
+            statusMessage = cannotReadFolderMessage(error)
             log.error("Downloads monitor failed to snapshot folder: \(error)")
         }
     }
@@ -203,7 +204,7 @@ final class DownloadsMonitorViewModel {
         do {
             urls = try eligibleFileURLs()
         } catch {
-            statusMessage = "Cannot read folder: \(error.localizedDescription)"
+            statusMessage = cannotReadFolderMessage(error)
             log.error("Downloads monitor failed to read folder: \(error)")
             return
         }
@@ -238,19 +239,27 @@ final class DownloadsMonitorViewModel {
         }
 
         let fileSize = fileSize(for: preparedURL)
-        guard fileSize > 0 && fileSize < maxFileSize else {
+        guard ScanPolicy.isSupportedFileSize(fileSize) else {
             appendFailedItem(url: preparedURL, message: "File size exceeds 650 MB or is invalid")
+            FilePreparation.cleanupPreparedFile(at: preparedURL)
             return true
         }
 
         do {
             let sha256 = try sha256(for: preparedURL)
+            guard !queuedFileHashes.contains(sha256) else {
+                FilePreparation.cleanupPreparedFile(at: preparedURL)
+                return true
+            }
+
             queuedFileFingerprints.insert(fingerprint)
+            queuedFileHashes.insert(sha256)
             scanItems.insert(DownloadScanItem(fileURL: preparedURL, fileSize: fileSize, sha256: sha256), at: 0)
-            statusMessage = "Queued \(stableURL.lastPathComponent)"
+            statusMessage = queuedMessage(for: stableURL)
             return true
         } catch {
             appendFailedItem(url: preparedURL, message: "Failed to calculate SHA256")
+            FilePreparation.cleanupPreparedFile(at: preparedURL)
             return true
         }
     }
@@ -276,6 +285,10 @@ final class DownloadsMonitorViewModel {
     }
 
     private func process(_ item: DownloadScanItem) async {
+        defer {
+            FilePreparation.cleanupPreparedFile(at: item.fileURL)
+        }
+
         item.status = .preparing
 
         do {
@@ -308,7 +321,7 @@ final class DownloadsMonitorViewModel {
 
     private func upload(_ item: DownloadScanItem) async throws -> Bool {
         var endpoint = defaultUploadURL
-        if item.fileSize > 33_554_432 {
+        if ScanPolicy.requiresLargeUploadEndpoint(fileSize: item.fileSize) {
             let endpointResult = try await FileAnalysis.shared.getLargeFileEndpoint()
             guard endpointResult.getEndpointSuccess == true,
                   let largeEndpoint = endpointResult.largeFileEndpoint else {
@@ -414,7 +427,7 @@ final class DownloadsMonitorViewModel {
     }
 
     private func isValidResponse(_ stats: FileAnalysisStats) -> Bool {
-        stats.allFlags.sum { $0 } > 0
+        ScanPolicy.isValidAnalysisStats(stats)
     }
 
     private func storeScanEntry(for item: DownloadScanItem, result: FileAnalysisResult) {
@@ -444,12 +457,7 @@ final class DownloadsMonitorViewModel {
 
     private func saveSecurityScopedBookmark(for url: URL) {
         do {
-            let data = try url.bookmarkData(
-                options: .withSecurityScope,
-                includingResourceValuesForKeys: nil,
-                relativeTo: nil
-            )
-            Defaults[.autoScanDownloadsFolderBookmark] = data.base64EncodedString()
+            Defaults[.autoScanDownloadsFolderBookmark] = try SecurityScopedBookmark.encodedString(for: url)
         } catch {
             Defaults[.autoScanDownloadsFolderBookmark] = ""
             log.error("Downloads monitor failed to save folder bookmark: \(error)")
@@ -462,18 +470,42 @@ final class DownloadsMonitorViewModel {
               let data = Data(base64Encoded: bookmark) else { return nil }
 
         do {
-            var isStale = false
-            let url = try URL(
-                resolvingBookmarkData: data,
-                options: .withSecurityScope,
-                relativeTo: nil,
-                bookmarkDataIsStale: &isStale
-            )
-            return url
+            return try resolveBookmarkedFolderURL(from: data, options: .withSecurityScope)
         } catch {
-            log.error("Downloads monitor failed to restore folder bookmark: \(error)")
-            return nil
+            do {
+                return try resolveBookmarkedFolderURL(from: data, options: [])
+            } catch {
+                log.error("Downloads monitor failed to restore folder bookmark: \(error)")
+                return nil
+            }
         }
+    }
+
+    private static func resolveBookmarkedFolderURL(
+        from data: Data,
+        options: URL.BookmarkResolutionOptions
+    ) throws -> URL {
+        var isStale = false
+        let url = try URL(
+            resolvingBookmarkData: data,
+            options: options,
+            relativeTo: nil,
+            bookmarkDataIsStale: &isStale
+        )
+
+        if isStale {
+            let bookmarkOptions: URL.BookmarkCreationOptions = options.contains(.withSecurityScope)
+                ? [.withSecurityScope, .securityScopeAllowOnlyReadAccess]
+                : []
+            let refreshedData = try url.bookmarkData(
+                options: bookmarkOptions,
+                includingResourceValuesForKeys: nil,
+                relativeTo: nil
+            )
+            Defaults[.autoScanDownloadsFolderBookmark] = refreshedData.base64EncodedString()
+        }
+
+        return url
     }
 
     // MARK: - File Helpers
@@ -488,8 +520,8 @@ final class DownloadsMonitorViewModel {
     }
 
     private func isEligibleFileURL(_ url: URL) -> Bool {
-        let excludedExtensions = ["download", "crdownload", "part", "tmp"]
-        guard !excludedExtensions.contains(url.pathExtension.lowercased()) else { return false }
+        guard !ScanPolicy.isActiveDownloadExtension(url.pathExtension) else { return false }
+        guard !hasActiveDownloadMarker(for: url) else { return false }
 
         do {
             let values = try url.resourceValues(forKeys: [.isRegularFileKey, .isDirectoryKey, .isPackageKey])
@@ -503,62 +535,59 @@ final class DownloadsMonitorViewModel {
         return false
     }
 
+    private func hasActiveDownloadMarker(for url: URL) -> Bool {
+        let folderURL = url.deletingLastPathComponent()
+        let fileName = url.lastPathComponent
+
+        return ScanPolicy.activeDownloadExtensions.contains { fileExtension in
+            let markerURL = folderURL.appendingPathComponent("\(fileName).\(fileExtension)")
+            return FileManager.default.fileExists(atPath: markerURL.path)
+        }
+    }
+
     private func category(for url: URL, isAppBundle: Bool) -> DownloadMonitorFileCategory {
-        if isAppBundle { return .applications }
-
-        guard let type = UTType(filenameExtension: url.pathExtension) else {
-            return .other
-        }
-
-        if type.conforms(to: .archive) { return .archives }
-        if type.conforms(to: .image) { return .images }
-        if type.conforms(to: .audio) { return .audio }
-        if type.conforms(to: .movie) { return .video }
-        if type.conforms(to: .application) { return .applications }
-        if type.conforms(to: .text) ||
-            type.conforms(to: .pdf) ||
-            type.conforms(to: .rtf) ||
-            type.conforms(to: .html) ||
-            type.conforms(to: .xml) ||
-            type.conforms(to: .json) ||
-            type.conforms(to: .sourceCode) ||
-            type.conforms(to: .script) ||
-            type.conforms(to: .propertyList) {
-            return .documents
-        }
-
-        return .other
+        ScanPolicy.category(forFilenameExtension: url.pathExtension, isAppBundle: isAppBundle)
     }
 
     private func waitForStableFile(at url: URL) async -> URL? {
-        var lastSize: Int64 = -1
+        var lastFingerprint: String?
+        var unchangedChecks = 0
 
-        for _ in 0..<5 {
-            let currentSize = fileSize(for: url)
-            guard currentSize > 0 else {
-                try? await Task.sleep(for: .seconds(2))
+        for _ in 0..<8 {
+            guard !hasActiveDownloadMarker(for: url), fileSize(for: url) > 0 else {
+                try? await Task.sleep(for: .seconds(3))
                 continue
             }
 
-            if currentSize == lastSize {
+            let currentFingerprint = fileFingerprint(for: url)
+            if currentFingerprint == lastFingerprint {
+                unchangedChecks += 1
+            } else {
+                lastFingerprint = currentFingerprint
+                unchangedChecks = 1
+            }
+
+            if unchangedChecks >= 3 && secondsSinceLastModification(for: url) >= 10 {
                 return url
             }
 
-            lastSize = currentSize
-            try? await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(for: .seconds(3))
         }
 
         return nil
     }
 
     private func fileFingerprint(for url: URL) -> String {
+        ScanPolicy.fileFingerprint(for: url)
+    }
+
+    private func secondsSinceLastModification(for url: URL) -> TimeInterval {
         do {
             let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
-            let size = attributes[.size] as? Int64 ?? 0
-            let modificationDate = (attributes[.modificationDate] as? Date)?.timeIntervalSince1970 ?? 0
-            return "\(url.path)|\(size)|\(modificationDate)"
+            guard let modificationDate = attributes[.modificationDate] as? Date else { return 0 }
+            return Date().timeIntervalSince(modificationDate)
         } catch {
-            return url.path
+            return 0
         }
     }
 
@@ -572,9 +601,23 @@ final class DownloadsMonitorViewModel {
     }
 
     private func sha256(for url: URL) throws -> String {
-        let data = try Data(contentsOf: url)
-        let hash = SHA256.hash(data: data)
-        return hash.compactMap { String(format: "%02x", $0) }.joined()
+        try FileHasher.sha256(for: url)
+    }
+
+    private func monitoringMessage(for folderURL: URL) -> String {
+        String(format: localizedString("downloadsmonitor.status.monitoring_folder"), folderURL.path)
+    }
+
+    private func cannotReadFolderMessage(_ error: Error) -> String {
+        String(format: localizedString("downloadsmonitor.status.cannot_read_folder"), error.localizedDescription)
+    }
+
+    private func queuedMessage(for fileURL: URL) -> String {
+        String(format: localizedString("downloadsmonitor.status.queued"), fileURL.lastPathComponent)
+    }
+
+    private func localizedString(_ key: String) -> String {
+        Defaults[.appLanguage].localizedString(forKey: key)
     }
 
     private static var savedFolderURL: URL {

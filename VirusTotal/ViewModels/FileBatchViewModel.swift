@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import CryptoKit
 import QuickLookThumbnailing
 
 @MainActor
@@ -84,12 +83,14 @@ final class FileBatchViewModel {
             processingTasks.removeValue(forKey: batchFile.id)
         }
 
+        FilePreparation.cleanupPreparedFile(at: batchFile.fileURL)
         batchFiles.removeAll { $0.id == batchFile.id }
         updateProgress()
     }
 
     func clearAllFiles() {
         cancelAllProcessing()
+        batchFiles.forEach { FilePreparation.cleanupPreparedFile(at: $0.fileURL) }
         batchFiles.removeAll()
         resetProgress()
         resetAllFileStatuses()
@@ -238,13 +239,15 @@ final class FileBatchViewModel {
 
         let fileName = scanFileURL.lastPathComponent
         let fileSize = getFileSize(for: scanFileURL)
-        guard fileSize > 0 && fileSize < 681_574_400 else {
+        guard ScanPolicy.isSupportedFileSize(fileSize) else {
             log.error("File \(fileName) exceeds size limit or is invalid")
+            FilePreparation.cleanupPreparedFile(at: scanFileURL)
             return .failure(.invalidSize(fileName: fileName, fileSize: fileSize))
         }
 
         guard let sha256 = getFileSHA256(for: scanFileURL) else {
             log.error("Failed to calculate SHA256 for \(fileName)")
+            FilePreparation.cleanupPreparedFile(at: scanFileURL)
             return .failure(.sha256(fileName: fileName, fileSize: fileSize))
         }
 
@@ -343,6 +346,10 @@ final class FileBatchViewModel {
     }
 
     private func processFileInternal(_ batchFile: BatchFile) async {
+        defer {
+            FilePreparation.cleanupPreparedFile(at: batchFile.fileURL)
+        }
+
         do {
             // First, check if file already exists in VirusTotal
             batchFile.status = .preparing
@@ -420,7 +427,7 @@ final class FileBatchViewModel {
         var apiEndpoint = chooseUploadEndpoint(for: batchFile)
 
         // Get large file endpoint if needed
-        if batchFile.fileSize > 33_554_432 {
+        if ScanPolicy.requiresLargeUploadEndpoint(fileSize: batchFile.fileSize) {
             let endpointResult = try await FileAnalysis.shared.getLargeFileEndpoint()
             guard endpointResult.getEndpointSuccess == true,
                   let largeEndpoint = endpointResult.largeFileEndpoint else {
@@ -447,7 +454,7 @@ final class FileBatchViewModel {
 
     private func getAnalysisResults(_ batchFile: BatchFile) async {
         var retryCount = 0
-        let maxRetries = 28 // 28 * 10 seconds = ~5 minutes
+        let maxRetries = ScanPolicy.maxPollingAttempts // 28 * 10 seconds = ~5 minutes
 
         while retryCount < maxRetries {
             guard !Task.isCancelled else { return }
@@ -526,15 +533,11 @@ final class FileBatchViewModel {
     }
 
     private func chooseUploadEndpoint(for batchFile: BatchFile) -> String {
-        if batchFile.fileSize <= 33_554_432 {
-            return "https://www.virustotal.com/api/v3/files"
-        } else {
-            return "https://www.virustotal.com/api/v3/files" // Will be replaced with large file endpoint
-        }
+        ScanPolicy.uploadEndpoint(forFileSize: batchFile.fileSize)
     }
 
     private func isValidResponse(_ stats: FileAnalysisStats) -> Bool {
-        return stats.allFlags.sum { $0 } > 0
+        ScanPolicy.isValidAnalysisStats(stats)
     }
 
     private func generateThumbnail(for batchFile: BatchFile) async {
@@ -566,10 +569,6 @@ final class FileBatchViewModel {
     }
 
     private func getFileSHA256(for fileURL: URL) -> String? {
-        guard let fileData = try? Data(contentsOf: fileURL) else {
-            return nil
-        }
-        let hash = SHA256.hash(data: fileData)
-        return hash.compactMap { String(format: "%02x", $0) }.joined()
+        try? FileHasher.sha256(for: fileURL)
     }
 }

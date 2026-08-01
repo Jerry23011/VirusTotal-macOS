@@ -46,7 +46,7 @@ struct GeneralTab: View {
                 }
                 Picker(selection: $startPage) {
                     ForEach(NavigationItem.allCases) { item in
-                        Text(item.rawValue.nslocalized)
+                        Text(LocalizedStringKey(item.rawValue))
                     }
                 } label: {
                     SettingsViewItem(color: .blue,

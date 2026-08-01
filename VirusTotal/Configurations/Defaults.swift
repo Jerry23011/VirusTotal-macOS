@@ -18,8 +18,7 @@ extension Defaults.Keys {
     static let monthlyQuota = Key<UserQuota>("monthlyQuota",
                                              default: UserQuota(used: 0, allowed: 15_500))
 
-    // Store VT API Key and Username
-    static let apiKey = Key<String>("apiKey", default: "")
+    // Store VT Username. The API key is stored in Keychain.
     static let userName = Key<String>("userName", default: "")
 
     // Onboarding
@@ -38,7 +37,7 @@ extension Defaults.Keys {
     )
     static let backgroundMonitoringMode = Key<Bool>("backgroundMonitoringMode", default: false)
     static let showMainWindowOnNextLaunch = Key<Bool>("showMainWindowOnNextLaunch", default: false)
-    static let appLanguage = Key<AppLanguage>("appLanguage", default: .english)
+    static let appLanguage = Key<AppLanguage>("appLanguage", default: AppLanguage.defaultLanguage)
 
     // Advanced Settings
     static let miniMode = Key<Bool>("miniMode", default: false)
@@ -57,6 +56,10 @@ enum AppLanguage: String, CaseIterable, Identifiable, Defaults.Serializable {
 
     var id: Self { self }
 
+    static var defaultLanguage: AppLanguage {
+        preferredSupportedLanguage(from: Locale.preferredLanguages) ?? .english
+    }
+
     var displayName: String {
         switch self {
         case .english:
@@ -70,9 +73,51 @@ enum AppLanguage: String, CaseIterable, Identifiable, Defaults.Serializable {
         }
     }
 
+    static func synchronizePreference() {
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: "appLanguage") == nil {
+            let preferredLanguages = defaults.stringArray(forKey: "AppleLanguages") ?? Locale.preferredLanguages
+            Defaults[.appLanguage] = preferredSupportedLanguage(from: preferredLanguages) ?? defaultLanguage
+        }
+
+        Defaults[.appLanguage].apply()
+    }
+
+    var locale: Locale {
+        Locale(identifier: rawValue)
+    }
+
+    func localizedString(forKey key: String, table: String? = nil) -> String {
+        if let path = Bundle.main.path(forResource: rawValue, ofType: "lproj"),
+           let bundle = Bundle(path: path) {
+            let value = bundle.localizedString(forKey: key, value: nil, table: table)
+            if value != key {
+                return value
+            }
+        }
+
+        return String(localized: String.LocalizationValue(key))
+    }
+
     func apply() {
         UserDefaults.standard.set([rawValue], forKey: "AppleLanguages")
         UserDefaults.standard.synchronize()
+    }
+
+    private static func preferredSupportedLanguage(from languageIdentifiers: [String]) -> AppLanguage? {
+        languageIdentifiers.compactMap(AppLanguage.init(languageIdentifier:)).first
+    }
+
+    private init?(languageIdentifier: String) {
+        let normalizedIdentifier = languageIdentifier.replacingOccurrences(of: "_", with: "-")
+        if let language = AppLanguage.allCases.first(where: {
+            normalizedIdentifier == $0.rawValue || normalizedIdentifier.hasPrefix("\($0.rawValue)-")
+        }) {
+            self = language
+            return
+        }
+
+        return nil
     }
 }
 

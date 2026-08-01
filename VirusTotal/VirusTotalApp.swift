@@ -17,7 +17,9 @@ struct VirusTotalApp: App {
     @Environment(\.openSettings) private var openSettings
     @Environment(\.openURL) private var openURL
     @Default(.appFirstLaunch) private var appFirstLaunch: Bool
+    @Default(.appLanguage) private var appLanguage: AppLanguage
     @State private var miniMode = Defaults[.miniMode]
+    @State private var shouldShowFullMainWindowAfterRelaunch = Defaults[.showMainWindowOnNextLaunch]
     @State private var scanHistoryManager = ScanHistoryManager.shared
     @State private var downloadsMonitor = DownloadsMonitorViewModel.shared
     @State private var didStartBackgroundServices = false
@@ -26,7 +28,11 @@ struct VirusTotalApp: App {
     var body: some Scene {
         Window("VirusTotal for macOS", id: WindowID.main.rawValue) {
             mainWindowContent
+                .environment(\.locale, appLocale)
                 .task(priority: .background) {
+                    appDelegate.openMainWindowAction = {
+                        openWindow(id: WindowID.main.rawValue)
+                    }
                     await startBackgroundServicesIfNeeded()
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .openMainWindowRequested)) { _ in
@@ -43,6 +49,7 @@ struct VirusTotalApp: App {
 
         Window("About VirusTotal", id: WindowID.about.rawValue) {
             AboutView()
+                .environment(\.locale, appLocale)
         }
         .defaultSize(width: 530, height: 220)
         .windowResizability(.contentSize)
@@ -50,6 +57,7 @@ struct VirusTotalApp: App {
 
         Settings {
             SettingsView(updater: updaterController.updater)
+                .environment(\.locale, appLocale)
         }
         .commands {
             CommandGroup(replacing: .appInfo) {
@@ -77,7 +85,10 @@ struct VirusTotalApp: App {
 
     @ViewBuilder
     private var mainWindowContent: some View {
-        if !miniMode {
+        if shouldUseMiniMode {
+            MiniModeView()
+                .frame(width: 290, height: 180)
+        } else {
             ContentView()
                 .sheet(isPresented: $appFirstLaunch, onDismiss: {
                     appFirstLaunch = false
@@ -85,10 +96,15 @@ struct VirusTotalApp: App {
                     LaunchView()
                         .frame(width: 400, height: 430)
                 })
-        } else {
-            MiniModeView()
-                .frame(width: 290, height: 180)
         }
+    }
+
+    private var shouldUseMiniMode: Bool {
+        miniMode && !shouldShowFullMainWindowAfterRelaunch
+    }
+
+    private var appLocale: Locale {
+        appLanguage.locale
     }
 
     // MARK: Menubar Items
@@ -141,7 +157,7 @@ struct VirusTotalApp: App {
             Text("menubar.go.home")
         }
         .keyboardShortcut("1")
-        .disabled(miniMode)
+        .disabled(shouldUseMiniMode)
 
         Button {
             appState.selectedSidebarItem = .fileUpload
@@ -149,7 +165,7 @@ struct VirusTotalApp: App {
             Text("menubar.go.file")
         }
         .keyboardShortcut("2")
-        .disabled(miniMode)
+        .disabled(shouldUseMiniMode)
 
         Button {
             appState.selectedSidebarItem = .urlLookup
@@ -157,7 +173,7 @@ struct VirusTotalApp: App {
             Text("menubar.go.url")
         }
         .keyboardShortcut("3")
-        .disabled(miniMode)
+        .disabled(shouldUseMiniMode)
 
         Button {
             appState.selectedSidebarItem = .fileBatch
@@ -165,7 +181,7 @@ struct VirusTotalApp: App {
             Text("menubar.go.fileBatch")
         }
         .keyboardShortcut("4")
-        .disabled(miniMode)
+        .disabled(shouldUseMiniMode)
     }
 
     private func startBackgroundServicesIfNeeded() async {
@@ -183,7 +199,8 @@ struct VirusTotalApp: App {
 
     // MARK: Internal
     init() {
-        Defaults[.appLanguage].apply()
+        AppLanguage.synchronizePreference()
+        APIKeychain.migrateAPIKeyFromDefaultsIfNeeded()
         // Tips
         #if DEBUG
         try? Tips.resetDatastore()
@@ -201,6 +218,7 @@ struct VirusTotalApp: App {
     // MARK: Private
     private let updaterController: SPUStandardUpdaterController
     private let feedbackURL = URL(string: "https://github.com/Jerry23011/VirusTotal-macOS/issues/new/choose")!
+
     private var logDirectory: URL {
         let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
         return homeDirectory.appendingPathComponent("Library/Logs", isDirectory: true)

@@ -31,7 +31,7 @@ struct FileUploadView: View {
                 OpenFinderButton(title: "fileview.button.upload",
                                  systemImage: "square.and.arrow.up",
                                  action: startFileUpload)
-                .frame(width: 200)
+                .frame(minWidth: 200, maxWidth: 240)
                 .keyboardShortcut(.return, modifiers: .command)
                 .disabled(viewModel.statusMonitor == .uploading)
             }

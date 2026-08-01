@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import CryptoKit
 import QuickLookThumbnailing
 
 @MainActor
@@ -42,6 +41,7 @@ final class FileViewModel {
 
     /// Given a fileURL, setup fileSize, fileName, thumbnailImage, and fileSHA256
     func setupFileInfo(fileURL: URL) async {
+        cleanupPreparedFile()
         self.cancellationRequested = false
         self.statusMonitor = .loading
 
@@ -57,10 +57,11 @@ final class FileViewModel {
 
         self.fileURL = scanFileURL
         let fileSize = getFileSize(for: scanFileURL)
-        guard fileSize < 681_574_400 else {
+        guard ScanPolicy.isSupportedFileSize(fileSize) else {
             log.error("Filesize \(fileSize) exceeded 650 MB.")
             self.errorMessage = "Local Error: VirusTotal only accepts files up to 650 MB"
             self.statusMonitor = .fail
+            cleanupPreparedFile()
             return
         }
         self.fileSize = fileSize
@@ -73,6 +74,7 @@ final class FileViewModel {
             log.error("Error calculating SHA256 for \(scanFileURL): \(error)")
             self.errorMessage = "Local Error: \(error.displayMessageWithCode)"
             self.statusMonitor = .fail
+            cleanupPreparedFile()
         }
     }
 
@@ -101,16 +103,21 @@ final class FileViewModel {
                     self.statusMonitor = .success
                     await NotificationManager.pushNotification(title: String(localized: "notification.analysis.complete.title"))
                     self.storeScanEntry()
+                    cleanupPreparedFile()
                 } else {
                     await self.retryFileReport(retryCount: self.numberOfRetries)
                 }
             } else {
                 self.errorMessage = result.errorMessage
+                if self.statusMonitor == .fail {
+                    cleanupPreparedFile()
+                }
             }
         } catch {
             self.errorMessage = error.displayMessageWithCode
             await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
             self.statusMonitor = .fail
+            cleanupPreparedFile()
         }
     }
 
@@ -178,14 +185,18 @@ final class FileViewModel {
             return
         }
 
+        defer {
+            cleanupPreparedFile()
+        }
+
         do {
             switch fileSize {
-            case ..<33_554_432:
+            case ...ScanPolicy.largeUploadThreshold:
                 if try await uploadFile() {
                     try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
                     await getNewFileReport()
                 }
-            case 33_554_432...681_574_400:
+            case (ScanPolicy.largeUploadThreshold + 1)..<ScanPolicy.maxUploadSize:
                 if try await fetchLargeFileEndpoint() {
                     if try await uploadFile() {
                         try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
@@ -222,6 +233,7 @@ final class FileViewModel {
 
     /// Cancel on-going AF request and stop model from running
     func cancelOngoingRequest() {
+        cleanupPreparedFile()
         Task {
             await FileAnalysis.shared.cancelAFRequest()
             cancellationRequested = true
@@ -237,7 +249,7 @@ final class FileViewModel {
     private var numberOfRetries = 0
     private let defaultFileURL = URL(string: "file://")!
     private let noFileSizeError: String = "Local Error: Can't retrieve file size"
-    private let defaultUploadURL: String = "https://www.virustotal.com/api/v3/files"
+    private let defaultUploadURL: String = ScanPolicy.defaultUploadEndpoint
 
     /// Given a fileURL, return the file size in bytes
     private func getFileSize(for fileURL: URL) -> Int64 {
@@ -257,9 +269,7 @@ final class FileViewModel {
 
     /// Given a fileURL, return the sha256 value of the given file
     private func getFileSHA256(for fileURL: URL) throws -> String {
-        let fileData = try Data(contentsOf: fileURL)
-        let hash = SHA256.hash(data: fileData)
-        return hash.compactMap { String(format: "%02x", $0) }.joined()
+        try FileHasher.sha256(for: fileURL)
     }
 
     /// Given a fileURL, generate a thumbnail icon and pass it to the viewModel
@@ -283,18 +293,18 @@ final class FileViewModel {
     /// Choose the upload endpoint for uploadFile() func
     private func chooseUploadEndpoint() -> String {
         let fileSize = self.fileSize ?? 0
-        if fileSize <= 33_554_432 {
-            return defaultUploadURL
-        } else if fileSize > 33_554_432 && fileSize <= 681_574_400 {
-            return largeFileEndpoint ?? defaultUploadURL
-        } else {
-            return "" // Files >650MB are not supported
-        }
+        return ScanPolicy.uploadEndpoint(forFileSize: fileSize, largeFileEndpoint: largeFileEndpoint)
+    }
+
+    private func cleanupPreparedFile() {
+        guard let fileURL else { return }
+        FilePreparation.cleanupPreparedFile(at: fileURL)
+        self.fileURL = nil
     }
 
     /// Given a FileAnalysisStats, return true if the sum of the flags is not 0, false otherwise
     private func isValidResponse(responses: FileAnalysisStats) -> Bool {
-        return responses.allFlags.sum { $0 } != 0
+        ScanPolicy.isValidAnalysisStats(responses)
     }
 
     /// Retry getting file report to wait for the server processing time when new file is scanned

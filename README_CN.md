@@ -7,7 +7,7 @@
 <p align="center"> 优雅的 VirusTotal 客户端，使用 Swift 和 SwiftUI 构建</p>
 
 <p align="center">
-<a href="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/README.md">English</a> · <a href="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/README_CN.md">简体中文</a>
+<a href="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/README.md">English</a> · <a href="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/README_CN.md">简体中文</a> · <a href="https://github.com/Jerry23011/VirusTotal-macOS/blob/main/README_RU.md">Русский</a>
 </p>
 
 ## 快速设置

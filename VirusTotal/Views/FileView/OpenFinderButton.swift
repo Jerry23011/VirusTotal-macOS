@@ -22,6 +22,9 @@ struct OpenFinderButton: View {
                     .frame(width: 24)
                 Text(title)
                     .font(.system(size: 13, weight: .semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+                    .truncationMode(.tail)
                     .frame(maxWidth: .infinity, alignment: .center)
                 Spacer()
             }

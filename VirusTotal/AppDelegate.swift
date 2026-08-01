@@ -7,17 +7,30 @@
 
 import Cocoa
 import Defaults
+import SwiftUI
 import UserNotifications
 
 @MainActor
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+    var openMainWindowAction: (() -> Void)?
+
     private var statusItem: NSStatusItem?
+    private var fallbackMainWindow: NSWindow?
     private var didHideInitialBackgroundWindow = false
     private let notificationDelegate = NotificationCenterDelegate()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.servicesProvider = ServiceProvider()
-        configureBackgroundMode()
+        let shouldShowMainWindow = Defaults[.showMainWindowOnNextLaunch]
+        configureBackgroundMode(shouldApplyAccessoryPolicy: !shouldShowMainWindow)
+        if shouldShowMainWindow {
+            Defaults[.showMainWindowOnNextLaunch] = false
+            didHideInitialBackgroundWindow = true
+            NSApp.setActivationPolicy(.regular)
+            Task { @MainActor in
+                showMainWindow()
+            }
+        }
         observeBackgroundModeChanges()
         UNUserNotificationCenter.current().delegate = notificationDelegate
     }
@@ -25,12 +38,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     func applicationDidUpdate(_ notification: Notification) {
         guard let mainWindow = NSApp.findWindow(WindowID.main) else { return }
         mainWindow.delegate = self
-
-        if Defaults[.showMainWindowOnNextLaunch] {
-            Defaults[.showMainWindowOnNextLaunch] = false
-            showMainWindow()
-            return
-        }
 
         if Defaults[.backgroundMonitoringMode], !didHideInitialBackgroundWindow {
             didHideInitialBackgroundWindow = true
@@ -95,10 +102,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         }
 
         let menu = NSMenu()
-        menu.addItem(statusMenuItem(title: "Open VirusTotal", action: #selector(openMainWindowFromMenu)))
-        menu.addItem(statusMenuItem(title: "Settings...", action: #selector(openSettingsFromMenu), keyEquivalent: ","))
+        menu.addItem(statusMenuItem(
+            title: localizedString("menubar.open.main", defaultValue: "Open VirusTotal"),
+            action: #selector(openMainWindowFromMenu)
+        ))
+        menu.addItem(statusMenuItem(
+            title: localizedString("Settings", defaultValue: "Settings"),
+            action: #selector(openSettingsFromMenu),
+            keyEquivalent: ","
+        ))
         menu.addItem(.separator())
-        menu.addItem(statusMenuItem(title: "Quit VirusTotal", action: #selector(quitFromMenu), keyEquivalent: "q"))
+        menu.addItem(statusMenuItem(title: localizedString("Quit", defaultValue: quitMenuTitle), action: #selector(quitFromMenu), keyEquivalent: "q"))
         statusItem?.menu = menu
     }
 
@@ -106,6 +120,24 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         let item = NSMenuItem(title: title, action: action, keyEquivalent: keyEquivalent)
         item.target = self
         return item
+    }
+
+    private func localizedString(_ key: String, defaultValue: String) -> String {
+        let localizedValue = Defaults[.appLanguage].localizedString(forKey: key)
+        return localizedValue == key ? defaultValue : localizedValue
+    }
+
+    private var quitMenuTitle: String {
+        switch Defaults[.appLanguage] {
+        case .english:
+            return "Quit"
+        case .czech:
+            return "Ukončit"
+        case .simplifiedChinese:
+            return "退出"
+        case .russian:
+            return "Выйти"
+        }
     }
 
     private func removeStatusItem() {
@@ -129,12 +161,80 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     }
 
     private func showMainWindow() {
+        didHideInitialBackgroundWindow = true
         showRegularAppUI()
-        NSApp.findWindow(WindowID.main)?.makeKeyAndOrderFront(nil)
+        openMainWindowAction?()
+
+        Task { @MainActor in
+            showExistingMainWindowOrFallback()
+        }
+    }
+
+    private func showExistingMainWindowOrFallback() {
+        DownloadsMonitorViewModel.shared.startIfNeeded()
+
+        if let mainWindow = NSApp.findWindow(WindowID.main) {
+            mainWindow.delegate = self
+            bringWindowToFront(mainWindow)
+            return
+        }
+
+        if let fallbackMainWindow {
+            bringWindowToFront(fallbackMainWindow)
+            return
+        }
+
+        let isMiniMode = Defaults[.miniMode] && !Defaults[.showMainWindowOnNextLaunch]
+        let windowSize = isMiniMode ? NSSize(width: 290, height: 180) : NSSize(width: 800, height: 550)
+        let window = NSWindow(
+            contentRect: NSRect(origin: .zero, size: windowSize),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable],
+            backing: .buffered,
+            defer: false
+        )
+
+        window.identifier = NSUserInterfaceItemIdentifier(WindowID.main.rawValue)
+        window.delegate = self
+        window.title = "VirusTotal for macOS"
+        window.titleVisibility = isMiniMode ? .hidden : .visible
+        window.titlebarAppearsTransparent = isMiniMode
+        window.isReleasedWhenClosed = false
+        window.isOpaque = true
+        window.center()
+
+        if isMiniMode {
+            window.contentView = NSHostingView(
+                rootView: AnyView(MiniModeView()
+                    .frame(width: 290, height: 180)
+                    .environment(\.locale, Defaults[.appLanguage].locale))
+            )
+        } else {
+            window.contentView = NSHostingView(
+                rootView: AnyView(ContentView()
+                    .frame(minWidth: 800, minHeight: 550)
+                    .environment(\.locale, Defaults[.appLanguage].locale))
+            )
+        }
+
+        fallbackMainWindow = window
+        bringWindowToFront(window)
+    }
+
+    private func bringWindowToFront(_ window: NSWindow) {
+        showRegularAppUI()
+
+        if window.isMiniaturized {
+            window.deminiaturize(nil)
+        }
+
+        window.orderFrontRegardless()
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     private func showRegularAppUI() {
         NSApp.setActivationPolicy(.regular)
+        NSApp.unhide(nil)
         NSApp.activate(ignoringOtherApps: true)
     }
 }

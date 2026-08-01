@@ -34,6 +34,8 @@ final class QuotaStatusViewModel {
             hourlyQuota = result.hourlyQuota
             dailyQuota = result.dailyQuota
             monthlyQuota = result.monthlyQuota
+        } catch where error.isCancellation {
+            return
         } catch {
             statusSuccess = false
             errorMessage = error.displayMessageWithCode

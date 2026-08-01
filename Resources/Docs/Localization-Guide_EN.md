@@ -8,8 +8,8 @@ You can install Xcode from the [Mac App Store](https://apps.apple.com/app/xcode/
 4. Open the project and build it
 ### Adding your language to String Catalog
 Now you can start to add your own language!
-1. There are 3 files in total you need to translation.
-2. Navigate to `VirusTotal -> Localizable.xcstrings`,  `VirusTotal -> InfoPlist.xcstrings`, and `VirusTotal -> ServicesMenu.xcstrings`. These three `.xcstrings` files are what you are going to work on.
+1. There are 4 files in total you need to translate.
+2. Navigate to `VirusTotal -> Localizable.xcstrings`, `VirusTotal -> InfoPlist.xcstrings`, `VirusTotal -> ServicesMenu.xcstrings`, and `VirusTotal -> AppShortcuts.xcstrings`. These four `.xcstrings` files are what you are going to work on. `AppShortcuts.xcstrings` contains Siri shortcut phrases — provide natural-sounding alternatives in your language.
 3. Click on the `Localizable.xcstrings` file and click the `+` button to find a list of available options. If you don't see the language you want to localize on the list (e.g. Canadian English). Scroll all the way down to the bottom of the menu to find `More Languages`.
 4. After you add a language, you can start translating 😉
 ### Previewing your translations

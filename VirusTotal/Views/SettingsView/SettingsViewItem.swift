@@ -24,15 +24,17 @@ struct SettingsViewItem: View {
                         .font(.system(size: 12))
                         .foregroundColor(.white)
                 }
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(labelText)
+                    .lineLimit(1)
                 if let subtitleText {
                     Text(subtitleText)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                 }
             }
-            .frame(height: 20)
         }
     }
 }

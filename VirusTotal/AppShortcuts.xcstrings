@@ -1,39 +1,43 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "Scan file with ${applicationName}" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "cs" : {
-          "stringSet" : {
-            "state" : "machine_translated",
-            "values" : [
+  "sourceLanguage": "en",
+  "strings": {
+    "Scan file with ${applicationName}": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "cs": {
+          "stringSet": {
+            "state": "machine_translated",
+            "values": [
               "Skenovat soubor pomocí ${applicationName}"
             ]
           }
         },
-        "en" : {
-          "stringSet" : {
-            "state" : "new",
-            "values" : [
+        "en": {
+          "stringSet": {
+            "state": "new",
+            "values": [
               "Scan file with ${applicationName}"
             ]
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "Проверить файл в ${applicationName}"
+        "ru": {
+          "stringSet": {
+            "state": "translated",
+            "values": [
+              "Проверить файл с помощью ${applicationName}"
+            ]
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "machine_translated",
-            "value" : "使用 ${applicationName} 扫描文件"
+        "zh-Hans": {
+          "stringSet": {
+            "state": "translated",
+            "values": [
+              "使用 ${applicationName} 扫描文件"
+            ]
           }
         }
       }
     }
   },
-  "version" : "1.3"
+  "version": "1.3"
 }

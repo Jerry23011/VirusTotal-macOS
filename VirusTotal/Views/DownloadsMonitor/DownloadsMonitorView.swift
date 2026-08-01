@@ -5,6 +5,7 @@
 
 import AppKit
 import SwiftUI
+import Defaults
 
 struct DownloadsMonitorView: View {
     @State private var viewModel = DownloadsMonitorViewModel.shared
@@ -41,13 +42,17 @@ struct DownloadsMonitorView: View {
             Text("This may use a lot of VirusTotal quota and take a long time.")
         }
         .toolbar {
-            ToolbarItem {
-                Button(action: viewModel.clearResults) {
-                    Image(systemName: "trash")
+            if !viewModel.scanItems.isEmpty {
+                ToolbarItem {
+                    Button(action: viewModel.clearResults) {
+                        Image(systemName: "trash")
+                    }
+                    .help("Clear results")
                 }
-                .disabled(viewModel.scanItems.isEmpty)
-                .help("Clear results")
             }
+        }
+        .onAppear {
+            viewModel.startIfNeeded()
         }
         .onReceive(NotificationCenter.default.publisher(for: .downloadsMonitorFileRequested)) { notification in
             viewModel.handleNotificationSelection(filePath: notification.userInfo?["filePath"] as? String)
@@ -63,7 +68,7 @@ struct DownloadsMonitorView: View {
                     .frame(width: 44)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Downloads Monitor")
+                    Text("sidebar.downloadsmonitor")
                         .font(.title2)
                         .fontWeight(.semibold)
                     Text(viewModel.statusMessage)
@@ -116,18 +121,26 @@ struct DownloadsMonitorView: View {
 
     private var fileTypeSettings: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Scan File Types")
+            Text("downloadsmonitor.filetypes.title")
                 .font(.headline)
 
             ForEach(DownloadMonitorFileCategory.allCases) { category in
-                Toggle(category.title, isOn: Binding(
+                Toggle(isOn: Binding(
                     get: { viewModel.selectedFileCategories.contains(category) },
                     set: { viewModel.setFileCategory(category, isEnabled: $0) }
-                ))
+                )) {
+                    HStack(alignment: .firstTextBaseline, spacing: 4) {
+                        Text(category.localizedTitle)
+                        Text("(\(category.extensionExamples))")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .lineLimit(1)
+                }
             }
         }
         .padding()
-        .frame(width: 240)
+        .frame(width: 340)
     }
 
     @ViewBuilder
@@ -311,23 +324,46 @@ private struct DownloadsMonitorRowView: View {
 }
 
 private extension DownloadMonitorFileCategory {
-    var title: String {
+    var localizedTitle: String {
         switch self {
         case .documents:
-            "Documents"
+            localizedString("downloadsmonitor.filetype.documents")
         case .archives:
-            "Archives"
+            localizedString("downloadsmonitor.filetype.archives")
         case .images:
-            "Images"
+            localizedString("downloadsmonitor.filetype.images")
         case .audio:
-            "Audio"
+            localizedString("downloadsmonitor.filetype.audio")
         case .video:
-            "Video"
+            localizedString("downloadsmonitor.filetype.video")
         case .applications:
-            "Applications"
+            localizedString("downloadsmonitor.filetype.applications")
         case .other:
-            "Other"
+            localizedString("downloadsmonitor.filetype.other")
         }
+    }
+
+    var extensionExamples: String {
+        switch self {
+        case .archives:
+            ".zip, .rar, .7z, .tar, .gz"
+        case .applications:
+            ".app, .dmg, .pkg, .ipa"
+        case .documents:
+            ".pdf, .txt, .rtf, .docx, .json"
+        case .images:
+            ".png, .jpg, .gif, .webp, .heic"
+        case .audio:
+            ".mp3, .m4a, .wav, .flac"
+        case .video:
+            ".mp4, .mov, .mkv, .avi"
+        case .other:
+            localizedString("downloadsmonitor.filetype.other.extensions")
+        }
+    }
+
+    private func localizedString(_ key: String) -> String {
+        Defaults[.appLanguage].localizedString(forKey: key)
     }
 }
 
