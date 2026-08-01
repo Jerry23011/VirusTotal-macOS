@@ -6,3 +6,6 @@
 **/.DS_Store
 VirusTotal.html
 VirusTotal.dmg
+
+xcuserdata/
+*.xcuserdatad/
