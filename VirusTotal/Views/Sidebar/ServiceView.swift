@@ -41,6 +41,9 @@ struct ServiceView: View {
         case .fileBatch:
             FileBatchView()
                 .frame(minWidth: 600, minHeight: 500)
+        case .downloadsMonitor:
+            DownloadsMonitorView()
+                .frame(minWidth: 600, minHeight: 500)
         }
     }
 
@@ -54,6 +57,7 @@ enum ServiceSidebarItem: String, CaseIterable, Identifiable {
     case fileUpload = "sidebar.file"
     case urlLookup = "sidebar.url"
     case fileBatch = "sidebar.batch"
+    case downloadsMonitor = "Downloads Monitor"
 
     var id: String { self.rawValue }
 
@@ -71,6 +75,8 @@ enum ServiceSidebarItem: String, CaseIterable, Identifiable {
             return "link"
         case .fileBatch:
             return "arrow.up.page.on.clipboard"
+        case .downloadsMonitor:
+            return "folder.badge.gearshape"
         }
     }
 }

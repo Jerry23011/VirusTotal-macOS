@@ -17,6 +17,12 @@
             "value" : "VirusTotal"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "VirusTotal"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41,6 +47,12 @@
             "value" : "Copyright © 2024-2026 Jerry Zhang. All rights reserved."
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Copyright © 2024-2026 Jerry Zhang. Все права защищены."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50,5 +62,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.3"
 }

@@ -14,6 +14,8 @@ struct GeneralTab: View {
     private let updater: SPUUpdater
 
     @State private var autoChecksForUpdates: Bool
+    @State private var selectedLanguage = Defaults[.appLanguage]
+    @State private var showLanguageRestartAlert = false
     @Default(.cleanURL) private var cleanURL: Bool
     @Default(.startPage) private var startPage: NavigationItem
     @Default(.enableNotification) private var enableNotification: Bool
@@ -36,6 +38,12 @@ struct GeneralTab: View {
                         labelText: "settings.general.notification"
                     )
                 }
+                .onChange(of: enableNotification) { _, newValue in
+                    guard newValue else { return }
+                    Task {
+                        await NotificationManager.requestAuthorization()
+                    }
+                }
                 Picker(selection: $startPage) {
                     ForEach(NavigationItem.allCases) { item in
                         Text(item.rawValue.nslocalized)
@@ -46,6 +54,26 @@ struct GeneralTab: View {
                                      labelText: "settings.general.startpage")
                 }
                 .controlSize(.regular)
+
+                Picker(selection: $selectedLanguage) {
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(language.displayName)
+                    }
+                } label: {
+                    SettingsViewItem(
+                        color: .blue,
+                        systemImage: "globe",
+                        labelText: "settings.general.language",
+                        subtitleText: "settings.general.language.restart"
+                    )
+                }
+                .controlSize(.regular)
+                .padding(.top, 8)
+                .onChange(of: selectedLanguage) { _, newValue in
+                    Defaults[.appLanguage] = newValue
+                    newValue.apply()
+                    showLanguageRestartAlert = true
+                }
             }
 
             Section {
@@ -81,6 +109,14 @@ struct GeneralTab: View {
         .controlSize(.small)
         .formStyle(.grouped)
         .scrollDisabled(true)
+        .alert("Restart required", isPresented: $showLanguageRestartAlert) {
+            Button("Restart") {
+                ApplicationRelauncher.restart()
+            }
+            Button("Later", role: .cancel) {}
+        } message: {
+            Text("Restart VirusTotal to apply language changes.")
+        }
     }
 
     // MARK: Internal

@@ -49,7 +49,7 @@ actor FileAnalysis {
                             fileAlysResult.statusMonitor = .upload
                         } else {
                             log.error(error)
-                            fileAlysResult.errorMessage = error.localizedDescription
+                            fileAlysResult.errorMessage = error.displayMessageWithCode
                             fileAlysResult.statusMonitor = .fail
                         }
                         continuation.resume(returning: fileAlysResult)
@@ -92,7 +92,7 @@ actor FileAnalysis {
                 case .failure(let error):
                     log.error(error)
                     fileUploadResult.uploadSuccess = false
-                    fileUploadResult.errorMessage = error.localizedDescription
+                    fileUploadResult.errorMessage = error.displayMessageWithCode
                     fileUploadResult.statusMonitor = .fail
                     continuation.resume(returning: fileUploadResult)
                 }
@@ -124,7 +124,7 @@ actor FileAnalysis {
                     case .failure(let error):
                         log.error(error)
                         endpointResult.getEndpointSuccess = false
-                        endpointResult.errorMessage = error.localizedDescription
+                        endpointResult.errorMessage = error.displayMessageWithCode
                         endpointResult.statusMonitor = .fail
                         continuation.resume(returning: endpointResult)
                     }

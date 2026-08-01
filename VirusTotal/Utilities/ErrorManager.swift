@@ -17,3 +17,10 @@ enum VTError: Error {
     /// Errors occured in AppIntents
     case intent(_ message: String)
 }
+
+extension Error {
+    var displayMessageWithCode: String {
+        let nsError = self as NSError
+        return "\(localizedDescription) (\(nsError.domain) Code=\(nsError.code))"
+    }
+}

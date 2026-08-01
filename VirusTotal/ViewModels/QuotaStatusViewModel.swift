@@ -36,7 +36,7 @@ final class QuotaStatusViewModel {
             monthlyQuota = result.monthlyQuota
         } catch {
             statusSuccess = false
-            errorMessage = error.localizedDescription
+            errorMessage = error.displayMessageWithCode
             log.error(error)
         }
     }

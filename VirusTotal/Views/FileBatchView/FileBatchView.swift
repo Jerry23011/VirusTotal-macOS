@@ -89,7 +89,7 @@ struct FileBatchView: View {
                 .keyboardShortcut("o", modifiers: .command)
                 .fileImporter(
                     isPresented: $isFileImporterPresent,
-                    allowedContentTypes: [.data],
+                    allowedContentTypes: fileScanContentTypes,
                     allowsMultipleSelection: true
                 ) { result in
                     handleFileImporterResult(result)
@@ -124,7 +124,7 @@ struct FileBatchView: View {
                 .disabled(viewModel.isProcessing)
                 .fileImporter(
                     isPresented: $isFileImporterPresent,
-                    allowedContentTypes: [.data],
+                    allowedContentTypes: fileScanContentTypes,
                     allowsMultipleSelection: true
                 ) { result in
                     handleFileImporterResult(result)
@@ -140,6 +140,7 @@ struct FileBatchView: View {
                     Button("filebatchview.button.start.analysis", action: startBatchAnalysis)
                         .buttonStyle(.borderedProminent)
                         .keyboardShortcut(.return, modifiers: .command)
+                        .disabled(viewModel.hasPreparingArchives)
                 }
             }
         }
@@ -178,12 +179,12 @@ struct FileBatchView: View {
     }
 
     private func validateDropInfo(_ dropInfo: DropInfo) -> Bool {
-        let fileURLs = dropInfo.fileURLsConforming(to: [.data])
+        let fileURLs = dropInfo.fileURLsConforming(to: fileScanContentTypes)
         return !fileURLs.isEmpty
     }
 
     private func handleDropInfo(_ dropInfo: DropInfo) -> Bool {
-        let fileURLs = dropInfo.fileURLsConforming(to: [.data])
+        let fileURLs = dropInfo.fileURLsConforming(to: fileScanContentTypes)
         guard !fileURLs.isEmpty else { return false }
 
         NSApp.activate(ignoringOtherApps: true)

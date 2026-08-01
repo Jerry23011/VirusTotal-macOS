@@ -40,7 +40,7 @@ struct MiniFileView: View {
             .animation(.spring, value: isFileDropped)
             .keyboardShortcut("o")
             .fileImporter(isPresented: $isFileImporterPresent,
-                          allowedContentTypes: [.data],
+                          allowedContentTypes: fileScanContentTypes,
                           allowsMultipleSelection: false) { result in
                 switch result {
                 case .success(let urls):
@@ -145,13 +145,13 @@ struct MiniFileView: View {
 
     /// Given a DropInfo, return true if DropInfo is `.data` and is a single item, return false otherwise
     private func validateDropInfo(_ dropInfo: DropInfo) -> Bool {
-        let fileURLs = dropInfo.fileURLsConforming(to: [.data])
+        let fileURLs = dropInfo.fileURLsConforming(to: fileScanContentTypes)
         return fileURLs.count == 1
     }
 
     /// Given a DropInfo, handle the dropped item with onPerform
     private func handleDropInfo(_ dropInfo: DropInfo) -> Bool {
-        guard let fileURL = dropInfo.fileURLsConforming(to: [.data]).first else {
+        guard let fileURL = dropInfo.fileURLsConforming(to: fileScanContentTypes).first else {
             return false
         }
         NSApp.activate(ignoringOtherApps: true)
@@ -174,9 +174,13 @@ struct MiniFileView: View {
 
     /// Trigger `uploadFile` and call `cancelOngoingRequest` after completion
     private func uploadFile() {
-        Task {
-            if try await viewModel.uploadFile() {
-                viewModel.cancelOngoingRequest()
+        Task<Void, Never> {
+            do {
+                if try await viewModel.uploadFile() {
+                    viewModel.cancelOngoingRequest()
+                }
+            } catch {
+                log.error("File Upload Error: \(error.localizedDescription)")
             }
         }
     }

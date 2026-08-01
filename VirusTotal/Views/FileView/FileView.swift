@@ -40,7 +40,7 @@ struct FileView: View {
                         .animation(.spring, value: isFileDropped)
                         .keyboardShortcut("o", modifiers: .command)
                         .fileImporter(isPresented: $isFileImporterPresent,
-                                      allowedContentTypes: [.data],
+                                      allowedContentTypes: fileScanContentTypes,
                                       allowsMultipleSelection: false) { result in
                             switch result {
                             case .success(let urls):
@@ -179,13 +179,13 @@ struct FileView: View {
         guard canDropFile() else {
             return false
         }
-        let fileURLs = dropInfo.fileURLsConforming(to: [.data])
+        let fileURLs = dropInfo.fileURLsConforming(to: fileScanContentTypes)
         return fileURLs.count == 1
     }
 
     /// Given a DropInfo, handle the dropped item with onPerform
     private func handleDropInfo(_ dropInfo: DropInfo) -> Bool {
-        guard let fileURL = dropInfo.fileURLsConforming(to: [.data]).first else {
+        guard let fileURL = dropInfo.fileURLsConforming(to: fileScanContentTypes).first else {
             return false
         }
         NSApp.activate(ignoringOtherApps: true)

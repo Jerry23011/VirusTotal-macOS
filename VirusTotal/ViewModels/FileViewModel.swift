@@ -43,8 +43,20 @@ final class FileViewModel {
     /// Given a fileURL, setup fileSize, fileName, thumbnailImage, and fileSHA256
     func setupFileInfo(fileURL: URL) async {
         self.cancellationRequested = false
-        self.fileURL = fileURL
-        let fileSize = getFileSize(for: fileURL)
+        self.statusMonitor = .loading
+
+        let scanFileURL: URL
+        do {
+            scanFileURL = try await FilePreparation.scanFileURL(for: fileURL)
+        } catch {
+            log.error("Error preparing file for scan: \(error)")
+            self.errorMessage = "Local Error: \(error.displayMessageWithCode)"
+            self.statusMonitor = .fail
+            return
+        }
+
+        self.fileURL = scanFileURL
+        let fileSize = getFileSize(for: scanFileURL)
         guard fileSize < 681_574_400 else {
             log.error("Filesize \(fileSize) exceeded 650 MB.")
             self.errorMessage = "Local Error: VirusTotal only accepts files up to 650 MB"
@@ -52,10 +64,15 @@ final class FileViewModel {
             return
         }
         self.fileSize = fileSize
-        self.fileName = getFileName(for: fileURL)
-        await getThumbnailImage(for: fileURL)
-        if let fileSHA256 = self.getFileSHA256(for: fileURL) {
-            self.inputSHA256 = fileSHA256
+        self.fileName = getFileName(for: scanFileURL)
+        await getThumbnailImage(for: scanFileURL)
+
+        do {
+            self.inputSHA256 = try getFileSHA256(for: scanFileURL)
+        } catch {
+            log.error("Error calculating SHA256 for \(scanFileURL): \(error)")
+            self.errorMessage = "Local Error: \(error.displayMessageWithCode)"
+            self.statusMonitor = .fail
         }
     }
 
@@ -91,7 +108,7 @@ final class FileViewModel {
                 self.errorMessage = result.errorMessage
             }
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.errorMessage = error.displayMessageWithCode
             await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
             self.statusMonitor = .fail
         }
@@ -124,7 +141,7 @@ final class FileViewModel {
                 return false
             }
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.errorMessage = error.displayMessageWithCode
             await NotificationManager.pushNotification(title: String(localized: "notification.upload.fail.title"))
             self.statusMonitor = .fail
             return false
@@ -145,7 +162,7 @@ final class FileViewModel {
                 return false
             }
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.errorMessage = error.displayMessageWithCode
             self.statusMonitor = .fail
             return false
         }
@@ -184,7 +201,7 @@ final class FileViewModel {
                 self.statusMonitor = .fail
             }
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.errorMessage = error.displayMessageWithCode
             self.statusMonitor = .fail
         }
     }
@@ -199,7 +216,7 @@ final class FileViewModel {
         } catch {
             log.error(error.localizedDescription)
             self.statusMonitor = .fail
-            self.errorMessage = error.localizedDescription
+            self.errorMessage = error.displayMessageWithCode
         }
     }
 
@@ -239,10 +256,8 @@ final class FileViewModel {
     }
 
     /// Given a fileURL, return the sha256 value of the given file
-    private func getFileSHA256(for fileURL: URL) -> String? {
-        guard let fileData = try? Data(contentsOf: fileURL) else {
-            return nil
-        }
+    private func getFileSHA256(for fileURL: URL) throws -> String {
+        let fileData = try Data(contentsOf: fileURL)
         let hash = SHA256.hash(data: fileData)
         return hash.compactMap { String(format: "%02x", $0) }.joined()
     }
@@ -302,7 +317,7 @@ final class FileViewModel {
                 return await retryFileReport(retryCount: self.numberOfRetries)
             }
         } catch {
-            self.errorMessage = "Error during retry: \(error.localizedDescription)"
+            self.errorMessage = "Error during retry: \(error.displayMessageWithCode)"
             self.statusMonitor = .fail
         }
     }

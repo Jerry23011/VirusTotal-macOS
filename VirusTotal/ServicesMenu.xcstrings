@@ -16,6 +16,12 @@
             "value" : "Scan File with VirusTotal"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Проверить файл с помощью VirusTotal"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39,6 +45,12 @@
             "value" : "Scan URL with VirusTotal"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Проверить URL с помощью VirusTotal"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48,5 +60,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.3"
 }

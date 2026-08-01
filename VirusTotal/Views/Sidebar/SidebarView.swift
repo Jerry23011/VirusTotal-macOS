@@ -12,15 +12,27 @@ struct SidebarView: View {
     @State private var searchText = ""
 
     var body: some View {
-        List(selection: $appState.selectedSidebarItem) {
-            ServiceView(searchText: searchText)
-            ToolView(searchText: searchText)
+        VStack(spacing: 0) {
+            List(selection: $appState.selectedSidebarItem) {
+                ServiceView(searchText: searchText)
+                ToolView(searchText: searchText)
+            }
+            .listStyle(.sidebar)
+            .searchable(text: $searchText,
+                        isPresented: $appState.sidebarSearchFocused,
+                        placement: .sidebar)
+
+            Divider()
+
+            SettingsLink {
+                Label("Settings", systemImage: "gearshape")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
         }
-        .listStyle(.sidebar)
         .frame(minWidth: 200)
-        .searchable(text: $searchText,
-                    isPresented: $appState.sidebarSearchFocused,
-                    placement: .sidebar)
         .navigationSplitViewColumnWidth(200)
     }
 }
