@@ -5073,7 +5073,7 @@
       }
     },
     "settings.api.message.unkown" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {

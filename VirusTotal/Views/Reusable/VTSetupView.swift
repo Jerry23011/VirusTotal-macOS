@@ -176,7 +176,8 @@ struct VTSetupView: View {
 
     /// Return true if any one of apiKey or userName is empty, return false otherwise
     private func isButtonDisabled() -> Bool {
-        return apiKey.isEmpty || userName.isEmpty
+        apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+        userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 

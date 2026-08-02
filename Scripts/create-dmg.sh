@@ -43,7 +43,7 @@ fi
 
 VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_PATH/Contents/Info.plist")
 BUILD=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PATH/Contents/Info.plist")
-DMG_PATH="$ARTIFACTS_DIR/$APP_NAME-$VERSION-$BUILD.dmg"
+DMG_PATH="$ARTIFACTS_DIR/$APP_NAME-$VERSION.dmg"
 RW_DMG_PATH="$WORK_DIR/$APP_NAME-rw.dmg"
 STAGING_DIR="$WORK_DIR/staging"
 
@@ -79,7 +79,7 @@ tell application "Finder"
         set toolbar visible of container window to false
         set statusbar visible of container window to false
         set pathbar visible of container window to false
-        set bounds of container window to {100, 100, 868, 612}
+        set bounds of container window to {100, 100, 868, 644}
         set viewOptions to icon view options of container window
         set arrangement of viewOptions to not arranged
         set icon size of viewOptions to 112
