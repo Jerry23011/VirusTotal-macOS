@@ -47,6 +47,7 @@ struct DownloadsMonitorView: View {
                     Button(action: viewModel.clearResults) {
                         Image(systemName: "trash")
                     }
+                    .disabled(viewModel.hasActiveScanItems)
                     .help("Clear results")
                 }
             }

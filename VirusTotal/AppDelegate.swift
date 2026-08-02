@@ -185,7 +185,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         }
 
         let isMiniMode = Defaults[.miniMode] && !Defaults[.showMainWindowOnNextLaunch]
-        let windowSize = isMiniMode ? NSSize(width: 290, height: 180) : NSSize(width: 800, height: 550)
+        let windowSize = isMiniMode ? NSSize(width: 290, height: 180) : NSSize(width: 808, height: 639)
         let window = NSWindow(
             contentRect: NSRect(origin: .zero, size: windowSize),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
@@ -211,7 +211,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         } else {
             window.contentView = NSHostingView(
                 rootView: AnyView(ContentView()
-                    .frame(minWidth: 800, minHeight: 550)
+                    .frame(minWidth: 808, minHeight: 639)
                     .environment(\.locale, Defaults[.appLanguage].locale))
             )
         }

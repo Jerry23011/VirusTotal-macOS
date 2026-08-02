@@ -65,6 +65,7 @@ final class FileBatchViewModel {
     }
 
     private var processingTasks: [UUID: Task<Void, Never>] = [:]
+    private var cancellationTokens: [UUID: FileAnalysisCancellationToken] = [:]
     private let maxConcurrentUploads = 3
     private var currentConcurrentUploads = 0
 
@@ -84,6 +85,7 @@ final class FileBatchViewModel {
             task.cancel()
             processingTasks.removeValue(forKey: batchFile.id)
         }
+        cancellationTokens.removeValue(forKey: batchFile.id)?.cancelAll()
 
         FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
         batchFiles.removeAll { $0.id == batchFile.id }
@@ -128,22 +130,32 @@ final class FileBatchViewModel {
             }
         }
 
-        isProcessing = false
+        if processingTasks.isEmpty {
+            isProcessing = false
+        }
     }
 
     func cancelAllProcessing() {
         isProcessing = false
 
-        // Cancel all ongoing tasks
+        // Cancel all ongoing tasks and their Alamofire requests.
         for task in processingTasks.values {
             task.cancel()
         }
+        for token in cancellationTokens.values {
+            token.cancelAll()
+        }
         processingTasks.removeAll()
+        cancellationTokens.removeAll()
 
-        // Reset file statuses
+        // Reset active file statuses without changing completed results.
         for batchFile in batchFiles {
-            if batchFile.status == .uploading || batchFile.status == .analyzing {
+            switch batchFile.status {
+            case .preparingArchive, .preparing, .upload, .uploading, .analyzing:
                 batchFile.status = .pending
+                batchFile.uploadProgress = 0.0
+            case .pending, .success, .failed:
+                break
             }
         }
 
@@ -248,20 +260,21 @@ final class FileBatchViewModel {
             return .failure(.invalidSize(fileName: fileName, fileSize: fileSize))
         }
 
-        guard let sha256 = getFileSHA256(for: scanFileURL) else {
+        do {
+            let sha256 = try await getFileSHA256(for: scanFileURL)
+            return .success(
+                PreparedFileDetails(
+                    fileURL: scanFileURL,
+                    fileName: fileName,
+                    fileSize: fileSize,
+                    sha256: sha256
+                )
+            )
+        } catch {
             log.error("Failed to calculate SHA256 for \(fileName)")
             FilePreparation.cleanupPreparedFile(at: scanFileURL)
             return .failure(.sha256(fileName: fileName, fileSize: fileSize))
         }
-
-        return .success(
-            PreparedFileDetails(
-                fileURL: scanFileURL,
-                fileName: fileName,
-                fileSize: fileSize,
-                sha256: sha256
-            )
-        )
     }
 
     private func applyPreparationFailure(_ failure: FilePreparationFailure,
@@ -339,81 +352,40 @@ final class FileBatchViewModel {
     }
 
     private func processFile(_ batchFile: BatchFile) async {
+        let cancellationToken = FileAnalysisCancellationToken()
         let task = Task {
-            await processFileInternal(batchFile)
+            await processFileInternal(batchFile, cancellationToken: cancellationToken)
         }
 
         processingTasks[batchFile.id] = task
+        cancellationTokens[batchFile.id] = cancellationToken
         await task.value
+
+        if cancellationTokens[batchFile.id] === cancellationToken {
+            cancellationTokens.removeValue(forKey: batchFile.id)
+        }
         processingTasks.removeValue(forKey: batchFile.id)
     }
 
-    private func processFileInternal(_ batchFile: BatchFile) async {
+    private func processFileInternal(_ batchFile: BatchFile, cancellationToken: FileAnalysisCancellationToken) async {
         do {
+            try Task.checkCancellation()
             try await refreshPreparedFile(for: batchFile)
             defer {
                 FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
             }
 
-            // First, check if file already exists in VirusTotal
-            batchFile.status = .preparing
-            let reportResult = try await FileAnalysis.shared.getFileReport(sha256: batchFile.sha256)
-            guard reportResult.statusMonitor != .fail else {
-                batchFile.status = .failed
-                batchFile.errorMessage = reportResult.errorMessage
-                log.error(batchFile.errorMessage ?? "Unknown Error")
-                return
-            }
-            if reportResult.getReportSuccess == true {
-                // For manually canceled and restarted scans, if response is empty then start getAnalysisResults
-                guard let stats = reportResult.lastAnalysisStats, isValidResponse(stats) else {
-                    await getAnalysisResults(batchFile)
-                    return
-                }
-                // File exists, update with results
-                updateBatchFileWithResults(batchFile, reportResult)
-                batchFile.status = .success
-
-                storeScanEntry(for: batchFile)
-
-                await NotificationManager.pushNotification(title: String(localized: "notification.analysis.complete.title"))
-                updateCompletedCount()
+            if try await handleExistingReport(for: batchFile, cancellationToken: cancellationToken) {
                 return
             }
 
-            // File doesn't exist, need to upload
-            batchFile.status = .upload
-
-            // Wait for upload slot
-            await waitForUploadSlot()
-
-            guard !Task.isCancelled else { return }
-
-            // Upload file
-            batchFile.status = .uploading
-            currentConcurrentUploads += 1
-
-            let uploadSuccess = try await uploadFile(batchFile)
-            currentConcurrentUploads -= 1
-
-            if uploadSuccess {
-                batchFile.status = .analyzing
-
-                // Wait for analysis to complete
-                try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
-
-                // Get analysis results with retry logic
-                await getAnalysisResults(batchFile)
-            } else {
-                batchFile.status = .failed
-                batchFile.errorMessage = "Upload Failed"
-                log.error("Upload Failed")
-                await NotificationManager.pushNotification(title: String(localized: "notification.upload.fail.title"))
-                updateCompletedCount()
+            try await uploadAndAnalyze(batchFile, cancellationToken: cancellationToken)
+        } catch is CancellationError {
+            if batchFiles.contains(where: { $0.id == batchFile.id }) {
+                batchFile.status = .pending
+                batchFile.uploadProgress = 0.0
             }
-
         } catch {
-            currentConcurrentUploads = max(0, currentConcurrentUploads - 1)
             batchFile.status = .failed
             batchFile.errorMessage = error.displayMessageWithCode
             log.error(batchFile.errorMessage ?? "Unknown Error")
@@ -421,9 +393,70 @@ final class FileBatchViewModel {
         }
     }
 
-    private func waitForUploadSlot() async {
+    private func handleExistingReport(for batchFile: BatchFile,
+                                      cancellationToken: FileAnalysisCancellationToken) async throws -> Bool {
+        try Task.checkCancellation()
+        batchFile.status = .preparing
+        let reportResult = try await FileAnalysis.shared.getFileReport(
+            sha256: batchFile.sha256,
+            cancellationToken: cancellationToken
+        )
+        try Task.checkCancellation()
+
+        guard reportResult.statusMonitor != .fail else {
+            batchFile.status = .failed
+            batchFile.errorMessage = reportResult.errorMessage
+            log.error(batchFile.errorMessage ?? "Unknown Error")
+            return true
+        }
+
+        guard reportResult.getReportSuccess == true else { return false }
+        guard let stats = reportResult.lastAnalysisStats, isValidResponse(stats) else {
+            await getAnalysisResults(batchFile, cancellationToken: cancellationToken)
+            return true
+        }
+
+        updateBatchFileWithResults(batchFile, reportResult)
+        batchFile.status = .success
+        storeScanEntry(for: batchFile)
+        await NotificationManager.pushNotification(title: String(localized: "notification.analysis.complete.title"))
+        updateCompletedCount()
+        return true
+    }
+
+    private func uploadAndAnalyze(_ batchFile: BatchFile, cancellationToken: FileAnalysisCancellationToken) async throws {
+        batchFile.status = .upload
+        try await waitForUploadSlot()
+        try Task.checkCancellation()
+
+        batchFile.status = .uploading
+        currentConcurrentUploads += 1
+        defer {
+            currentConcurrentUploads = max(0, currentConcurrentUploads - 1)
+        }
+
+        let uploadSuccess = try await uploadFile(batchFile, cancellationToken: cancellationToken)
+        try Task.checkCancellation()
+
+        guard uploadSuccess else {
+            batchFile.status = .failed
+            batchFile.errorMessage = "Upload Failed"
+            log.error("Upload Failed")
+            await NotificationManager.pushNotification(title: String(localized: "notification.upload.fail.title"))
+            updateCompletedCount()
+            return
+        }
+
+        batchFile.status = .analyzing
+        try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
+        try Task.checkCancellation()
+        await getAnalysisResults(batchFile, cancellationToken: cancellationToken)
+    }
+
+    private func waitForUploadSlot() async throws {
         while currentConcurrentUploads >= maxConcurrentUploads {
-            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+            try Task.checkCancellation()
+            try await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
         }
     }
 
@@ -444,7 +477,14 @@ final class FileBatchViewModel {
             )
         }
 
-        guard let sha256 = getFileSHA256(for: scanFileURL) else {
+        do {
+            let sha256 = try await getFileSHA256(for: scanFileURL)
+            FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
+            batchFile.preparedFileURL = scanFileURL
+            batchFile.fileName = fileName
+            batchFile.fileSize = fileSize
+            batchFile.sha256 = sha256
+        } catch {
             FilePreparation.cleanupPreparedFile(at: scanFileURL)
             throw NSError(
                 domain: "VirusTotal.FileBatchViewModel",
@@ -452,20 +492,15 @@ final class FileBatchViewModel {
                 userInfo: [NSLocalizedDescriptionKey: "Failed to calculate SHA256"]
             )
         }
-
-        FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
-        batchFile.preparedFileURL = scanFileURL
-        batchFile.fileName = fileName
-        batchFile.fileSize = fileSize
-        batchFile.sha256 = sha256
     }
 
-    private func uploadFile(_ batchFile: BatchFile) async throws -> Bool {
+    private func uploadFile(_ batchFile: BatchFile, cancellationToken: FileAnalysisCancellationToken) async throws -> Bool {
         var apiEndpoint = chooseUploadEndpoint(for: batchFile)
 
         // Get large file endpoint if needed
         if ScanPolicy.requiresLargeUploadEndpoint(fileSize: batchFile.fileSize) {
-            let endpointResult = try await FileAnalysis.shared.getLargeFileEndpoint()
+            let endpointResult = try await FileAnalysis.shared.getLargeFileEndpoint(cancellationToken: cancellationToken)
+            try Task.checkCancellation()
             guard endpointResult.getEndpointSuccess == true,
                   let largeEndpoint = endpointResult.largeFileEndpoint else {
                 log.error("Failed to get large file endpoint")
@@ -476,6 +511,7 @@ final class FileBatchViewModel {
 
         let progressHandler: @Sendable (Double) -> Void = { [weak batchFile] progress in
             Task { @MainActor in
+                guard batchFile?.status == .uploading else { return }
                 batchFile?.uploadProgress = progress
             }
         }
@@ -483,13 +519,14 @@ final class FileBatchViewModel {
         let uploadResult = try await FileAnalysis.shared.uploadFile(
             fileURL: batchFile.preparedFileURL,
             apiEndPoint: apiEndpoint,
+            cancellationToken: cancellationToken,
             progressHandler: progressHandler
         )
 
         return uploadResult.uploadSuccess == true
     }
 
-    private func getAnalysisResults(_ batchFile: BatchFile) async {
+    private func getAnalysisResults(_ batchFile: BatchFile, cancellationToken: FileAnalysisCancellationToken) async {
         var retryCount = 0
         let maxRetries = ScanPolicy.maxPollingAttempts // 28 * 10 seconds = ~5 minutes
 
@@ -497,7 +534,11 @@ final class FileBatchViewModel {
             guard !Task.isCancelled else { return }
 
             do {
-                let reportResult = try await FileAnalysis.shared.getFileReport(sha256: batchFile.sha256)
+                let reportResult = try await FileAnalysis.shared.getFileReport(
+                    sha256: batchFile.sha256,
+                    cancellationToken: cancellationToken
+                )
+                try Task.checkCancellation()
 
                 if reportResult.getReportSuccess == true,
                    let stats = reportResult.lastAnalysisStats,
@@ -522,6 +563,8 @@ final class FileBatchViewModel {
                 try await Task.sleep(nanoseconds: 10_000_000_000) // 10 seconds
                 retryCount += 1
 
+            } catch is CancellationError {
+                return
             } catch {
                 batchFile.status = .failed
                 await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
@@ -532,10 +575,10 @@ final class FileBatchViewModel {
             }
         }
 
-        // Timeout
+        guard !Task.isCancelled else { return }
         batchFile.status = .failed
         await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
-        batchFile.errorMessage = "Analysis timeout"
+        batchFile.errorMessage = String(localized: "downloadsmonitor.error.analysis_timeout")
         log.error(batchFile.errorMessage ?? "Unknown Error")
         updateCompletedCount()
     }
@@ -605,7 +648,7 @@ final class FileBatchViewModel {
         }
     }
 
-    private func getFileSHA256(for fileURL: URL) -> String? {
-        try? FileHasher.sha256(for: fileURL)
+    private func getFileSHA256(for fileURL: URL) async throws -> String {
+        try await FileHasher.sha256Async(for: fileURL)
     }
 }

@@ -17,11 +17,18 @@ enum FileHasher {
 
         var hasher = SHA256()
         while true {
+            try Task.checkCancellation()
             let data = try fileHandle.read(upToCount: chunkSize) ?? Data()
             guard !data.isEmpty else { break }
             hasher.update(data: data)
         }
 
         return hasher.finalize().compactMap { String(format: "%02x", $0) }.joined()
+    }
+
+    static func sha256Async(for fileURL: URL) async throws -> String {
+        try await Task.detached(priority: .utility) {
+            try sha256(for: fileURL)
+        }.value
     }
 }

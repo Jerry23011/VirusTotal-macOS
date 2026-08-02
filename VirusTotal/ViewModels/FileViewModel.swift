@@ -41,8 +41,10 @@ final class FileViewModel {
 
     /// Given a fileURL, setup fileSize, fileName, thumbnailImage, and fileSHA256
     func setupFileInfo(fileURL: URL) async {
+        cancelCurrentRequest()
         cleanupPreparedFile()
         self.cancellationRequested = false
+        self.currentCancellationToken = FileAnalysisCancellationToken()
         self.statusMonitor = .loading
 
         let scanFileURL: URL
@@ -52,6 +54,11 @@ final class FileViewModel {
             log.error("Error preparing file for scan: \(error)")
             self.errorMessage = "Local Error: \(error.displayMessageWithCode)"
             self.statusMonitor = .fail
+            return
+        }
+
+        guard !cancellationRequested else {
+            FilePreparation.cleanupPreparedFile(at: scanFileURL)
             return
         }
 
@@ -69,7 +76,9 @@ final class FileViewModel {
         await getThumbnailImage(for: scanFileURL)
 
         do {
-            self.inputSHA256 = try getFileSHA256(for: scanFileURL)
+            self.inputSHA256 = try await getFileSHA256(for: scanFileURL)
+        } catch is CancellationError {
+            cleanupPreparedFile()
         } catch {
             log.error("Error calculating SHA256 for \(scanFileURL): \(error)")
             self.errorMessage = "Local Error: \(error.displayMessageWithCode)"
@@ -89,7 +98,12 @@ final class FileViewModel {
         guard !self.cancellationRequested else { return }
         guard self.statusMonitor != .fail else { return }
         do {
-            let result = try await FileAnalysis.shared.getFileReport(sha256: inputSHA256)
+            let result = try await FileAnalysis.shared.getFileReport(
+                sha256: inputSHA256,
+                cancellationToken: currentCancellationToken
+            )
+            guard !self.cancellationRequested else { return }
+
             self.statusMonitor = result.statusMonitor
             self.errorMessage = result.errorMessage
             self.lastAnalysisStats = result.lastAnalysisStats
@@ -113,7 +127,10 @@ final class FileViewModel {
                     cleanupPreparedFile()
                 }
             }
+        } catch is CancellationError {
+            cleanupPreparedFile()
         } catch {
+            guard !self.cancellationRequested else { return }
             self.errorMessage = error.displayMessageWithCode
             await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
             self.statusMonitor = .fail
@@ -128,6 +145,7 @@ final class FileViewModel {
 
         let updateProgress: @Sendable (Double) -> Void = { [weak self] progress in
             Task { @MainActor [weak self] in
+                guard self?.cancellationRequested == false else { return }
                 self?.uploadProgress = progress
             }
         }
@@ -136,8 +154,11 @@ final class FileViewModel {
             let uploadResult = try await FileAnalysis.shared.uploadFile(
                 fileURL: self.fileURL ?? defaultFileURL,
                 apiEndPoint: chooseUploadEndpoint(),
+                cancellationToken: currentCancellationToken,
                 progressHandler: updateProgress
             )
+            guard !self.cancellationRequested else { return false }
+
             if uploadResult.uploadSuccess == true {
                 self.statusMonitor = .analyzing
                 self.uploadSuccess = true
@@ -147,7 +168,10 @@ final class FileViewModel {
                 self.statusMonitor = uploadResult.statusMonitor
                 return false
             }
+        } catch is CancellationError {
+            return false
         } catch {
+            guard !self.cancellationRequested else { return false }
             self.errorMessage = error.displayMessageWithCode
             await NotificationManager.pushNotification(title: String(localized: "notification.upload.fail.title"))
             self.statusMonitor = .fail
@@ -159,7 +183,9 @@ final class FileViewModel {
     func fetchLargeFileEndpoint() async throws -> Bool {
         guard !self.cancellationRequested else { return false }
         do {
-            let endpointResult = try await FileAnalysis.shared.getLargeFileEndpoint()
+            let endpointResult = try await FileAnalysis.shared.getLargeFileEndpoint(cancellationToken: currentCancellationToken)
+            guard !self.cancellationRequested else { return false }
+
             if endpointResult.getEndpointSuccess == true {
                 self.largeFileEndpoint = endpointResult.largeFileEndpoint
                 return true
@@ -168,7 +194,10 @@ final class FileViewModel {
                 self.statusMonitor = endpointResult.statusMonitor
                 return false
             }
+        } catch is CancellationError {
+            return false
         } catch {
+            guard !self.cancellationRequested else { return false }
             self.errorMessage = error.displayMessageWithCode
             self.statusMonitor = .fail
             return false
@@ -192,58 +221,73 @@ final class FileViewModel {
         do {
             switch fileSize {
             case ...ScanPolicy.largeUploadThreshold:
-                if try await uploadFile() {
-                    try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
-                    await getNewFileReport()
-                }
+                try await uploadCurrentFileAndFetchReport()
             case (ScanPolicy.largeUploadThreshold + 1)...ScanPolicy.maxUploadSize:
                 if try await fetchLargeFileEndpoint() {
-                    if try await uploadFile() {
-                        try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
-                        await getNewFileReport()
-                    }
+                    try await uploadCurrentFileAndFetchReport()
                 } else {
-                    log.error("Failed to fetch large file upload endpoint.")
-                    self.errorMessage = "Failed to fetch large file upload endpoint."
-                    self.statusMonitor = .fail
+                    handleLargeFileEndpointFailure()
                 }
             default:
                 self.errorMessage = "Unexpected file size."
                 self.statusMonitor = .fail
             }
+        } catch is CancellationError {
+            return
         } catch {
+            guard !self.cancellationRequested else { return }
             self.errorMessage = error.displayMessageWithCode
             self.statusMonitor = .fail
         }
+    }
+
+    private func uploadCurrentFileAndFetchReport() async throws {
+        if try await uploadFile() {
+            try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
+            await getNewFileReport()
+        }
+    }
+
+    private func handleLargeFileEndpointFailure() {
+        guard !cancellationRequested else { return }
+        log.error("Failed to fetch large file upload endpoint.")
+        self.errorMessage = "Failed to fetch large file upload endpoint."
+        self.statusMonitor = .fail
     }
 
     // Request to re-analyze a file
     func requestReanalyze() async {
         guard !self.cancellationRequested else { return }
         do {
-            try await FileAnalysis.shared.reanalyzeFile(sha256: inputSHA256)
+            try await FileAnalysis.shared.reanalyzeFile(
+                sha256: inputSHA256,
+                cancellationToken: currentCancellationToken
+            )
+            guard !self.cancellationRequested else { return }
             await getNewFileReport()
             self.errorMessage = nil
+        } catch is CancellationError {
+            return
         } catch {
+            guard !self.cancellationRequested else { return }
             log.error(error.localizedDescription)
             self.statusMonitor = .fail
             self.errorMessage = error.displayMessageWithCode
         }
     }
 
-    /// Cancel on-going AF request and stop model from running
+    /// Cancel on-going requests and stop model from running.
     func cancelOngoingRequest() {
+        cancellationRequested = true
+        cancelCurrentRequest()
         cleanupPreparedFile()
-        Task {
-            await FileAnalysis.shared.cancelAFRequest()
-            cancellationRequested = true
-        }
     }
 
     // MARK: Private
 
     private var fileURL: URL?
     private var cancellationRequested = false // Flag to track cancellation of code
+    private var currentCancellationToken: FileAnalysisCancellationToken?
     private var largeFileEndpoint: String?
     private var uploadSuccess: Bool?
     private var numberOfRetries = 0
@@ -268,8 +312,8 @@ final class FileViewModel {
     }
 
     /// Given a fileURL, return the sha256 value of the given file
-    private func getFileSHA256(for fileURL: URL) throws -> String {
-        try FileHasher.sha256(for: fileURL)
+    private func getFileSHA256(for fileURL: URL) async throws -> String {
+        try await FileHasher.sha256Async(for: fileURL)
     }
 
     /// Given a fileURL, generate a thumbnail icon and pass it to the viewModel
@@ -302,6 +346,11 @@ final class FileViewModel {
         self.fileURL = nil
     }
 
+    private func cancelCurrentRequest() {
+        currentCancellationToken?.cancelAll()
+        currentCancellationToken = nil
+    }
+
     /// Given a FileAnalysisStats, return true if the sum of the flags is not 0, false otherwise
     private func isValidResponse(responses: FileAnalysisStats) -> Bool {
         ScanPolicy.isValidAnalysisStats(responses)
@@ -320,13 +369,17 @@ final class FileViewModel {
 
         do {
             try await Task.sleep(for: .seconds(10))
+            guard !self.cancellationRequested else { return }
             self.numberOfRetries += 1
             await getFileReport()
 
             if self.statusMonitor != .success {
                 return await retryFileReport(retryCount: self.numberOfRetries)
             }
+        } catch is CancellationError {
+            return
         } catch {
+            guard !self.cancellationRequested else { return }
             self.errorMessage = "Error during retry: \(error.displayMessageWithCode)"
             self.statusMonitor = .fail
         }

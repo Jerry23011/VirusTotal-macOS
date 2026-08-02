@@ -57,14 +57,14 @@ struct AboutView: View {
                         }
                         HStack(spacing: 12) {
                             Button {
-                                openURL(URL(string: "https://github.com/Jerry23011/VirusTotal-macOS")!)
+                                openURL(AppLinks.repository)
                             } label: {
                                 Label("about.github.link", systemImage: "star.fill")
                                     .frame(width: 135, height: 20)
                             }
 
                             Button {
-                                openURL(URL(string: "https://github.com/Jerry23011/VirusTotal-macOS/blob/main/Resources/ACKNOWLEDGEMENTS.md")!)
+                                openURL(AppLinks.acknowledgements)
                             } label: {
                                 Label("about.contributor.link", systemImage: "bookmark.fill")
                                     .frame(width: 135, height: 20)

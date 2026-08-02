@@ -43,7 +43,7 @@ struct VirusTotalApp: App {
                 }
         }
         .windowResizability(.contentSize)
-        .defaultSize(width: 800, height: 550)
+        .defaultSize(width: 808, height: 639)
         .defaultPosition(.center)
         .commandsRemoved()
 
@@ -217,7 +217,7 @@ struct VirusTotalApp: App {
 
     // MARK: Private
     private let updaterController: SPUStandardUpdaterController
-    private let feedbackURL = URL(string: "https://github.com/Jerry23011/VirusTotal-macOS/issues/new/choose")!
+    private let feedbackURL = AppLinks.feedback
 
     private var logDirectory: URL {
         let homeDirectory = FileManager.default.homeDirectoryForCurrentUser

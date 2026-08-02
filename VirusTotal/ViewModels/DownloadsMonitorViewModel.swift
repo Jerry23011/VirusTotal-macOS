@@ -57,8 +57,13 @@ final class DownloadsMonitorViewModel {
         !Defaults[.autoScanDownloadsFolderBookmark].isEmpty
     }
 
+    var hasActiveScanItems: Bool {
+        scanItems.contains { isActiveStatus($0.status) }
+    }
+
     private var monitorTask: Task<Void, Never>?
     private var scanTask: Task<Void, Never>?
+    private var scanCancellationToken: FileAnalysisCancellationToken?
     private var knownFileFingerprints: [String: String] = [:]
     private var queuedFileFingerprints: Set<String> = []
     private var queuedFileHashes: Set<String> = []
@@ -152,6 +157,7 @@ final class DownloadsMonitorViewModel {
     }
 
     func clearResults() {
+        guard !hasActiveScanItems else { return }
         scanItems.forEach { FilePreparation.cleanupPreparedFile(at: $0.preparedFileURL) }
         scanItems.removeAll()
     }
@@ -182,6 +188,10 @@ final class DownloadsMonitorViewModel {
     private func stopMonitoring() {
         monitorTask?.cancel()
         monitorTask = nil
+        scanTask?.cancel()
+        scanTask = nil
+        scanCancellationToken?.cancelAll()
+        scanCancellationToken = nil
         securityScopedFolderURL?.stopAccessingSecurityScopedResource()
         securityScopedFolderURL = nil
         statusMessage = localizedString("downloadsmonitor.status.off")
@@ -212,6 +222,7 @@ final class DownloadsMonitorViewModel {
         }
 
         for url in urls {
+            guard !Task.isCancelled else { return }
             let fingerprint = fileFingerprint(for: url)
 
             if includeKnownFiles {
@@ -236,19 +247,19 @@ final class DownloadsMonitorViewModel {
         do {
             preparedURL = try await FilePreparation.scanFileURL(for: stableURL)
         } catch {
-            appendFailedItem(url: stableURL, message: "Local Error: \(error.displayMessageWithCode)")
+            appendFailedItem(url: stableURL, message: localErrorMessage(error))
             return true
         }
 
         let fileSize = fileSize(for: preparedURL)
         guard ScanPolicy.isSupportedFileSize(fileSize) else {
-            appendFailedItem(originalURL: stableURL, preparedURL: preparedURL, message: "File size exceeds 650 MB or is invalid")
+            appendFailedItem(originalURL: stableURL, preparedURL: preparedURL, message: localizedString("downloadsmonitor.error.file_size"))
             FilePreparation.cleanupPreparedFile(at: preparedURL)
             return true
         }
 
         do {
-            let sha256 = try sha256(for: preparedURL)
+            let sha256 = try await sha256(for: preparedURL)
             guard !queuedFileHashes.contains(sha256) else {
                 FilePreparation.cleanupPreparedFile(at: preparedURL)
                 return true
@@ -267,8 +278,11 @@ final class DownloadsMonitorViewModel {
             )
             statusMessage = queuedMessage(for: stableURL)
             return true
+        } catch is CancellationError {
+            FilePreparation.cleanupPreparedFile(at: preparedURL)
+            return false
         } catch {
-            appendFailedItem(originalURL: stableURL, preparedURL: preparedURL, message: "Failed to calculate SHA256")
+            appendFailedItem(originalURL: stableURL, preparedURL: preparedURL, message: localizedString("downloadsmonitor.error.sha256"))
             FilePreparation.cleanupPreparedFile(at: preparedURL)
             return true
         }
@@ -282,6 +296,7 @@ final class DownloadsMonitorViewModel {
             await self.processQueuedItems()
             await MainActor.run {
                 self.scanTask = nil
+                self.scanCancellationToken = nil
             }
         }
     }
@@ -290,19 +305,30 @@ final class DownloadsMonitorViewModel {
 
     private func processQueuedItems() async {
         while let item = scanItems.reversed().first(where: { $0.status == .queued }) {
+            guard !Task.isCancelled else { return }
             await process(item)
         }
     }
 
     private func process(_ item: DownloadScanItem) async {
+        let cancellationToken = FileAnalysisCancellationToken()
+        scanCancellationToken = cancellationToken
         defer {
+            if scanCancellationToken === cancellationToken {
+                scanCancellationToken = nil
+            }
             FilePreparation.cleanupPreparedFile(at: item.preparedFileURL)
         }
 
         item.status = .preparing
 
         do {
-            let reportResult = try await FileAnalysis.shared.getFileReport(sha256: item.sha256)
+            let reportResult = try await FileAnalysis.shared.getFileReport(
+                sha256: item.sha256,
+                cancellationToken: cancellationToken
+            )
+            try Task.checkCancellation()
+
             if reportResult.getReportSuccess == true,
                let stats = reportResult.lastAnalysisStats,
                isValidResponse(stats) {
@@ -311,28 +337,35 @@ final class DownloadsMonitorViewModel {
             }
 
             guard reportResult.statusMonitor != .fail else {
-                fail(item, message: reportResult.errorMessage ?? "Failed to get file report")
+                fail(item, message: reportResult.errorMessage ?? localizedString("downloadsmonitor.error.report"))
                 return
             }
 
             item.status = .uploading
             notifyUploadStarted(for: item)
-            if try await upload(item) {
+            if try await upload(item, cancellationToken: cancellationToken) {
+                try Task.checkCancellation()
                 item.status = .analyzing
                 try await Task.sleep(for: .seconds(20))
-                await waitForAnalysis(item)
+                await waitForAnalysis(item, cancellationToken: cancellationToken)
             } else {
-                fail(item, message: "Upload failed")
+                fail(item, message: localizedString("downloadsmonitor.error.upload_failed"))
+            }
+        } catch is CancellationError {
+            if scanItems.contains(where: { $0.id == item.id }) {
+                item.status = .queued
+                item.uploadProgress = 0
             }
         } catch {
             fail(item, message: error.displayMessageWithCode)
         }
     }
 
-    private func upload(_ item: DownloadScanItem) async throws -> Bool {
+    private func upload(_ item: DownloadScanItem, cancellationToken: FileAnalysisCancellationToken) async throws -> Bool {
         var endpoint = defaultUploadURL
         if ScanPolicy.requiresLargeUploadEndpoint(fileSize: item.fileSize) {
-            let endpointResult = try await FileAnalysis.shared.getLargeFileEndpoint()
+            let endpointResult = try await FileAnalysis.shared.getLargeFileEndpoint(cancellationToken: cancellationToken)
+            try Task.checkCancellation()
             guard endpointResult.getEndpointSuccess == true,
                   let largeEndpoint = endpointResult.largeFileEndpoint else {
                 return false
@@ -342,6 +375,7 @@ final class DownloadsMonitorViewModel {
 
         let progressHandler: @Sendable (Double) -> Void = { [weak item] progress in
             Task { @MainActor in
+                guard item?.status == .uploading else { return }
                 item?.uploadProgress = progress
             }
         }
@@ -349,15 +383,22 @@ final class DownloadsMonitorViewModel {
         let uploadResult = try await FileAnalysis.shared.uploadFile(
             fileURL: item.preparedFileURL,
             apiEndPoint: endpoint,
+            cancellationToken: cancellationToken,
             progressHandler: progressHandler
         )
         return uploadResult.uploadSuccess == true
     }
 
-    private func waitForAnalysis(_ item: DownloadScanItem) async {
+    private func waitForAnalysis(_ item: DownloadScanItem, cancellationToken: FileAnalysisCancellationToken) async {
         for _ in 0..<28 {
             do {
-                let reportResult = try await FileAnalysis.shared.getFileReport(sha256: item.sha256)
+                try Task.checkCancellation()
+                let reportResult = try await FileAnalysis.shared.getFileReport(
+                    sha256: item.sha256,
+                    cancellationToken: cancellationToken
+                )
+                try Task.checkCancellation()
+
                 if reportResult.getReportSuccess == true,
                    let stats = reportResult.lastAnalysisStats,
                    isValidResponse(stats) {
@@ -366,13 +407,16 @@ final class DownloadsMonitorViewModel {
                 }
 
                 try await Task.sleep(for: .seconds(10))
+            } catch is CancellationError {
+                return
             } catch {
                 fail(item, message: error.displayMessageWithCode)
                 return
             }
         }
 
-        fail(item, message: "Analysis timeout")
+        guard !Task.isCancelled else { return }
+        fail(item, message: localizedString("downloadsmonitor.error.analysis_timeout"))
     }
 
     private func complete(_ item: DownloadScanItem, with result: FileAnalysisResult) {
@@ -383,11 +427,11 @@ final class DownloadsMonitorViewModel {
         let stats = item.analysisStats
         let detections = (stats?.malicious ?? 0) + (stats?.suspicious ?? 0)
         let total = stats?.allFlags.sum { $0 } ?? 0
-        let body = "\(detections)/\(total) detections"
+        let body = String(format: localizedString("downloadsmonitor.notification.detections"), detections, total)
         let userInfo = notificationUserInfo(for: item)
         Task {
             await NotificationManager.pushNotification(
-                title: "Downloads scan complete",
+                title: localizedString("downloadsmonitor.notification.complete.title"),
                 subtitle: item.fileName,
                 body: body,
                 userInfo: userInfo
@@ -399,9 +443,9 @@ final class DownloadsMonitorViewModel {
         let userInfo = notificationUserInfo(for: item)
         Task {
             await NotificationManager.pushNotification(
-                title: "Uploading to VirusTotal",
+                title: localizedString("downloadsmonitor.notification.uploading.title"),
                 subtitle: item.fileName,
-                body: "The app is uploading this file. Please wait.",
+                body: localizedString("downloadsmonitor.notification.uploading.body"),
                 userInfo: userInfo
             )
         }
@@ -413,7 +457,7 @@ final class DownloadsMonitorViewModel {
         let userInfo = notificationUserInfo(for: item)
         Task {
             await NotificationManager.pushNotification(
-                title: "Downloads scan failed",
+                title: localizedString("downloadsmonitor.notification.failed.title"),
                 subtitle: item.fileName,
                 body: message,
                 userInfo: userInfo
@@ -573,6 +617,7 @@ final class DownloadsMonitorViewModel {
         var unchangedChecks = 0
 
         for _ in 0..<8 {
+            guard !Task.isCancelled else { return nil }
             guard !hasActiveDownloadMarker(for: url), fileSize(for: url) > 0 else {
                 try? await Task.sleep(for: .seconds(3))
                 continue
@@ -619,8 +664,8 @@ final class DownloadsMonitorViewModel {
         }
     }
 
-    private func sha256(for url: URL) throws -> String {
-        try FileHasher.sha256(for: url)
+    private func sha256(for url: URL) async throws -> String {
+        try await FileHasher.sha256Async(for: url)
     }
 
     private func monitoringMessage(for folderURL: URL) -> String {
@@ -635,8 +680,21 @@ final class DownloadsMonitorViewModel {
         String(format: localizedString("downloadsmonitor.status.queued"), fileURL.lastPathComponent)
     }
 
+    private func localErrorMessage(_ error: Error) -> String {
+        String(format: localizedString("downloadsmonitor.error.local"), error.displayMessageWithCode)
+    }
+
     private func localizedString(_ key: String) -> String {
         Defaults[.appLanguage].localizedString(forKey: key)
+    }
+
+    private func isActiveStatus(_ status: DownloadScanStatus) -> Bool {
+        switch status {
+        case .queued, .preparing, .uploading, .analyzing:
+            true
+        case .success, .failed:
+            false
+        }
     }
 
     private static var savedFolderURL: URL {
