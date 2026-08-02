@@ -63,6 +63,9 @@ final class DownloadsMonitorViewModel {
 
     private var monitorTask: Task<Void, Never>?
     private var scanTask: Task<Void, Never>?
+    private var scanTaskID: UUID?
+    private var scanExistingTask: Task<Void, Never>?
+    private var scanExistingTaskID: UUID?
     private var scanCancellationToken: FileAnalysisCancellationToken?
     private var knownFileFingerprints: [String: String] = [:]
     private var queuedFileFingerprints: Set<String> = []
@@ -103,6 +106,7 @@ final class DownloadsMonitorViewModel {
     }
 
     func setFolderURL(_ url: URL) {
+        cancelScanExistingTask()
         saveSecurityScopedBookmark(for: url)
         Defaults[.autoScanDownloadsFolderPath] = url.path
         folderURL = url
@@ -117,9 +121,24 @@ final class DownloadsMonitorViewModel {
     }
 
     func scanExistingFiles() {
-        Task {
-            await scanFolder(includeKnownFiles: true)
-            startScanQueueIfNeeded()
+        guard scanExistingTask == nil else { return }
+
+        let taskID = UUID()
+        scanExistingTaskID = taskID
+        scanExistingTask = Task { [weak self] in
+            guard let self else { return }
+            await self.scanFolder(includeKnownFiles: true)
+            let wasCancelled = Task.isCancelled
+
+            await MainActor.run {
+                guard self.scanExistingTaskID == taskID else { return }
+                self.scanExistingTask = nil
+                self.scanExistingTaskID = nil
+
+                if !wasCancelled {
+                    self.startScanQueueIfNeeded()
+                }
+            }
         }
     }
 
@@ -188,13 +207,33 @@ final class DownloadsMonitorViewModel {
     private func stopMonitoring() {
         monitorTask?.cancel()
         monitorTask = nil
+        cancelScanExistingTask()
         scanTask?.cancel()
         scanTask = nil
+        scanTaskID = nil
         scanCancellationToken?.cancelAll()
         scanCancellationToken = nil
+        cancelQueuedScanItems()
         securityScopedFolderURL?.stopAccessingSecurityScopedResource()
         securityScopedFolderURL = nil
         statusMessage = localizedString("downloadsmonitor.status.off")
+    }
+
+    private func cancelScanExistingTask() {
+        scanExistingTask?.cancel()
+        scanExistingTask = nil
+        scanExistingTaskID = nil
+    }
+
+    private func cancelQueuedScanItems() {
+        for item in scanItems where isActiveStatus(item.status) {
+            FilePreparation.cleanupPreparedFile(at: item.preparedFileURL)
+            item.status = .failed
+            item.uploadProgress = 0
+            item.errorMessage = "Cancelled"
+        }
+        queuedFileFingerprints.removeAll()
+        queuedFileHashes.removeAll()
     }
 
     private func snapshotCurrentFiles() {
@@ -291,11 +330,15 @@ final class DownloadsMonitorViewModel {
     private func startScanQueueIfNeeded() {
         guard scanTask == nil else { return }
 
+        let taskID = UUID()
+        scanTaskID = taskID
         scanTask = Task { [weak self] in
             guard let self else { return }
             await self.processQueuedItems()
             await MainActor.run {
+                guard self.scanTaskID == taskID else { return }
                 self.scanTask = nil
+                self.scanTaskID = nil
                 self.scanCancellationToken = nil
             }
         }
@@ -352,7 +395,8 @@ final class DownloadsMonitorViewModel {
                 fail(item, message: localizedString("downloadsmonitor.error.upload_failed"))
             }
         } catch is CancellationError {
-            if scanItems.contains(where: { $0.id == item.id }) {
+            if scanCancellationToken === cancellationToken,
+               scanItems.contains(where: { $0.id == item.id }) {
                 item.status = .queued
                 item.uploadProgress = 0
             }

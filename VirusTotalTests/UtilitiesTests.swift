@@ -4,6 +4,7 @@
 //
 
 import AppKit
+import Defaults
 import Foundation
 import Testing
 @testable import VirusTotal
@@ -65,6 +66,36 @@ struct AppBehaviorTests {
         let appDelegate = AppDelegate()
 
         #expect(!appDelegate.applicationShouldTerminateAfterLastWindowClosed(NSApp))
+    }
+
+    @Test("Disabling downloads monitor completes queued items")
+    func disablingDownloadsMonitorCompletesQueuedItems() {
+        let viewModel = DownloadsMonitorViewModel.shared
+        let oldEnabled = viewModel.isEnabled
+        let oldDefaultEnabled = Defaults[.autoScanDownloadsEnabled]
+        defer {
+            viewModel.scanItems.removeAll()
+            viewModel.isEnabled = oldEnabled
+            Defaults[.autoScanDownloadsEnabled] = oldDefaultEnabled
+        }
+
+        let item = DownloadScanItem(
+            originalFileURL: URL(filePath: "/tmp/queued.zip"),
+            preparedFileURL: URL(filePath: "/tmp/queued.zip"),
+            fileSize: 1,
+            sha256: "1"
+        )
+        viewModel.scanItems = [item]
+        viewModel.isEnabled = true
+
+        viewModel.setMonitoringEnabled(false)
+
+        #expect(item.status == .failed)
+        #expect(!viewModel.hasActiveScanItems)
+
+        viewModel.clearResults()
+
+        #expect(viewModel.scanItems.isEmpty)
     }
 
     @Test("Notification file selection moves the item to the top")

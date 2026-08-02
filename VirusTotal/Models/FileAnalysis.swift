@@ -26,6 +26,12 @@ final class FileAnalysisCancellationToken: @unchecked Sendable {
         return id
     }
 
+    func unregister(_ id: UUID) {
+        lock.lock()
+        requests.removeValue(forKey: id)
+        lock.unlock()
+    }
+
     func cancelAll() {
         lock.lock()
         isCancelled = true
@@ -64,6 +70,28 @@ private final class FileAnalysisRequestBox: @unchecked Sendable {
     }
 }
 
+private final class FileAnalysisRequestRegistrationBox: @unchecked Sendable {
+    private let lock = NSLock()
+    private var id: UUID?
+
+    func set(_ id: UUID?) {
+        lock.lock()
+        self.id = id
+        lock.unlock()
+    }
+
+    func unregister(from cancellationToken: FileAnalysisCancellationToken?) {
+        lock.lock()
+        let id = id
+        self.id = nil
+        lock.unlock()
+
+        if let id {
+            cancellationToken?.unregister(id)
+        }
+    }
+}
+
 actor FileAnalysis {
     static let shared = FileAnalysis()
 
@@ -74,48 +102,23 @@ actor FileAnalysis {
             "x-apikey": apiKey
         ]
         let requestBox = FileAnalysisRequestBox()
+        let registrationBox = FileAnalysisRequestRegistrationBox()
 
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
                 let request = AF.request(apiEndPoint, method: .get, headers: headers)
                     .validate()
                     .responseDecodable(of: FileAnalysisResponse.self) { response in
+                        defer { registrationBox.unregister(from: cancellationToken) }
+
                         if response.error?.isExplicitlyCancelledError == true {
                             continuation.resume(throwing: CancellationError())
                             return
                         }
 
-                        var fileAlysResult = FileAnalysisResult(getReportSuccess: nil,
-                                                                statusMonitor: .analyzing,
-                                                                errorMessage: nil,
-                                                                lastAnalysisStats: nil,
-                                                                typeDescription: nil,
-                                                                lastAnalysisDate: nil,
-                                                                reputation: nil,
-                                                                uniqueSources: nil)
-
-                        switch response.result {
-                        case .success(let analyses):
-                            let alysAttrs = analyses.data.attributes
-                            fileAlysResult.lastAnalysisStats = alysAttrs.lastAnalysisStats
-                            fileAlysResult.lastAnalysisDate = alysAttrs.lastAnalysisDate?.unixTimestampToDate()
-                            fileAlysResult.reputation = alysAttrs.reputation
-                            fileAlysResult.typeDescription = alysAttrs.typeDescription
-                            fileAlysResult.uniqueSources = alysAttrs.uniqueSources
-                            fileAlysResult.getReportSuccess = true
-                            continuation.resume(returning: fileAlysResult)
-                        case .failure(let error):
-                            if response.response?.statusCode == 404 {
-                                fileAlysResult.statusMonitor = .upload
-                            } else {
-                                log.error(error)
-                                fileAlysResult.errorMessage = error.displayMessageWithCode
-                                fileAlysResult.statusMonitor = .fail
-                            }
-                            continuation.resume(returning: fileAlysResult)
-                        }
+                        continuation.resume(returning: self.makeFileAnalysisResult(from: response))
                     }
-                _ = cancellationToken?.register(request)
+                registrationBox.set(cancellationToken?.register(request))
                 requestBox.set(request)
             }
         } onCancel: {
@@ -133,6 +136,7 @@ actor FileAnalysis {
             "x-apikey": apiKey
         ]
         let requestBox = FileAnalysisRequestBox()
+        let registrationBox = FileAnalysisRequestRegistrationBox()
 
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
@@ -147,6 +151,8 @@ actor FileAnalysis {
                     progressHandler(progress.fractionCompleted)
                 }
                 .responseDecodable(of: FileUploadResponse.self) { response in
+                    defer { registrationBox.unregister(from: cancellationToken) }
+
                     if response.error?.isExplicitlyCancelledError == true {
                         continuation.resume(throwing: CancellationError())
                         return
@@ -168,7 +174,7 @@ actor FileAnalysis {
                         continuation.resume(returning: fileUploadResult)
                     }
                 }
-                _ = cancellationToken?.register(request)
+                registrationBox.set(cancellationToken?.register(request))
                 requestBox.set(request)
             }
         } onCancel: {
@@ -182,12 +188,15 @@ actor FileAnalysis {
             "x-apikey": apiKey
         ]
         let requestBox = FileAnalysisRequestBox()
+        let registrationBox = FileAnalysisRequestRegistrationBox()
 
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
                 let request = AF.request(apiEndPoint, method: .get, headers: headers)
                     .validate()
                     .responseDecodable(of: FileGetEndpointResponse.self) { response in
+                        defer { registrationBox.unregister(from: cancellationToken) }
+
                         if response.error?.isExplicitlyCancelledError == true {
                             continuation.resume(throwing: CancellationError())
                             return
@@ -211,7 +220,7 @@ actor FileAnalysis {
                             continuation.resume(returning: endpointResult)
                         }
                     }
-                _ = cancellationToken?.register(request)
+                registrationBox.set(cancellationToken?.register(request))
                 requestBox.set(request)
             }
         } onCancel: {
@@ -225,6 +234,7 @@ actor FileAnalysis {
             "x-apikey": apiKey
         ]
         let requestBox = FileAnalysisRequestBox()
+        let registrationBox = FileAnalysisRequestRegistrationBox()
 
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
@@ -233,6 +243,8 @@ actor FileAnalysis {
                                          headers: headers)
                     .validate()
                     .response { response in
+                        defer { registrationBox.unregister(from: cancellationToken) }
+
                         if response.error?.isExplicitlyCancelledError == true {
                             continuation.resume(throwing: CancellationError())
                             return
@@ -246,7 +258,7 @@ actor FileAnalysis {
                             continuation.resume(throwing: error)
                         }
                     }
-                _ = cancellationToken?.register(request)
+                registrationBox.set(cancellationToken?.register(request))
                 requestBox.set(request)
             }
         } onCancel: {
@@ -257,6 +269,38 @@ actor FileAnalysis {
     // MARK: Private
 
     private var apiKey: String { APIKeychain.apiKey }
+
+    nonisolated private func makeFileAnalysisResult(from response: DataResponse<FileAnalysisResponse, AFError>) -> FileAnalysisResult {
+        var result = FileAnalysisResult(getReportSuccess: nil,
+                                        statusMonitor: .analyzing,
+                                        errorMessage: nil,
+                                        lastAnalysisStats: nil,
+                                        typeDescription: nil,
+                                        lastAnalysisDate: nil,
+                                        reputation: nil,
+                                        uniqueSources: nil)
+
+        switch response.result {
+        case .success(let analyses):
+            let attributes = analyses.data.attributes
+            result.lastAnalysisStats = attributes.lastAnalysisStats
+            result.lastAnalysisDate = attributes.lastAnalysisDate?.unixTimestampToDate()
+            result.reputation = attributes.reputation
+            result.typeDescription = attributes.typeDescription
+            result.uniqueSources = attributes.uniqueSources
+            result.getReportSuccess = true
+        case .failure(let error):
+            if response.response?.statusCode == 404 {
+                result.statusMonitor = .upload
+            } else {
+                log.error(error)
+                result.errorMessage = error.displayMessageWithCode
+                result.statusMonitor = .fail
+            }
+        }
+
+        return result
+    }
 
     /// Appends a file to the given MultipartFormData instance.
     /// Handle AF's .bodyPartFilenameInvalid error for files without an extension e.g. Mach-O

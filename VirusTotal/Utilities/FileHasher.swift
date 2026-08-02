@@ -27,8 +27,15 @@ enum FileHasher {
     }
 
     static func sha256Async(for fileURL: URL) async throws -> String {
-        try await Task.detached(priority: .utility) {
+        try Task.checkCancellation()
+        let hashingTask = Task.detached(priority: .utility) {
             try sha256(for: fileURL)
-        }.value
+        }
+
+        return try await withTaskCancellationHandler {
+            try await hashingTask.value
+        } onCancel: {
+            hashingTask.cancel()
+        }
     }
 }

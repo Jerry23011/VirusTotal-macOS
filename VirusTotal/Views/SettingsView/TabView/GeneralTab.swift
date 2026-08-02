@@ -15,7 +15,6 @@ struct GeneralTab: View {
 
     @State private var autoChecksForUpdates: Bool
     @State private var selectedLanguage = Defaults[.appLanguage]
-    @State private var showLanguageRestartAlert = false
     @Default(.cleanURL) private var cleanURL: Bool
     @Default(.startPage) private var startPage: NavigationItem
     @Default(.enableNotification) private var enableNotification: Bool
@@ -63,8 +62,7 @@ struct GeneralTab: View {
                     SettingsViewItem(
                         color: .blue,
                         systemImage: "globe",
-                        labelText: "settings.general.language",
-                        subtitleText: "settings.general.language.restart"
+                        labelText: "settings.general.language"
                     )
                 }
                 .controlSize(.regular)
@@ -72,7 +70,6 @@ struct GeneralTab: View {
                 .onChange(of: selectedLanguage) { _, newValue in
                     Defaults[.appLanguage] = newValue
                     newValue.apply()
-                    showLanguageRestartAlert = true
                 }
             }
 
@@ -109,14 +106,6 @@ struct GeneralTab: View {
         .controlSize(.small)
         .formStyle(.grouped)
         .scrollDisabled(true)
-        .alert("Restart required", isPresented: $showLanguageRestartAlert) {
-            Button("Restart") {
-                ApplicationRelauncher.restart()
-            }
-            Button("Later", role: .cancel) {}
-        } message: {
-            Text("Restart VirusTotal to apply language changes.")
-        }
     }
 
     // MARK: Internal

@@ -36,58 +36,75 @@ enum FilePreparation {
     }
 
     private static func makeZipArchive(for appBundleURL: URL) async throws -> URL {
-        try await Task.detached(priority: .userInitiated) {
-            let archiveDirectory = archiveRootDirectory
-                .appendingPathComponent(UUID().uuidString, isDirectory: true)
-            do {
-                try FileManager.default.createDirectory(at: archiveDirectory, withIntermediateDirectories: true)
-            } catch {
+        try Task.checkCancellation()
+        let processBox = CancellableProcessBox()
+        let archiveTask = Task.detached(priority: .userInitiated) {
+            try createZipArchive(for: appBundleURL, processBox: processBox)
+        }
+
+        return try await withTaskCancellationHandler {
+            try await archiveTask.value
+        } onCancel: {
+            archiveTask.cancel()
+            processBox.cancel()
+        }
+    }
+
+    private static func createZipArchive(for appBundleURL: URL, processBox: CancellableProcessBox) throws -> URL {
+        try Task.checkCancellation()
+        let archiveDirectory = archiveRootDirectory
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        do {
+            try FileManager.default.createDirectory(at: archiveDirectory, withIntermediateDirectories: true)
+        } catch {
+            try? FileManager.default.removeItem(at: archiveDirectory)
+            throw error
+        }
+
+        let archiveURL = archiveDirectory
+            .appendingPathComponent(appBundleURL.lastPathComponent)
+            .appendingPathExtension("zip")
+        var shouldKeepArchive = false
+        defer {
+            if !shouldKeepArchive {
                 try? FileManager.default.removeItem(at: archiveDirectory)
-                throw error
             }
+        }
 
-            let archiveURL = archiveDirectory
-                .appendingPathComponent(appBundleURL.lastPathComponent)
-                .appendingPathExtension("zip")
-            var shouldKeepArchive = false
-            defer {
-                if !shouldKeepArchive {
-                    try? FileManager.default.removeItem(at: archiveDirectory)
-                }
-            }
+        let process = Process()
+        process.executableURL = URL(filePath: "/usr/bin/ditto")
+        process.arguments = [
+            "-c",
+            "-k",
+            "--keepParent",
+            appBundleURL.path,
+            archiveURL.path
+        ]
 
-            let process = Process()
-            process.executableURL = URL(filePath: "/usr/bin/ditto")
-            process.arguments = [
-                "-c",
-                "-k",
-                "--keepParent",
-                appBundleURL.path,
-                archiveURL.path
-            ]
+        let errorPipe = Pipe()
+        process.standardError = errorPipe
 
-            let errorPipe = Pipe()
-            process.standardError = errorPipe
+        try processBox.set(process)
+        defer { processBox.clear(process) }
+        try process.run()
+        process.waitUntilExit()
+        try Task.checkCancellation()
 
-            try process.run()
-            process.waitUntilExit()
+        guard process.terminationStatus == 0 else {
+            let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+            let details = String(data: errorData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
+            let message = details?.isEmpty == false
+                ? "Failed to create .app.zip archive: \(details!)"
+                : "Failed to create .app.zip archive."
+            throw NSError(
+                domain: "VirusTotal.FilePreparation",
+                code: Int(process.terminationStatus),
+                userInfo: [NSLocalizedDescriptionKey: message]
+            )
+        }
 
-            guard process.terminationStatus == 0 else {
-                let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-                let details = String(data: errorData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
-                let message = details?.isEmpty == false
-                    ? "Failed to create .app.zip archive: \(details!)"
-                    : "Failed to create .app.zip archive."
-                throw NSError(
-                    domain: "VirusTotal.FilePreparation",
-                    code: Int(process.terminationStatus),
-                    userInfo: [NSLocalizedDescriptionKey: message]
-                )
-            }
-
-            shouldKeepArchive = true
-            return archiveURL
-        }.value
+        shouldKeepArchive = true
+        return archiveURL
     }
 
     private static func cleanupOldTemporaryArchives() {
@@ -112,6 +129,42 @@ enum FilePreparation {
         guard standardizedURL.path.hasPrefix(standardizedRoot + "/") else { return nil }
 
         return standardizedURL.deletingLastPathComponent()
+    }
+}
+
+private final class CancellableProcessBox: @unchecked Sendable {
+    private let lock = NSLock()
+    private var process: Process?
+    private var isCancelled = false
+
+    func set(_ process: Process) throws {
+        lock.lock()
+        if isCancelled {
+            lock.unlock()
+            process.terminate()
+            throw CancellationError()
+        }
+
+        self.process = process
+        lock.unlock()
+    }
+
+    func clear(_ process: Process) {
+        lock.lock()
+        if self.process === process {
+            self.process = nil
+        }
+        lock.unlock()
+    }
+
+    func cancel() {
+        lock.lock()
+        isCancelled = true
+        let process = process
+        self.process = nil
+        lock.unlock()
+
+        process?.terminate()
     }
 }
 

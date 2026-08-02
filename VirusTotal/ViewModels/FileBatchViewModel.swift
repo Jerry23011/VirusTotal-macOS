@@ -66,10 +66,19 @@ final class FileBatchViewModel {
 
     private var processingTasks: [UUID: Task<Void, Never>] = [:]
     private var cancellationTokens: [UUID: FileAnalysisCancellationToken] = [:]
+    private var securityScopedFileURLs: Set<URL> = []
     private let maxConcurrentUploads = 3
     private var currentConcurrentUploads = 0
 
     init() {}
+
+    deinit {
+        MainActor.assumeIsolated {
+            for url in securityScopedFileURLs {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+    }
 
     // MARK: - Public Methods
 
@@ -88,6 +97,7 @@ final class FileBatchViewModel {
         cancellationTokens.removeValue(forKey: batchFile.id)?.cancelAll()
 
         FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
+        releaseSecurityScopedAccess(for: batchFile.originalFileURL)
         batchFiles.removeAll { $0.id == batchFile.id }
         updateProgress()
     }
@@ -95,6 +105,7 @@ final class FileBatchViewModel {
     func clearAllFiles() {
         cancelAllProcessing()
         batchFiles.forEach { FilePreparation.cleanupPreparedFile(at: $0.preparedFileURL) }
+        releaseAllSecurityScopedAccess()
         batchFiles.removeAll()
         resetProgress()
         resetAllFileStatuses()
@@ -184,10 +195,19 @@ final class FileBatchViewModel {
     }
 
     private func addFile(_ url: URL) async {
-        _ = url.startAccessingSecurityScopedResource()
+        let didStartAccessing = url.startAccessingSecurityScopedResource()
+        if didStartAccessing {
+            securityScopedFileURLs.insert(url)
+        }
 
-        guard let inspection = inspectFile(at: url) else { return }
-        guard !isDuplicateFile(url, preparedFileName: inspection.preparedFileName) else { return }
+        guard let inspection = inspectFile(at: url) else {
+            releaseSecurityScopedAccess(for: url)
+            return
+        }
+        guard !isDuplicateFile(url, preparedFileName: inspection.preparedFileName) else {
+            releaseSecurityScopedAccess(for: url)
+            return
+        }
 
         let batchFile = makeBatchFile(for: url)
         appendPreparingFileIfNeeded(batchFile, shouldShowPreparation: inspection.shouldShowPreparation)
@@ -363,8 +383,8 @@ final class FileBatchViewModel {
 
         if cancellationTokens[batchFile.id] === cancellationToken {
             cancellationTokens.removeValue(forKey: batchFile.id)
+            processingTasks.removeValue(forKey: batchFile.id)
         }
-        processingTasks.removeValue(forKey: batchFile.id)
     }
 
     private func processFileInternal(_ batchFile: BatchFile, cancellationToken: FileAnalysisCancellationToken) async {
@@ -650,5 +670,17 @@ final class FileBatchViewModel {
 
     private func getFileSHA256(for fileURL: URL) async throws -> String {
         try await FileHasher.sha256Async(for: fileURL)
+    }
+
+    private func releaseSecurityScopedAccess(for url: URL) {
+        guard securityScopedFileURLs.remove(url) != nil else { return }
+        url.stopAccessingSecurityScopedResource()
+    }
+
+    private func releaseAllSecurityScopedAccess() {
+        for url in securityScopedFileURLs {
+            url.stopAccessingSecurityScopedResource()
+        }
+        securityScopedFileURLs.removeAll()
     }
 }

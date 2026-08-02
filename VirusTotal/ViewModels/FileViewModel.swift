@@ -34,7 +34,6 @@ final class FileViewModel {
 
     /// Handle the File Import modifier, run setupFileInfo and getFileReport
     func handleFileImport(_ url: URL) async {
-        _ = url.startAccessingSecurityScopedResource()
         await setupFileInfo(fileURL: url)
         await getFileReport()
     }
@@ -43,6 +42,7 @@ final class FileViewModel {
     func setupFileInfo(fileURL: URL) async {
         cancelCurrentRequest()
         cleanupPreparedFile()
+        activateSecurityScopedAccess(for: fileURL)
         self.cancellationRequested = false
         self.currentCancellationToken = FileAnalysisCancellationToken()
         self.statusMonitor = .loading
@@ -51,6 +51,7 @@ final class FileViewModel {
         do {
             scanFileURL = try await FilePreparation.scanFileURL(for: fileURL)
         } catch {
+            releaseSecurityScopedAccess()
             log.error("Error preparing file for scan: \(error)")
             self.errorMessage = "Local Error: \(error.displayMessageWithCode)"
             self.statusMonitor = .fail
@@ -59,6 +60,7 @@ final class FileViewModel {
 
         guard !cancellationRequested else {
             FilePreparation.cleanupPreparedFile(at: scanFileURL)
+            releaseSecurityScopedAccess()
             return
         }
 
@@ -285,7 +287,14 @@ final class FileViewModel {
 
     // MARK: Private
 
+    deinit {
+        MainActor.assumeIsolated {
+            securityScopedFileURL?.stopAccessingSecurityScopedResource()
+        }
+    }
+
     private var fileURL: URL?
+    private var securityScopedFileURL: URL?
     private var cancellationRequested = false // Flag to track cancellation of code
     private var currentCancellationToken: FileAnalysisCancellationToken?
     private var largeFileEndpoint: String?
@@ -341,9 +350,23 @@ final class FileViewModel {
     }
 
     private func cleanupPreparedFile() {
-        guard let fileURL else { return }
-        FilePreparation.cleanupPreparedFile(at: fileURL)
-        self.fileURL = nil
+        if let fileURL {
+            FilePreparation.cleanupPreparedFile(at: fileURL)
+            self.fileURL = nil
+        }
+        releaseSecurityScopedAccess()
+    }
+
+    private func activateSecurityScopedAccess(for url: URL) {
+        releaseSecurityScopedAccess()
+        if url.startAccessingSecurityScopedResource() {
+            securityScopedFileURL = url
+        }
+    }
+
+    private func releaseSecurityScopedAccess() {
+        securityScopedFileURL?.stopAccessingSecurityScopedResource()
+        securityScopedFileURL = nil
     }
 
     private func cancelCurrentRequest() {
