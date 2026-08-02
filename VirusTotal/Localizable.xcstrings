@@ -510,7 +510,7 @@
     },
     "common.cancelled" : {
       "comment" : "A generic cancellation status shown for stopped scans.",
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -643,7 +643,7 @@
       }
     },
     "downloadsmonitor.error.file_size" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -672,7 +672,7 @@
       }
     },
     "downloadsmonitor.error.local" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -701,7 +701,7 @@
       }
     },
     "downloadsmonitor.error.report" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -730,7 +730,7 @@
       }
     },
     "downloadsmonitor.error.sha256" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -759,7 +759,7 @@
       }
     },
     "downloadsmonitor.error.upload_failed" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -788,7 +788,7 @@
       }
     },
     "downloadsmonitor.filetype.applications" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -817,7 +817,7 @@
       }
     },
     "downloadsmonitor.filetype.archives" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -846,7 +846,7 @@
       }
     },
     "downloadsmonitor.filetype.audio" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -875,7 +875,7 @@
       }
     },
     "downloadsmonitor.filetype.documents" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -904,7 +904,7 @@
       }
     },
     "downloadsmonitor.filetype.images" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -933,7 +933,7 @@
       }
     },
     "downloadsmonitor.filetype.other" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -962,7 +962,7 @@
       }
     },
     "downloadsmonitor.filetype.other.extensions" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -991,7 +991,7 @@
       }
     },
     "downloadsmonitor.filetype.video" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1048,7 +1048,7 @@
       }
     },
     "downloadsmonitor.notification.complete.title" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1077,7 +1077,7 @@
       }
     },
     "downloadsmonitor.notification.detections" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1106,7 +1106,7 @@
       }
     },
     "downloadsmonitor.notification.failed.title" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1135,7 +1135,7 @@
       }
     },
     "downloadsmonitor.notification.uploading.body" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1164,7 +1164,7 @@
       }
     },
     "downloadsmonitor.notification.uploading.title" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1193,7 +1193,7 @@
       }
     },
     "downloadsmonitor.status.cannot_read_folder" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1222,7 +1222,7 @@
       }
     },
     "downloadsmonitor.status.choose_folder" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1251,7 +1251,7 @@
       }
     },
     "downloadsmonitor.status.monitoring_folder" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1280,7 +1280,7 @@
       }
     },
     "downloadsmonitor.status.off" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -1309,7 +1309,7 @@
       }
     },
     "downloadsmonitor.status.queued" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "cs" : {
           "stringUnit" : {
@@ -4389,7 +4389,7 @@
     },
     "Restart VirusTotal to apply language changes." : {
       "comment" : "A message displayed when the user changes the app's language.",
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "isCommentAutoGenerated" : true,
       "localizations" : {
         "cs" : {
@@ -5384,7 +5384,7 @@
     },
     "settings.general.language.restart" : {
       "comment" : "Subtitle for the language picker in the General tab.",
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "isCommentAutoGenerated" : true,
       "localizations" : {
         "cs" : {
