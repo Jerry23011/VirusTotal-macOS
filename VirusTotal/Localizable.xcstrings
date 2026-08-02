@@ -4965,25 +4965,25 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "VirusTotal uloží váš klíč API do svazku klíčů macOS, aby ho nemusel uchovávat v nastaveních aplikace. macOS může požádat o heslo ke svazku klíčů. Zvolte „Vždy povolit“, aby aplikace mohla klíč používat pro kontroly souborů, URL a kvót bez opakovaných výzev."
+            "value" : "VirusTotal uloží API klíč do svazku klíčů macOS."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "VirusTotal will store your API key in the macOS Keychain instead of app settings. macOS may ask for your Keychain password. Choose “Always Allow” so the app can use the key for file scans, URL checks, and quota updates without asking again."
+            "value" : "VirusTotal will store your API key in macOS Keychain."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "VirusTotal сохранит ваш API-ключ в Связке ключей macOS, а не в настройках приложения. macOS может запросить пароль от Связки ключей. Выберите «Разрешить всегда», чтобы приложение могло использовать ключ для проверки файлов, URL и квот без повторных запросов."
+            "value" : "VirusTotal сохранит API-ключ в Связке ключей macOS."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "VirusTotal 会将您的 API 密钥存储在 macOS 钥匙串中，而不是应用设置中。macOS 可能会要求输入钥匙串密码。请选择“始终允许”，这样应用就可以使用该密钥扫描文件、检查 URL 和更新配额，而无需再次询问。"
+            "value" : "VirusTotal 会将 API 密钥存储在 macOS 钥匙串中。"
           }
         }
       }
@@ -5073,6 +5073,7 @@
       }
     },
     "settings.api.message.unkown" : {
+      "extractionState" : "stale",
       "localizations" : {
         "cs" : {
           "stringUnit" : {

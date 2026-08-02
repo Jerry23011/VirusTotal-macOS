@@ -51,12 +51,6 @@ enum APIKeychain {
     private static let legacyDefaultsKey = "apiKey"
 
     private static var baseQuery: [String: Any] {
-        var query = legacyBaseQuery
-        query[kSecUseDataProtectionKeychain as String] = true
-        return query
-    }
-
-    private static var legacyBaseQuery: [String: Any] {
         [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -81,16 +75,7 @@ enum APIKeychain {
     }
 
     private static func migrateAPIKeyFromLegacyKeychainIfNeeded() {
-        guard apiKey.isEmpty else { return }
-
-        do {
-            let legacyAPIKey = try readAPIKey(from: legacyBaseQuery)
-            guard !legacyAPIKey.isEmpty else { return }
-            try saveAPIKey(legacyAPIKey)
-            try deleteAPIKey(from: legacyBaseQuery)
-        } catch {
-            log.error(error)
-        }
+        // No-op. Older builds used the same service/account in the standard macOS Keychain.
     }
 
     private static func readAPIKey() throws -> String {

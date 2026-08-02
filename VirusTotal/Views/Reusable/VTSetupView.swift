@@ -9,7 +9,7 @@ import SwiftUI
 import Defaults
 
 struct VTSetupView: View {
-    private var viewModel = QuotaStatusViewModel()
+    @State private var viewModel = QuotaStatusViewModel()
 
     @Default(.userName) private var userName: String
 
@@ -20,7 +20,7 @@ struct VTSetupView: View {
     @State private var isAlertPresented: Bool = false
     @State private var isKeychainNoticePresented = false
     @State private var alertTitle: LocalizedStringKey?
-    @State private var alertMessage: LocalizedStringKey?
+    @State private var alertMessage = ""
 
     var body: some View {
         Form {
@@ -38,7 +38,7 @@ struct VTSetupView: View {
                     reset()
                 }
             } message: {
-                Text(alertMessage ?? "settings.api.message.unkown")
+                Text(alertMessage)
             }
             .alert("settings.api.keychain.notice.title", isPresented: $isKeychainNoticePresented) {
                 Button("settings.api.keychain.notice.cancel", role: .cancel) {}
@@ -53,12 +53,12 @@ struct VTSetupView: View {
                 switch newValue {
                 case true:
                     alertTitle = "settings.api.verify.success"
-                    alertMessage = "settings.api.message.success"
+                    alertMessage = String(localized: "settings.api.message.success")
                     buttonIsLoading = false
                     isAlertPresented = true
                 case false:
                     alertTitle = "settings.api.verify.failed"
-                    alertMessage = "settings.api.message.failed"
+                    alertMessage = viewModel.errorMessage ?? String(localized: "settings.api.message.failed")
                     buttonIsLoading = false
                     isAlertPresented = true
                 default:
@@ -138,7 +138,12 @@ struct VTSetupView: View {
     }
 
     private func saveAndVerifyAPIKey() {
-        guard saveAPIKey(apiKey) else { return }
+        let trimmedAPIKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedUserName = userName.trimmingCharacters(in: .whitespacesAndNewlines)
+        apiKey = trimmedAPIKey
+        userName = trimmedUserName
+
+        guard saveAPIKey(trimmedAPIKey) else { return }
         buttonIsLoading = true
         viewModel.retryRequest()
     }
@@ -151,7 +156,7 @@ struct VTSetupView: View {
         } catch {
             log.error(error)
             alertTitle = "settings.api.verify.failed"
-            alertMessage = "settings.api.message.failed"
+            alertMessage = error.localizedDescription
             buttonIsLoading = false
             isAlertPresented = true
             return false
@@ -166,6 +171,7 @@ struct VTSetupView: View {
     private func reset() {
         isAlertPresented = false
         alertTitle = nil
+        alertMessage = ""
     }
 
     /// Return true if any one of apiKey or userName is empty, return false otherwise
