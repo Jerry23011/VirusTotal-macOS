@@ -11,6 +11,7 @@ struct DownloadsMonitorView: View {
     @State private var viewModel = DownloadsMonitorViewModel.shared
     @State private var isFolderImporterPresented = false
     @State private var isScanExistingConfirmationPresented = false
+    @State private var isAutoScanConsentPresented = false
     @State private var isFileTypeSettingsPresented = false
     @State private var shouldEnableAfterFolderSelection = false
     @State private var existingFileCount = 0
@@ -40,6 +41,18 @@ struct DownloadsMonitorView: View {
             Button("Cancel", role: .cancel) { }
         } message: {
             Text("This may use a lot of VirusTotal quota and take a long time.")
+        }
+        .confirmationDialog(
+            "Enable Auto Scan?",
+            isPresented: $isAutoScanConsentPresented
+        ) {
+            Button("Enable Auto Scan", role: nil) {
+                Defaults[.didConfirmAutoScanUploads] = true
+                viewModel.setMonitoringEnabled(true)
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Files not already known to VirusTotal may be uploaded automatically. Auto Scan also uses your VirusTotal API quota.")
         }
         .toolbar {
             if !viewModel.scanItems.isEmpty {
@@ -83,11 +96,10 @@ struct DownloadsMonitorView: View {
                 Toggle("Auto Scan", isOn: Binding(
                     get: { viewModel.isEnabled },
                     set: { enabled in
-                        if enabled && !viewModel.hasSavedFolderAccess {
-                            shouldEnableAfterFolderSelection = true
-                            isFolderImporterPresented = true
+                        if enabled {
+                            requestEnableAutoScan()
                         } else {
-                            viewModel.setMonitoringEnabled(enabled)
+                            viewModel.setMonitoringEnabled(false)
                         }
                     }
                 ))
@@ -171,10 +183,25 @@ struct DownloadsMonitorView: View {
             viewModel.setFolderURL(url)
             if shouldEnableAfterFolderSelection {
                 shouldEnableAfterFolderSelection = false
-                viewModel.setMonitoringEnabled(true)
+                requestEnableAutoScan()
             }
         case .failure(let error):
+            shouldEnableAfterFolderSelection = false
             log.error("Downloads monitor folder selection failed: \(error)")
+        }
+    }
+
+    private func requestEnableAutoScan() {
+        guard viewModel.hasSavedFolderAccess else {
+            shouldEnableAfterFolderSelection = true
+            isFolderImporterPresented = true
+            return
+        }
+
+        if Defaults[.didConfirmAutoScanUploads] {
+            viewModel.setMonitoringEnabled(true)
+        } else {
+            isAutoScanConsentPresented = true
         }
     }
 

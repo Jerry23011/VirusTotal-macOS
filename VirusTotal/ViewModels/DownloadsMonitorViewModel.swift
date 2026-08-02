@@ -110,7 +110,10 @@ final class DownloadsMonitorViewModel {
         saveSecurityScopedBookmark(for: url)
         Defaults[.autoScanDownloadsFolderPath] = url.path
         folderURL = url
-        activateFolderAccess(for: url)
+        if !isEnabled {
+            securityScopedFolderURL?.stopAccessingSecurityScopedResource()
+            securityScopedFolderURL = nil
+        }
         knownFileFingerprints.removeAll()
         queuedFileFingerprints.removeAll()
         queuedFileHashes.removeAll()
@@ -167,7 +170,9 @@ final class DownloadsMonitorViewModel {
 
     func eligibleFileCount() -> Int {
         do {
-            return try eligibleFileURLs().count
+            return try withFolderAccess {
+                try eligibleFileURLs().count
+            }
         } catch {
             statusMessage = cannotReadFolderMessage(error)
             log.error("Downloads monitor failed to count folder files: \(error)")
@@ -231,7 +236,7 @@ final class DownloadsMonitorViewModel {
             FilePreparation.cleanupPreparedFile(at: item.preparedFileURL)
             item.status = .failed
             item.uploadProgress = 0
-            item.errorMessage = "Cancelled"
+            item.errorMessage = localizedString("common.cancelled")
         }
         queuedFileFingerprints.removeAll()
         queuedFileHashes.removeAll()
@@ -252,29 +257,29 @@ final class DownloadsMonitorViewModel {
     }
 
     private func scanFolder(includeKnownFiles: Bool) async {
-        let urls: [URL]
         do {
-            urls = try eligibleFileURLs()
+            try await withFolderAccess {
+                let urls = try eligibleFileURLs()
+
+                for url in urls {
+                    guard !Task.isCancelled else { return }
+                    let fingerprint = fileFingerprint(for: url)
+
+                    if includeKnownFiles {
+                        knownFileFingerprints[url.path] = fingerprint
+                        _ = await queueFileIfNeeded(url)
+                    } else {
+                        guard knownFileFingerprints[url.path] != fingerprint else { continue }
+
+                        if await queueFileIfNeeded(url) {
+                            knownFileFingerprints[url.path] = fingerprint
+                        }
+                    }
+                }
+            }
         } catch {
             statusMessage = cannotReadFolderMessage(error)
             log.error("Downloads monitor failed to read folder: \(error)")
-            return
-        }
-
-        for url in urls {
-            guard !Task.isCancelled else { return }
-            let fingerprint = fileFingerprint(for: url)
-
-            if includeKnownFiles {
-                knownFileFingerprints[url.path] = fingerprint
-                _ = await queueFileIfNeeded(url)
-            } else {
-                guard knownFileFingerprints[url.path] != fingerprint else { continue }
-
-                if await queueFileIfNeeded(url) {
-                    knownFileFingerprints[url.path] = fingerprint
-                }
-            }
         }
     }
 
@@ -561,6 +566,36 @@ final class DownloadsMonitorViewModel {
         if url.startAccessingSecurityScopedResource() {
             securityScopedFolderURL = url
         }
+    }
+
+    private func withFolderAccess<T>(_ operation: () throws -> T) rethrows -> T {
+        if securityScopedFolderURL == folderURL {
+            return try operation()
+        }
+
+        let didStartAccessing = folderURL.startAccessingSecurityScopedResource()
+        defer {
+            if didStartAccessing {
+                folderURL.stopAccessingSecurityScopedResource()
+            }
+        }
+
+        return try operation()
+    }
+
+    private func withFolderAccess<T>(_ operation: () async throws -> T) async rethrows -> T {
+        if securityScopedFolderURL == folderURL {
+            return try await operation()
+        }
+
+        let didStartAccessing = folderURL.startAccessingSecurityScopedResource()
+        defer {
+            if didStartAccessing {
+                folderURL.stopAccessingSecurityScopedResource()
+            }
+        }
+
+        return try await operation()
     }
 
     private func saveSecurityScopedBookmark(for url: URL) {

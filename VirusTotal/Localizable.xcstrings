@@ -508,6 +508,36 @@
         }
       }
     },
+    "common.cancelled" : {
+      "comment" : "A generic cancellation status shown for stopped scans.",
+      "extractionState" : "stale",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušeno"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelled"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменено"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已取消"
+          }
+        }
+      }
+    },
     "community.score.label %lld" : {
       "localizations" : {
         "cs" : {
@@ -1071,6 +1101,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已加入队列：%@"
+          }
+        }
+      }
+    },
+    "Enable Auto Scan" : {
+      "comment" : "A button that confirms enabling automatic downloads scanning.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapnout automatické skenování"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Auto Scan"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить автопроверку"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用自动扫描"
+          }
+        }
+      }
+    },
+    "Enable Auto Scan?" : {
+      "comment" : "A confirmation dialog title shown before enabling automatic downloads scanning.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapnout automatické skenování?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Auto Scan?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить автопроверку?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用自动扫描？"
           }
         }
       }
@@ -1746,6 +1834,35 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "• %@"
+          }
+        }
+      }
+    },
+    "Files not already known to VirusTotal may be uploaded automatically. Auto Scan also uses your VirusTotal API quota." : {
+      "comment" : "A privacy and quota warning shown before enabling Auto Scan.",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soubory, které VirusTotal ještě nezná, mohou být automaticky nahrány. Automatické skenování také využívá vaši kvótu API VirusTotal."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Files not already known to VirusTotal may be uploaded automatically. Auto Scan also uses your VirusTotal API quota."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Файлы, которых ещё нет в базе VirusTotal, могут автоматически загружаться на сервер. Автопроверка также расходует вашу квоту API VirusTotal."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VirusTotal 尚未知的文件可能会被自动上传。自动扫描还会使用您的 VirusTotal API 配额。"
           }
         }
       }

@@ -226,7 +226,7 @@ struct VirusTotalApp: App {
     }
 
     private static func migrateMainWindowAutosavedLayoutIfNeeded() {
-        let migrationKey = "didResetLayoutForV1_6"
+        let migrationKey = "didMigrateMainWindowLayoutForDownloadsMonitor"
         let defaults = UserDefaults.standard
         guard !defaults.bool(forKey: migrationKey) else { return }
         defaults.removeObject(forKey: "NSWindow Frame main")

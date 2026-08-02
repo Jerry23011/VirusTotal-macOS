@@ -31,6 +31,7 @@ extension Defaults.Keys {
     static let autoScanDownloadsEnabled = Key<Bool>("autoScanDownloadsEnabled", default: false)
     static let autoScanDownloadsFolderPath = Key<String>("autoScanDownloadsFolderPath", default: "")
     static let autoScanDownloadsFolderBookmark = Key<String>("autoScanDownloadsFolderBookmark", default: "")
+    static let didConfirmAutoScanUploads = Key<Bool>("didConfirmAutoScanUploads", default: false)
     static let downloadMonitorFileCategories = Key<[DownloadMonitorFileCategory]>(
         "downloadMonitorFileCategories",
         default: [.archives, .applications]
