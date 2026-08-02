@@ -76,14 +76,24 @@ final class DownloadsMonitorViewModel {
     private init() {}
 
     func startIfNeeded() {
-        isEnabled = Defaults[.autoScanDownloadsEnabled] && hasSavedFolderAccess
-        Defaults[.autoScanDownloadsEnabled] = isEnabled
+        let shouldEnable = Defaults[.autoScanDownloadsEnabled]
+            && Defaults[.didConfirmAutoScanUploads]
+            && hasSavedFolderAccess
+
         folderURL = Self.savedFolderURL
-        guard isEnabled else {
-            stopMonitoring()
+        isEnabled = shouldEnable
+        Defaults[.autoScanDownloadsEnabled] = shouldEnable
+
+        guard shouldEnable else {
+            if monitorTask != nil {
+                stopMonitoring()
+            } else {
+                statusMessage = localizedString("downloadsmonitor.status.off")
+            }
             return
         }
 
+        guard monitorTask == nil else { return }
         startMonitoring()
     }
 
@@ -569,14 +579,16 @@ final class DownloadsMonitorViewModel {
     }
 
     private func withFolderAccess<T>(_ operation: () throws -> T) rethrows -> T {
-        if securityScopedFolderURL == folderURL {
+        let accessedURL = folderURL
+
+        if securityScopedFolderURL == accessedURL {
             return try operation()
         }
 
-        let didStartAccessing = folderURL.startAccessingSecurityScopedResource()
+        let didStartAccessing = accessedURL.startAccessingSecurityScopedResource()
         defer {
             if didStartAccessing {
-                folderURL.stopAccessingSecurityScopedResource()
+                accessedURL.stopAccessingSecurityScopedResource()
             }
         }
 
@@ -584,14 +596,16 @@ final class DownloadsMonitorViewModel {
     }
 
     private func withFolderAccess<T>(_ operation: () async throws -> T) async rethrows -> T {
-        if securityScopedFolderURL == folderURL {
+        let accessedURL = folderURL
+
+        if securityScopedFolderURL == accessedURL {
             return try await operation()
         }
 
-        let didStartAccessing = folderURL.startAccessingSecurityScopedResource()
+        let didStartAccessing = accessedURL.startAccessingSecurityScopedResource()
         defer {
             if didStartAccessing {
-                folderURL.stopAccessingSecurityScopedResource()
+                accessedURL.stopAccessingSecurityScopedResource()
             }
         }
 

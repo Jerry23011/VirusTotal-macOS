@@ -98,6 +98,89 @@ struct AppBehaviorTests {
         #expect(viewModel.scanItems.isEmpty)
     }
 
+    @Test("Downloads monitor does not restore auto scan without upload consent")
+    func downloadsMonitorRequiresUploadConsentOnRestore() throws {
+        let viewModel = DownloadsMonitorViewModel.shared
+        let oldEnabled = viewModel.isEnabled
+        let oldFolderURL = viewModel.folderURL
+        let oldDefaultEnabled = Defaults[.autoScanDownloadsEnabled]
+        let oldConsent = Defaults[.didConfirmAutoScanUploads]
+        let oldFolderPath = Defaults[.autoScanDownloadsFolderPath]
+        let oldFolderBookmark = Defaults[.autoScanDownloadsFolderBookmark]
+        let folderURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
+        defer {
+            viewModel.setMonitoringEnabled(false)
+            viewModel.scanItems.removeAll()
+            viewModel.folderURL = oldFolderURL
+            viewModel.isEnabled = oldEnabled
+            Defaults[.autoScanDownloadsEnabled] = oldDefaultEnabled
+            Defaults[.didConfirmAutoScanUploads] = oldConsent
+            Defaults[.autoScanDownloadsFolderPath] = oldFolderPath
+            Defaults[.autoScanDownloadsFolderBookmark] = oldFolderBookmark
+            try? FileManager.default.removeItem(at: folderURL)
+        }
+
+        Defaults[.autoScanDownloadsEnabled] = true
+        Defaults[.didConfirmAutoScanUploads] = false
+        Defaults[.autoScanDownloadsFolderPath] = folderURL.path
+        Defaults[.autoScanDownloadsFolderBookmark] = try SecurityScopedBookmark.encodedString(for: folderURL)
+
+        viewModel.startIfNeeded()
+
+        #expect(!viewModel.isEnabled)
+        #expect(!Defaults[.autoScanDownloadsEnabled])
+    }
+
+    @Test("Downloads monitor restore is idempotent while scanning")
+    func downloadsMonitorRestoreDoesNotCancelActiveScanItems() throws {
+        let viewModel = DownloadsMonitorViewModel.shared
+        let oldEnabled = viewModel.isEnabled
+        let oldFolderURL = viewModel.folderURL
+        let oldDefaultEnabled = Defaults[.autoScanDownloadsEnabled]
+        let oldConsent = Defaults[.didConfirmAutoScanUploads]
+        let oldFolderPath = Defaults[.autoScanDownloadsFolderPath]
+        let oldFolderBookmark = Defaults[.autoScanDownloadsFolderBookmark]
+        let folderURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
+        defer {
+            viewModel.setMonitoringEnabled(false)
+            viewModel.scanItems.removeAll()
+            viewModel.folderURL = oldFolderURL
+            viewModel.isEnabled = oldEnabled
+            Defaults[.autoScanDownloadsEnabled] = oldDefaultEnabled
+            Defaults[.didConfirmAutoScanUploads] = oldConsent
+            Defaults[.autoScanDownloadsFolderPath] = oldFolderPath
+            Defaults[.autoScanDownloadsFolderBookmark] = oldFolderBookmark
+            try? FileManager.default.removeItem(at: folderURL)
+        }
+
+        Defaults[.autoScanDownloadsEnabled] = true
+        Defaults[.didConfirmAutoScanUploads] = true
+        Defaults[.autoScanDownloadsFolderPath] = folderURL.path
+        Defaults[.autoScanDownloadsFolderBookmark] = try SecurityScopedBookmark.encodedString(for: folderURL)
+        viewModel.scanItems.removeAll()
+        viewModel.startIfNeeded()
+
+        let item = DownloadScanItem(
+            originalFileURL: folderURL.appendingPathComponent("queued.zip"),
+            preparedFileURL: folderURL.appendingPathComponent("queued.zip"),
+            fileSize: 1,
+            sha256: "1"
+        )
+        item.status = .uploading
+        item.uploadProgress = 0.5
+        viewModel.scanItems = [item]
+
+        viewModel.startIfNeeded()
+
+        #expect(item.status == .uploading)
+        #expect(item.uploadProgress == 0.5)
+        #expect(item.errorMessage == nil)
+    }
+
     @Test("Notification file selection moves the item to the top")
     func notificationSelectionMovesItemToTop() {
         let viewModel = DownloadsMonitorViewModel.shared

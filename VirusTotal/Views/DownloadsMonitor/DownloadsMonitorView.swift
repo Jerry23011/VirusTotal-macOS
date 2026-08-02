@@ -40,7 +40,10 @@ struct DownloadsMonitorView: View {
             }
             Button("Cancel", role: .cancel) { }
         } message: {
-            Text("This may use a lot of VirusTotal quota and take a long time.")
+            Text("""
+            Files not already known to VirusTotal may be uploaded. \
+            Scanning may use a significant amount of your API quota and take a long time.
+            """)
         }
         .confirmationDialog(
             "Enable Auto Scan?",
@@ -162,7 +165,10 @@ struct DownloadsMonitorView: View {
             ContentUnavailableView(
                 "No scanned downloads",
                 systemImage: "tray",
-                description: Text("Auto Scan only checks files added after it is enabled. Use Scan Existing to check files already in the folder.")
+                description: Text("""
+                Auto Scan only checks files added after it is enabled. \
+                Scan Existing checks files already in the folder; unknown files may be uploaded to VirusTotal and use API quota.
+                """)
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
