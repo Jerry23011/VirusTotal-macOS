@@ -198,6 +198,7 @@ final class DownloadsMonitorViewModel {
 
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(10))
+                guard !Task.isCancelled else { break }
                 await self.scanFolder(includeKnownFiles: false)
                 self.startScanQueueIfNeeded()
             }

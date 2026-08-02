@@ -69,6 +69,7 @@ final class FileBatchViewModel {
     private var securityScopedFileURLs: Set<URL> = []
     private let maxConcurrentUploads = 3
     private var currentConcurrentUploads = 0
+    private var uploadGeneration = 0
 
     init() {}
 
@@ -170,6 +171,7 @@ final class FileBatchViewModel {
             }
         }
 
+        uploadGeneration += 1
         currentConcurrentUploads = 0
         resetProgress()
     }
@@ -196,17 +198,18 @@ final class FileBatchViewModel {
 
     private func addFile(_ url: URL) async {
         let didStartAccessing = url.startAccessingSecurityScopedResource()
-        if didStartAccessing {
-            securityScopedFileURLs.insert(url)
-        }
 
         guard let inspection = inspectFile(at: url) else {
-            releaseSecurityScopedAccess(for: url)
+            if didStartAccessing { url.stopAccessingSecurityScopedResource() }
             return
         }
         guard !isDuplicateFile(url, preparedFileName: inspection.preparedFileName) else {
-            releaseSecurityScopedAccess(for: url)
+            if didStartAccessing { url.stopAccessingSecurityScopedResource() }
             return
+        }
+
+        if didStartAccessing {
+            securityScopedFileURLs.insert(url)
         }
 
         let batchFile = makeBatchFile(for: url)
@@ -450,9 +453,12 @@ final class FileBatchViewModel {
         try Task.checkCancellation()
 
         batchFile.status = .uploading
+        let generation = uploadGeneration
         currentConcurrentUploads += 1
         defer {
-            currentConcurrentUploads = max(0, currentConcurrentUploads - 1)
+            if generation == uploadGeneration {
+                currentConcurrentUploads = max(0, currentConcurrentUploads - 1)
+            }
         }
 
         let uploadSuccess = try await uploadFile(batchFile, cancellationToken: cancellationToken)

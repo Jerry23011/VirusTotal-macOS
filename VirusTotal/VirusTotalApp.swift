@@ -199,7 +199,7 @@ struct VirusTotalApp: App {
 
     // MARK: Internal
     init() {
-        Self.resetMainWindowAutosavedLayout()
+        Self.migrateMainWindowAutosavedLayoutIfNeeded()
         AppLanguage.synchronizePreference()
         APIKeychain.migrateAPIKeyFromDefaultsIfNeeded()
         // Tips
@@ -225,9 +225,12 @@ struct VirusTotalApp: App {
         return homeDirectory.appendingPathComponent("Library/Logs", isDirectory: true)
     }
 
-    private static func resetMainWindowAutosavedLayout() {
+    private static func migrateMainWindowAutosavedLayoutIfNeeded() {
+        let migrationKey = "didResetLayoutForV1_6"
         let defaults = UserDefaults.standard
+        guard !defaults.bool(forKey: migrationKey) else { return }
         defaults.removeObject(forKey: "NSWindow Frame main")
         defaults.removeObject(forKey: "NSSplitView Subview Frames main, SidebarNavigationSplitView")
+        defaults.set(true, forKey: migrationKey)
     }
 }

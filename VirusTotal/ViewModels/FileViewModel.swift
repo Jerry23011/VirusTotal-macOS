@@ -387,6 +387,7 @@ final class FileViewModel {
             log.error("Request Timeout. \(self.errorMessage ?? "")")
             self.errorMessage = "Request timeout." + (self.errorMessage ?? "")
             self.statusMonitor = .fail
+            cleanupPreparedFile()
             return
         }
 
@@ -396,7 +397,10 @@ final class FileViewModel {
             self.numberOfRetries += 1
             await getFileReport()
 
-            if self.statusMonitor != .success {
+            switch self.statusMonitor {
+            case .success, .fail:
+                return
+            default:
                 return await retryFileReport(retryCount: self.numberOfRetries)
             }
         } catch is CancellationError {
@@ -405,6 +409,7 @@ final class FileViewModel {
             guard !self.cancellationRequested else { return }
             self.errorMessage = "Error during retry: \(error.displayMessageWithCode)"
             self.statusMonitor = .fail
+            cleanupPreparedFile()
         }
     }
 }
