@@ -25,7 +25,7 @@ struct ContentView: View {
                 .navigationTitle("VirusTotal for macOS")
         }
         .task {
-            configureMainWindowTitlebar()
+            self.configureMainWindowTitlebar()
         }
     }
 
