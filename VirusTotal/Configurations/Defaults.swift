@@ -29,11 +29,34 @@ extension Defaults.Keys {
     static let startPage = Key<NavigationItem>("startPage", default: .home)
     static let enableNotification = Key<Bool>("enableNotification", default: true)
 
+    // Downloads Monitor
+    static let autoScanDownloadsEnabled = Key<Bool>("autoScanDownloadsEnabled", default: false)
+    static let autoScanDownloadsFolderPath = Key<String>("autoScanDownloadsFolderPath", default: "")
+    static let autoScanDownloadsFolderBookmark = Key<String>("autoScanDownloadsFolderBookmark", default: "")
+    static let didConfirmAutoScanUploads = Key<Bool>("didConfirmAutoScanUploads", default: false)
+    static let downloadMonitorFileCategories = Key<[DownloadMonitorFileCategory]>(
+        "downloadMonitorFileCategories",
+        default: [.archives, .applications]
+    )
+    static let backgroundMonitoringMode = Key<Bool>("backgroundMonitoringMode", default: false)
+
     // Advanced Settings
     static let miniMode = Key<Bool>("miniMode", default: false)
 }
 
 enum NavigationItem: String, CaseIterable, Identifiable, Defaults.Serializable {
     case home, file, url, fileBatch
+    var id: Self { self }
+}
+
+enum DownloadMonitorFileCategory: String, CaseIterable, Identifiable, Defaults.Serializable {
+    case archives
+    case applications
+    case documents
+    case images
+    case audio
+    case video
+    case other
+
     var id: Self { self }
 }

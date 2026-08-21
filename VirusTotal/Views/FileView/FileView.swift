@@ -39,7 +39,7 @@ struct FileView: View {
                         .animation(.spring, value: isFileDropped)
                         .keyboardShortcut("o", modifiers: .command)
                         .fileImporter(isPresented: $isFileImporterPresent,
-                                      allowedContentTypes: [.data],
+                                      allowedContentTypes: fileScanContentTypes,
                                       allowsMultipleSelection: false) { result in
                             switch result {
                             case .success(let urls):

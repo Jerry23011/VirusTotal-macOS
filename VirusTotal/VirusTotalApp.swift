@@ -14,33 +14,27 @@ import Sparkle
 struct VirusTotalApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.openSettings) private var openSettings
     @Environment(\.openURL) private var openURL
     @Default(.appFirstLaunch) private var appFirstLaunch: Bool
     @State private var scanHistoryManager = ScanHistoryManager.shared
+    @State private var downloadsMonitor = DownloadsMonitorViewModel.shared
     private var appState = AppState.shared
 
     var body: some Scene {
         Window("VirusTotal for macOS", id: WindowID.main.rawValue) {
-            if !miniMode {
-                ContentView()
-                    .sheet(isPresented: $appFirstLaunch, onDismiss: {
-                        appFirstLaunch = false
-                    }, content: {
-                        LaunchView()
-                            .frame(width: 400, height: 430)
-                    })
-                    .task(priority: .background) {
-                        do {
-                            try await scanHistoryManager.load()
-                        } catch {
-                            log.error("Error loading scan entries: \(error)")
-                        }
-                        await NotificationManager.requestAuthorization()
+            mainWindowContent
+                .task(priority: .background) {
+                    appDelegate.openMainWindowAction = {
+                        openWindow(id: WindowID.main.rawValue)
                     }
-            } else {
-                MiniModeView()
-                    .frame(width: 290, height: 180)
-            }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: .openMainWindowRequested)) { _ in
+                    openWindow(id: WindowID.main.rawValue)
+                }
+                .onReceive(NotificationCenter.default.publisher(for: .openSettingsRequested)) { _ in
+                    openSettings()
+                }
         }
         .windowResizability(.contentSize)
         .defaultSize(width: 800, height: 550)
@@ -78,6 +72,31 @@ struct VirusTotalApp: App {
             CommandMenu("menubar.go.title") {
                 menubarGo
             }
+        }
+    }
+
+    @ViewBuilder
+    private var mainWindowContent: some View {
+        if miniMode {
+            MiniModeView()
+                .frame(width: 290, height: 180)
+        } else {
+            ContentView()
+                .sheet(isPresented: $appFirstLaunch, onDismiss: {
+                    appFirstLaunch = false
+                }, content: {
+                    LaunchView()
+                        .frame(width: 400, height: 430)
+                })
+                .task(priority: .background) {
+                    do {
+                        try await scanHistoryManager.load()
+                    } catch {
+                        log.error("Error loading scan entries: \(error)")
+                    }
+                    await NotificationManager.requestAuthorization()
+                    downloadsMonitor.startIfNeeded()
+                }
         }
     }
 

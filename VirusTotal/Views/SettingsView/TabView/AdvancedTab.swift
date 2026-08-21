@@ -10,6 +10,7 @@ import Defaults
 
 struct AdvancedTab: View {
     @Default(.miniMode) private var miniMode: Bool
+    @Default(.backgroundMonitoringMode) private var backgroundMonitoringMode: Bool
 
     var body: some View {
         Form {
@@ -21,6 +22,16 @@ struct AdvancedTab: View {
                                      subtitleText: "settings.advanced.mini.restart")
                 }
                 .padding(.vertical, 4)
+
+                Toggle(isOn: $backgroundMonitoringMode) {
+                    SettingsViewItem(color: .orange,
+                                     systemImage: "menubar.rectangle",
+                                     labelText: "settings.advanced.background",
+                                     subtitleText: "settings.advanced.background.subtitle")
+                }
+                .onChange(of: backgroundMonitoringMode) {
+                    NotificationCenter.default.post(name: .backgroundMonitoringModeChanged, object: nil)
+                }
             }
         }
         .controlSize(.small)

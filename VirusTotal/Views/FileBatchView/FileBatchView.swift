@@ -97,7 +97,7 @@ struct FileBatchView: View {
                 .keyboardShortcut("o", modifiers: .command)
                 .fileImporter(
                     isPresented: $isFileImporterPresent,
-                    allowedContentTypes: [.data],
+                    allowedContentTypes: fileScanContentTypes,
                     allowsMultipleSelection: true
                 ) { result in
                     handleFileImporterResult(result)
@@ -132,7 +132,7 @@ struct FileBatchView: View {
                 .disabled(viewModel.isProcessing)
                 .fileImporter(
                     isPresented: $isFileImporterPresent,
-                    allowedContentTypes: [.data],
+                    allowedContentTypes: fileScanContentTypes,
                     allowsMultipleSelection: true
                 ) { result in
                     handleFileImporterResult(result)
@@ -148,6 +148,7 @@ struct FileBatchView: View {
                     Button("filebatchview.button.start.analysis", action: startBatchAnalysis)
                         .buttonStyle(.borderedProminent)
                         .keyboardShortcut(.return, modifiers: .command)
+                        .disabled(viewModel.hasPreparingArchives)
                 }
             }
         }

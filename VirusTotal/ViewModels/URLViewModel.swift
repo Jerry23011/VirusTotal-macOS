@@ -44,7 +44,7 @@ final class URLViewModel: ObservableObject {
                 startURLAnalysis()
             } catch {
                 statusMonitor = .fail
-                errorMessage = error.localizedDescription
+                errorMessage = error.displayMessageWithCode
                 log.error(error)
             }
         }
@@ -78,7 +78,7 @@ final class URLViewModel: ObservableObject {
            throw timeoutError
        } catch {
            statusMonitor = .fail
-           errorMessage = error.localizedDescription
+           errorMessage = error.displayMessageWithCode
            await NotificationManager.pushNotification(title: String(localized: "notification.analysis.fail.title"))
            log.error(error)
        }

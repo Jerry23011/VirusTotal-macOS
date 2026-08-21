@@ -13,8 +13,12 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            SidebarView()
-                .frame(minWidth: 200)
+            ZStack(alignment: .bottomLeading) {
+                SidebarView()
+
+                settingsButton
+            }
+            .frame(minWidth: 200)
         } detail: {
             detail
                 .frame(minWidth: 600, minHeight: 500)
@@ -33,6 +37,21 @@ struct ContentView: View {
             URLView()
         case .fileBatch:
             FileBatchView()
+        }
+    }
+
+    private var settingsButton: some View {
+        VStack(spacing: 0) {
+            Divider()
+
+            SettingsLink {
+                Label("menubar.open.settings", systemImage: "gearshape")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 22)
+                    .padding(.trailing, 14)
+                    .padding(.vertical, 8)
+            }
+            .buttonStyle(.plain)
         }
     }
 

@@ -40,7 +40,7 @@ struct MiniFileView: View {
             .animation(.spring, value: isFileDropped)
             .keyboardShortcut("o")
             .fileImporter(isPresented: $isFileImporterPresent,
-                          allowedContentTypes: [.data],
+                          allowedContentTypes: fileScanContentTypes,
                           allowsMultipleSelection: false) { result in
                 switch result {
                 case .success(let urls):
@@ -196,9 +196,13 @@ struct MiniFileView: View {
 
     /// Trigger `uploadFile` and call `cancelOngoingRequest` after completion
     private func uploadFile() {
-        Task {
-            if try await viewModel.uploadFile() {
-                viewModel.cancelOngoingRequest()
+        Task<Void, Never> {
+            do {
+                if try await viewModel.uploadFile() {
+                    viewModel.cancelOngoingRequest()
+                }
+            } catch {
+                log.error("File Upload Error: \(error.localizedDescription)")
             }
         }
     }
