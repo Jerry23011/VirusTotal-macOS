@@ -1,12 +1,12 @@
 //
-//  ApplicationRelauncher.swift
+//  AppRelauncher.swift
 //  VirusTotal
 //
 
 import AppKit
 import Defaults
 
-enum ApplicationRelauncher {
+enum AppRelauncher {
     @MainActor
     static func restart() {
         Defaults[.showMainWindowOnNextLaunch] = true

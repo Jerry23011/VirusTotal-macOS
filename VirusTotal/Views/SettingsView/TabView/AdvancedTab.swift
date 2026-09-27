@@ -33,7 +33,7 @@ struct AdvancedTab: View {
         .alert("settings.restart.alert.title", isPresented: $showRestartAlert) {
             Button("settings.restart.alert.confirm") {
                 saveMiniModePreference()
-                ApplicationRelauncher.restart()
+                AppRelauncher.restart()
             }
             Button("settings.restart.alert.later", role: .cancel) {
                 saveMiniModePreference()
