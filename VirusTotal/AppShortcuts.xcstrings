@@ -20,19 +20,19 @@
             ]
           }
         },
-        "zh-Hans" : {
-          "stringSet" : {
-            "state" : "machine_translated",
-            "values" : [
-              "使用 ${applicationName} 扫描文件"
-            ]
-          }
-        },
         "ru" : {
           "stringSet" : {
             "state" : "translated",
             "values" : [
               "Проверить файл через ${applicationName}"
+            ]
+          }
+        },
+        "zh-Hans" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "使用 ${applicationName} 扫描文件"
             ]
           }
         }
