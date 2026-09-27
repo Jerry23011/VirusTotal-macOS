@@ -5,31 +5,29 @@
 
 import AppKit
 import Defaults
-import Foundation
 
 enum ApplicationRelauncher {
+    @MainActor
     static func restart() {
         Defaults[.showMainWindowOnNextLaunch] = true
         UserDefaults.standard.synchronize()
 
-        let process = Process()
-        process.executableURL = URL(filePath: "/bin/sh")
-        process.arguments = [
-            "-c",
-            "sleep 0.5; /usr/bin/open -n \(shellQuote(Bundle.main.bundleURL.path))"
-        ]
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.createsNewApplicationInstance = true
 
-        do {
-            try process.run()
+        NSWorkspace.shared.openApplication(
+            at: Bundle.main.bundleURL,
+            configuration: configuration
+        ) { _, error in
             Task { @MainActor in
-                NSApp.terminate(nil)
+                if let error {
+                    Defaults[.showMainWindowOnNextLaunch] = false
+                    UserDefaults.standard.synchronize()
+                    log.error("Failed to restart application: \(error)")
+                } else {
+                    NSApp.terminate(nil)
+                }
             }
-        } catch {
-            log.error("Failed to restart application: \(error)")
         }
-    }
-
-    private static func shellQuote(_ value: String) -> String {
-        "'" + value.replacingOccurrences(of: "'", with: "'\\''") + "'"
     }
 }
