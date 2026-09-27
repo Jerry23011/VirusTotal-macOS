@@ -43,12 +43,14 @@ enum APIKeychain {
     static func migrateAPIKeyFromDefaultsIfNeeded() {
         let defaults = UserDefaults.standard
         guard let storedAPIKey = defaults.string(forKey: legacyDefaultsKey), !storedAPIKey.isEmpty else { return }
-        guard apiKey.isEmpty else {
-            defaults.removeObject(forKey: legacyDefaultsKey)
-            return
-        }
 
         do {
+            let existingAPIKey = try readAPIKey()
+            guard existingAPIKey.isEmpty else {
+                defaults.removeObject(forKey: legacyDefaultsKey)
+                return
+            }
+
             try saveAPIKey(storedAPIKey)
             defaults.removeObject(forKey: legacyDefaultsKey)
         } catch {
@@ -85,7 +87,7 @@ enum APIKeychain {
         case errSecItemNotFound:
             return ""
         default:
-            throw KeychainError.unhandledStatus(status)
+            throw KeychainError.readFailed(status)
         }
     }
 
@@ -110,12 +112,15 @@ enum APIKeychain {
 
 enum KeychainError: LocalizedError {
     case invalidData
+    case readFailed(OSStatus)
     case unhandledStatus(OSStatus)
 
     var errorDescription: String? {
         switch self {
         case .invalidData:
             return "The API key stored in Keychain is not valid UTF-8 data."
+        case .readFailed(let status):
+            return "The API key could not be read from Keychain (status \(status))."
         case .unhandledStatus(let status):
             return "Keychain operation failed with status \(status)."
         }
