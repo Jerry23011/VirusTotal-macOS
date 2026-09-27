@@ -3485,34 +3485,6 @@
         }
       }
     },
-    "settings.api.message.unkown" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neznámý stav ověření"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown verification status"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Неизвестный статус проверки"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "未知验证状态"
-          }
-        }
-      }
-    },
     "settings.api.username" : {
       "localizations" : {
         "cs" : {
@@ -4528,5 +4500,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.3"
 }
