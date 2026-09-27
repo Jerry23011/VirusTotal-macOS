@@ -7,7 +7,6 @@
 
 import Foundation
 import Alamofire
-import Defaults
 
 actor FileAnalysis {
     static let shared = FileAnalysis()
@@ -165,7 +164,7 @@ actor FileAnalysis {
 
     /// Store a reference to the current request
     private var currentAFRequest: Request?
-    private var apiKey: String { Defaults[.apiKey] }
+    private var apiKey: String { APIKeychain.apiKey }
 
     /// Appends a file to the given MultipartFormData instance.
     /// Handle AF's .bodyPartFilenameInvalid error for files without an extension e.g. Mach-O

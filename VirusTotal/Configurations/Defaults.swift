@@ -17,8 +17,7 @@ extension Defaults.Keys {
     static let monthlyQuota = Key<UserQuota>("monthlyQuota",
                                              default: UserQuota(used: 0, allowed: 15_500))
 
-    // Store VT API Key and Username
-    static let apiKey = Key<String>("apiKey", default: "")
+    // Store VT Username. The API key is stored in Keychain, see APIKeychain.
     static let userName = Key<String>("userName", default: "")
 
     // Onboarding

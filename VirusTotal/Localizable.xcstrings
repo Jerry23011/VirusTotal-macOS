@@ -3341,6 +3341,94 @@
         }
       }
     },
+    "settings.api.keychain.notice.cancel" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Zrušit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "取消"
+          }
+        }
+      }
+    },
+    "settings.api.keychain.notice.continue" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Pokračovat"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "继续"
+          }
+        }
+      }
+    },
+    "settings.api.keychain.notice.message" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "VirusTotal uloží API klíč do svazku klíčů macOS."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VirusTotal will store your API key in macOS Keychain."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "VirusTotal 会将 API 密钥存储在 macOS 钥匙串中。"
+          }
+        }
+      }
+    },
+    "settings.api.keychain.notice.title" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Přístup ke svazku klíčů"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keychain Access"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "钥匙串访问"
+          }
+        }
+      }
+    },
     "settings.api.message.failed" : {
       "localizations" : {
         "cs" : {
@@ -3393,34 +3481,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "VirusTotal 配置成功！"
-          }
-        }
-      }
-    },
-    "settings.api.message.unkown" : {
-      "localizations" : {
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neznámý stav ověření"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown verification status"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Неизвестный статус проверки"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "未知验证状态"
           }
         }
       }
@@ -4440,5 +4500,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.3"
 }

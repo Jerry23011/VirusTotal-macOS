@@ -161,6 +161,7 @@ struct VirusTotalApp: App {
 
     // MARK: Internal
     init() {
+        APIKeychain.migrateAPIKeyFromDefaultsIfNeeded()
         // Consumed once, so a relaunch triggered from Settings lands in the
         // full window and the next launch honours Mini Mode again.
         Defaults[.showMainWindowOnNextLaunch] = false

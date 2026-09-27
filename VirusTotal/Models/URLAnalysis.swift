@@ -7,7 +7,6 @@
 
 import Foundation
 import Alamofire
-import Defaults
 
 actor URLAnalysis {
     static let shared = URLAnalysis()
@@ -63,7 +62,7 @@ actor URLAnalysis {
 
     // MARK: Private
 
-    private var apiKey: String { Defaults[.apiKey] }
+    private var apiKey: String { APIKeychain.apiKey }
 
     /// Given an inputURL, upload the URL to VirusTotal
     private func uploadURL(inputURL: String) async throws -> URLUploadResult {
