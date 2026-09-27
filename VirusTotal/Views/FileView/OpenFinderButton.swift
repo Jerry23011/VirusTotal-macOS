@@ -15,8 +15,7 @@ struct OpenFinderButton: View {
     var body: some View {
         Button(action: action, label: {
             HStack(spacing: 7) {
-                Image(systemName: systemImage)
-                    .aspectRatio(contentMode: .fit)
+                Image(systemName: systemImage).scaledToFit()
                     .foregroundColor(.secondary)
                     .font(.system(size: 20))
                     .frame(width: 24)

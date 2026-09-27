@@ -16,6 +16,7 @@ struct VirusTotalApp: App {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.openURL) private var openURL
     @Default(.appFirstLaunch) private var appFirstLaunch: Bool
+    @State private var shouldShowFullMainWindowAfterRelaunch = Defaults[.showMainWindowOnNextLaunch]
     @State private var scanHistoryManager = ScanHistoryManager.shared
     private var appState = AppState.shared
 
@@ -160,6 +161,9 @@ struct VirusTotalApp: App {
 
     // MARK: Internal
     init() {
+        // Consumed once, so a relaunch triggered from Settings lands in the
+        // full window and the next launch honours Mini Mode again.
+        Defaults[.showMainWindowOnNextLaunch] = false
         // Tips
         #if DEBUG
         try? Tips.resetDatastore()
@@ -177,7 +181,7 @@ struct VirusTotalApp: App {
     // MARK: Private
     private let updaterController: SPUStandardUpdaterController
     private let feedbackURL = URL(string: "https://github.com/Jerry23011/VirusTotal-macOS/issues/new/choose")!
-    private var miniMode: Bool { Defaults[.miniMode] }
+    private var miniMode: Bool { Defaults[.miniMode] && !shouldShowFullMainWindowAfterRelaunch }
     private var logDirectory: URL {
         let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
         return homeDirectory.appendingPathComponent("Library/Logs", isDirectory: true)
