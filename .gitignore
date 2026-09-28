@@ -2,5 +2,11 @@
 .obsidian/
 .gitattributes
 *.xcuserstate
+.DS_Store
+**/.DS_Store
 VirusTotal.html
 VirusTotal.dmg
+Artifacts/
+
+xcuserdata/
+*.xcuserdatad/
