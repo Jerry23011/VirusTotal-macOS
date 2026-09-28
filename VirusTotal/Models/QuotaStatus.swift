@@ -37,7 +37,7 @@ actor QuotaStatus {
 
     // MARK: Private
 
-    private var apiKey: String { Defaults[.apiKey] }
+    private var apiKey: String { APIKeychain.apiKey }
     private var userName: String { Defaults[.userName] }
     private let maxQuotaMessage: String = "Maximum quota exceeded"
 

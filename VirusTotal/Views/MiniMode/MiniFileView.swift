@@ -196,13 +196,15 @@ struct MiniFileView: View {
 
     /// Trigger `uploadFile` and call `cancelOngoingRequest` after completion
     private func uploadFile() {
-        Task<Void, Never> {
+        Task {
             do {
                 if try await viewModel.uploadFile() {
                     viewModel.cancelOngoingRequest()
                 }
             } catch {
-                log.error("File Upload Error: \(error.localizedDescription)")
+                viewModel.errorMessage = error.localizedDescription
+                viewModel.statusMonitor = .fail
+                log.error(error.localizedDescription)
             }
         }
     }

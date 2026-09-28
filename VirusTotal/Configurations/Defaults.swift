@@ -17,8 +17,7 @@ extension Defaults.Keys {
     static let monthlyQuota = Key<UserQuota>("monthlyQuota",
                                              default: UserQuota(used: 0, allowed: 15_500))
 
-    // Store VT API Key and Username
-    static let apiKey = Key<String>("apiKey", default: "")
+    // Store VT Username. The API key is stored in Keychain, see APIKeychain.
     static let userName = Key<String>("userName", default: "")
 
     // Onboarding
@@ -28,6 +27,7 @@ extension Defaults.Keys {
     static let cleanURL = Key<Bool>("cleanURL", default: false)
     static let startPage = Key<NavigationItem>("startPage", default: .home)
     static let enableNotification = Key<Bool>("enableNotification", default: true)
+    static let showMainWindowOnNextLaunch = Key<Bool>("showMainWindowOnNextLaunch", default: false)
 
     // Advanced Settings
     static let miniMode = Key<Bool>("miniMode", default: false)

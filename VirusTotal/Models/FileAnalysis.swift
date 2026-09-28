@@ -7,7 +7,6 @@
 
 import Foundation
 import Alamofire
-import Defaults
 
 final class FileAnalysisCancellationToken: @unchecked Sendable {
     private let lock = NSLock()
@@ -309,8 +308,9 @@ actor FileAnalysis {
     }
 
     // MARK: Private
-
-    private var apiKey: String { Defaults[.apiKey] }
+    /// Store a reference to the current request
+    private var currentAFRequest: Request?
+    private var apiKey: String { APIKeychain.apiKey }
 
     nonisolated private func makeFileAnalysisResult(from response: DataResponse<FileAnalysisResponse, AFError>) -> FileAnalysisResult {
         var result = FileAnalysisResult(getReportSuccess: nil,

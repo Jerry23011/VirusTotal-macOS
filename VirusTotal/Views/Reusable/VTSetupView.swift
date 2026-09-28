@@ -9,16 +9,18 @@ import SwiftUI
 import Defaults
 
 struct VTSetupView: View {
-    private var viewModel = QuotaStatusViewModel()
+    @State private var viewModel = QuotaStatusViewModel()
 
-    @Default(.apiKey) private var apiKey: String
     @Default(.userName) private var userName: String
 
+    @AppStorage("didShowAPIKeychainNotice") private var didShowAPIKeychainNotice = false
+    @State private var apiKey: String = ""
     @State private var showSecret: Bool = false
     @State private var buttonIsLoading: Bool = false
     @State private var isAlertPresented: Bool = false
+    @State private var isKeychainNoticePresented = false
     @State private var alertTitle: LocalizedStringKey?
-    @State private var alertMessage: LocalizedStringKey?
+    @State private var alertMessage = ""
 
     var body: some View {
         Form {
@@ -36,18 +38,27 @@ struct VTSetupView: View {
                     reset()
                 }
             } message: {
-                Text(alertMessage ?? "settings.api.message.unkown")
+                Text(alertMessage)
+            }
+            .alert("settings.api.keychain.notice.title", isPresented: $isKeychainNoticePresented) {
+                Button("settings.api.keychain.notice.cancel", role: .cancel) {}
+                Button("settings.api.keychain.notice.continue") {
+                    didShowAPIKeychainNotice = true
+                    saveAndVerifyAPIKey()
+                }
+            } message: {
+                Text("settings.api.keychain.notice.message")
             }
             .onChange(of: viewModel.statusSuccess) { _, newValue in
                 switch newValue {
                 case true:
                     alertTitle = "settings.api.verify.success"
-                    alertMessage = "settings.api.message.success"
+                    alertMessage = String(localized: "settings.api.message.success")
                     buttonIsLoading = false
                     isAlertPresented = true
                 case false:
                     alertTitle = "settings.api.verify.failed"
-                    alertMessage = "settings.api.message.failed"
+                    alertMessage = viewModel.errorMessage ?? String(localized: "settings.api.message.failed")
                     buttonIsLoading = false
                     isAlertPresented = true
                 default:
@@ -57,6 +68,9 @@ struct VTSetupView: View {
         }
         .formStyle(.grouped)
         .scrollDisabled(true)
+        .onAppear {
+            apiKey = APIKeychain.apiKey
+        }
     }
 
     // MARK: ViewBuilder
@@ -115,19 +129,55 @@ struct VTSetupView: View {
 
     /// Triggers verification
     private func verifyInput() {
+        if shouldShowKeychainNotice() {
+            isKeychainNoticePresented = true
+            return
+        }
+
+        saveAndVerifyAPIKey()
+    }
+
+    private func saveAndVerifyAPIKey() {
+        let trimmedAPIKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedUserName = userName.trimmingCharacters(in: .whitespacesAndNewlines)
+        apiKey = trimmedAPIKey
+        userName = trimmedUserName
+
+        guard saveAPIKey(trimmedAPIKey) else { return }
         buttonIsLoading = true
         viewModel.retryRequest()
+    }
+
+    @discardableResult
+    private func saveAPIKey(_ newValue: String) -> Bool {
+        do {
+            try APIKeychain.saveAPIKey(newValue)
+            return true
+        } catch {
+            log.error(error)
+            alertTitle = "settings.api.verify.failed"
+            alertMessage = error.localizedDescription
+            buttonIsLoading = false
+            isAlertPresented = true
+            return false
+        }
+    }
+
+    private func shouldShowKeychainNotice() -> Bool {
+        !didShowAPIKeychainNotice && !apiKey.isEmpty
     }
 
     /// Reset after button is pressed in alert
     private func reset() {
         isAlertPresented = false
         alertTitle = nil
+        alertMessage = ""
     }
 
     /// Return true if any one of apiKey or userName is empty, return false otherwise
     private func isButtonDisabled() -> Bool {
-        return apiKey.isEmpty || userName.isEmpty
+        apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+        userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 
