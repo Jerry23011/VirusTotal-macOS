@@ -13,14 +13,30 @@ actor QuotaStatus {
     static let shared = QuotaStatus()
 
     func performRequest() async throws -> QuotaResult {
-        let quotas = try await fetchQuotas(apiKey: apiKey, userName: userName)
+        var accountQuotas: AccountQuotas?
+        var accountQuotasError: Error?
+
+        do {
+            accountQuotas = try await fetchUserQuotas(apiKey: apiKey)
+        } catch {
+            accountQuotasError = error
+        }
+
+        let overallQuotas = try? await fetchQuotas(apiKey: apiKey, userName: userName)
+        guard accountQuotas != nil || overallQuotas != nil else {
+            throw accountQuotasError ?? QuotaError.unavailable
+        }
+
+        let hourlyQuota = accountQuotas?.apiRequestsHourly ?? overallQuotas?.data.apiRequestsHourly.effectiveQuota
+        let dailyQuota = accountQuotas?.apiRequestsDaily ?? overallQuotas?.data.apiRequestsDaily.effectiveQuota
+        let monthlyQuota = accountQuotas?.apiRequestsMonthly ?? overallQuotas?.data.apiRequestsMonthly.effectiveQuota
 
         var quotaResult = QuotaResult(
             statusSuccess: nil,
             errorMessage: nil,
-            hourlyQuota: quotas.data.apiRequestsHourly.user,
-            dailyQuota: quotas.data.apiRequestsDaily.user,
-            monthlyQuota: quotas.data.apiRequestsMonthly.user
+            hourlyQuota: hourlyQuota,
+            dailyQuota: dailyQuota,
+            monthlyQuota: monthlyQuota
         )
 
         await storeQuotas(quotaResult)
@@ -82,6 +98,21 @@ private func fetchQuotas(apiKey: String, userName: String) async throws -> Quota
     return quotas
 }
 
+private func fetchUserQuotas(apiKey: String) async throws -> AccountQuotas {
+    let apiEndPoint = "https://www.virustotal.com/api/v3/users/\(apiKey)"
+    let headers: HTTPHeaders = [
+        "accept": "application/json",
+        "x-apikey": apiKey
+    ]
+
+    let user = try await AF.request(apiEndPoint, method: .get, headers: headers)
+        .validate()
+        .serializingDecodable(VTUserResponse.self)
+        .value
+
+    return user.data.attributes.quotas
+}
+
 // MARK: - QuotaResult
 
 struct QuotaResult {
@@ -90,6 +121,10 @@ struct QuotaResult {
     var hourlyQuota: UserQuota?
     var dailyQuota: UserQuota?
     var monthlyQuota: UserQuota?
+}
+
+enum QuotaError: Error {
+    case unavailable
 }
 
 // MARK: Quota Response
@@ -114,11 +149,53 @@ struct RequestData: Decodable {
     }
 }
 
+struct VTUserResponse: Decodable {
+    let data: VTUserData
+
+    private enum CodingKeys: String, CodingKey {
+        case data
+    }
+}
+
+struct VTUserData: Decodable {
+    let attributes: VTUserAttributes
+
+    private enum CodingKeys: String, CodingKey {
+        case attributes
+    }
+}
+
+struct VTUserAttributes: Decodable {
+    let quotas: AccountQuotas
+
+    private enum CodingKeys: String, CodingKey {
+        case quotas
+    }
+}
+
+struct AccountQuotas: Decodable {
+    let apiRequestsHourly: UserQuota?
+    let apiRequestsDaily: UserQuota?
+    let apiRequestsMonthly: UserQuota?
+
+    private enum CodingKeys: String, CodingKey {
+        case apiRequestsHourly = "api_requests_hourly"
+        case apiRequestsDaily = "api_requests_daily"
+        case apiRequestsMonthly = "api_requests_monthly"
+    }
+}
+
 struct UserQuotaWrapper: Decodable {
-    let user: UserQuota
+    let user: UserQuota?
+    let group: UserQuota?
+
+    var effectiveQuota: UserQuota? {
+        user ?? group
+    }
 
     private enum CodingKeys: String, CodingKey {
         case user
+        case group
     }
 }
 
