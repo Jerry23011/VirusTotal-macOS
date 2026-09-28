@@ -40,7 +40,7 @@ struct MiniFileView: View {
             .animation(.spring, value: isFileDropped)
             .keyboardShortcut("o")
             .fileImporter(isPresented: $isFileImporterPresent,
-                          allowedContentTypes: [.data],
+                          allowedContentTypes: fileScanContentTypes,
                           allowsMultipleSelection: false) { result in
                 switch result {
                 case .success(let urls):
