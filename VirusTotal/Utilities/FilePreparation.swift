@@ -19,9 +19,7 @@ enum FilePreparation {
     }
 
     static func cleanupPreparedFile(at fileURL: URL) {
-        guard temporaryArchiveDirectory(for: fileURL) != nil else { return }
-
-        let directoryURL = fileURL.deletingLastPathComponent()
+        guard let directoryURL = ownedArchiveDirectory(for: fileURL) else { return }
         try? FileManager.default.removeItem(at: directoryURL)
     }
 
@@ -37,29 +35,25 @@ enum FilePreparation {
 
     private static func makeZipArchive(for appBundleURL: URL) async throws -> URL {
         try Task.checkCancellation()
-        let processBox = CancellableProcessBox()
         let archiveTask = Task.detached(priority: .userInitiated) {
-            try createZipArchive(for: appBundleURL, processBox: processBox)
+            try createZipArchive(for: appBundleURL)
         }
 
         return try await withTaskCancellationHandler {
             try await archiveTask.value
         } onCancel: {
             archiveTask.cancel()
-            processBox.cancel()
         }
     }
 
-    private static func createZipArchive(for appBundleURL: URL, processBox: CancellableProcessBox) throws -> URL {
+    /// Reading a directory with `.forUploading` makes `NSFileCoordinator` zip it,
+    /// the same way Finder's Compress does. The zip only lives for the duration
+    /// of the block, so it is moved into a directory this type owns.
+    private static func createZipArchive(for appBundleURL: URL) throws -> URL {
         try Task.checkCancellation()
         let archiveDirectory = archiveRootDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
-        do {
-            try FileManager.default.createDirectory(at: archiveDirectory, withIntermediateDirectories: true)
-        } catch {
-            try? FileManager.default.removeItem(at: archiveDirectory)
-            throw error
-        }
+        try FileManager.default.createDirectory(at: archiveDirectory, withIntermediateDirectories: true)
 
         let archiveURL = archiveDirectory
             .appendingPathComponent(appBundleURL.lastPathComponent)
@@ -71,38 +65,26 @@ enum FilePreparation {
             }
         }
 
-        let process = Process()
-        process.executableURL = URL(filePath: "/usr/bin/ditto")
-        process.arguments = [
-            "-c",
-            "-k",
-            "--keepParent",
-            appBundleURL.path,
-            archiveURL.path
-        ]
-
-        let errorPipe = Pipe()
-        process.standardError = errorPipe
-
-        try processBox.set(process)
-        defer { processBox.clear(process) }
-        try process.run()
-        process.waitUntilExit()
+        var coordinatorError: NSError?
+        var moveError: Error?
+        NSFileCoordinator().coordinate(readingItemAt: appBundleURL,
+                                       options: .forUploading,
+                                       error: &coordinatorError) { zipURL in
+            do {
+                try FileManager.default.moveItem(at: zipURL, to: archiveURL)
+            } catch {
+                moveError = error
+            }
+        }
+        if let error = coordinatorError ?? moveError {
+            throw error
+        }
+        // The archiving itself cannot be interrupted, so a cancellation that
+        // arrived meanwhile is honoured here and the archive is discarded.
         try Task.checkCancellation()
 
-        guard process.terminationStatus == 0 else {
-            let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-            let details = String(data: errorData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
-            let message = details?.isEmpty == false
-                ? "Failed to create .app.zip archive: \(details!)"
-                : "Failed to create .app.zip archive."
-            throw NSError(
-                domain: "VirusTotal.FilePreparation",
-                code: Int(process.terminationStatus),
-                userInfo: [NSLocalizedDescriptionKey: message]
-            )
-        }
-
+        try Data(archiveURL.lastPathComponent.utf8).write(
+            to: archiveDirectory.appendingPathComponent(".virustotal-archive"), options: .atomic)
         shouldKeepArchive = true
         return archiveURL
     }
@@ -117,54 +99,31 @@ enum FilePreparation {
         let expirationDate = Date().addingTimeInterval(-24 * 60 * 60)
         for archiveDirectory in archiveDirectories {
             let creationDate = (try? archiveDirectory.resourceValues(forKeys: [.creationDateKey]))?.creationDate ?? .distantPast
-            if creationDate < expirationDate {
-                try? FileManager.default.removeItem(at: archiveDirectory)
-            }
+            let marker = archiveDirectory.appendingPathComponent(".virustotal-archive")
+            guard creationDate < expirationDate,
+                  let name = try? String(contentsOf: marker, encoding: .utf8),
+                  name == URL(fileURLWithPath: name).lastPathComponent,
+                  ownedArchiveDirectory(for: archiveDirectory.appendingPathComponent(name)) != nil
+            else { continue }
+            try? FileManager.default.removeItem(at: archiveDirectory)
         }
     }
 
-    private static func temporaryArchiveDirectory(for fileURL: URL) -> URL? {
-        let standardizedRoot = archiveRootDirectory.standardizedFileURL.path
+    /// Require the exact archive name recorded at creation, not just a path
+    /// shaped like an archive: foreign ZIPs under the temp root are left alone.
+    private static func ownedArchiveDirectory(for fileURL: URL) -> URL? {
         let standardizedURL = fileURL.standardizedFileURL
-        guard standardizedURL.path.hasPrefix(standardizedRoot + "/") else { return nil }
+        let directoryURL = standardizedURL.deletingLastPathComponent()
+        let markerURL = directoryURL.appendingPathComponent(".virustotal-archive")
+        let recordedName = try? String(contentsOf: markerURL, encoding: .utf8)
+        guard standardizedURL.pathExtension == "zip",
+              UUID(uuidString: directoryURL.lastPathComponent) != nil,
+              directoryURL.deletingLastPathComponent().path == archiveRootDirectory.standardizedFileURL.path,
+              (try? directoryURL.resourceValues(forKeys: [.isSymbolicLinkKey]))?.isSymbolicLink != true,
+              recordedName == standardizedURL.lastPathComponent
+        else { return nil }
 
-        return standardizedURL.deletingLastPathComponent()
-    }
-}
-
-private final class CancellableProcessBox: @unchecked Sendable {
-    private let lock = NSLock()
-    private var process: Process?
-    private var isCancelled = false
-
-    func set(_ process: Process) throws {
-        lock.lock()
-        if isCancelled {
-            lock.unlock()
-            process.terminate()
-            throw CancellationError()
-        }
-
-        self.process = process
-        lock.unlock()
-    }
-
-    func clear(_ process: Process) {
-        lock.lock()
-        if self.process === process {
-            self.process = nil
-        }
-        lock.unlock()
-    }
-
-    func cancel() {
-        lock.lock()
-        isCancelled = true
-        let process = process
-        self.process = nil
-        lock.unlock()
-
-        process?.terminate()
+        return directoryURL
     }
 }
 

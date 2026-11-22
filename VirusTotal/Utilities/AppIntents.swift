@@ -7,7 +7,7 @@
 
 import AppIntents
 
-// Takes in a fileURL and launch the app. Then run handleFileImport() in ViewModel.
+// Takes in a fileURL and launch the app. Then run startFileImport() in ViewModel.
 struct ScanFileIntent: AppIntent {
 
     static let title: LocalizedStringResource = "intent.file.title"
@@ -31,7 +31,7 @@ struct ScanFileIntent: AppIntent {
         }
 
         AppState.shared.selectedSidebarItem = .fileUpload
-        await FileViewModel.shared.handleFileImport(fileURL)
+        await FileViewModel.shared.startFileImport(fileURL).value
 
         return .result()
     }

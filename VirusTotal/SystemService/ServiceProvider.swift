@@ -36,7 +36,7 @@ class ServiceProvider: NSObject {
             WindowManager.showFileWindow()
             let fileURL = URL(string: url)
             let defaultFileURL = URL(string: "file://")!
-            await fileViewModel.handleFileImport(fileURL ?? defaultFileURL)
+            await fileViewModel.startFileImport(fileURL ?? defaultFileURL).value
         }
     }
 }

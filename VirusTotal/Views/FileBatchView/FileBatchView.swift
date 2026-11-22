@@ -148,7 +148,7 @@ struct FileBatchView: View {
                     Button("filebatchview.button.start.analysis", action: startBatchAnalysis)
                         .buttonStyle(.borderedProminent)
                         .keyboardShortcut(.return, modifiers: .command)
-                        .disabled(viewModel.hasPreparingArchives)
+                        .disabled(viewModel.isPreparingFiles)
                 }
             }
         }

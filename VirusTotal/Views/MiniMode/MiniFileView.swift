@@ -45,9 +45,7 @@ struct MiniFileView: View {
                 switch result {
                 case .success(let urls):
                     urls.forEach { url in
-                        Task {
-                            await viewModel.handleFileImport(url)
-                        }
+                        viewModel.startFileImport(url)
                     }
                 case .failure(let error):
                     log.error("File Import Error: \(error.localizedDescription)")
@@ -177,13 +175,13 @@ struct MiniFileView: View {
             return false
         }
         NSApp.activate(ignoringOtherApps: true)
+        let importTask = viewModel.startFileImport(fileURL)
         Task {
-            await viewModel.setupFileInfo(fileURL: fileURL)
+            await importTask.value
             /// On macOS 26, AnyDropDelegate will not trigger `dropExited()` when releasing the cursor after dropping a file.
             if #available(macOS 26, *) {
                 isFileDropped = false
             }
-            await viewModel.getFileReport()
         }
         return true
     }

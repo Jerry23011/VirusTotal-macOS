@@ -60,10 +60,14 @@ final class FileBatchViewModel {
     var isProcessing: Bool = false
     var completedCount: Int = 0
     var overallProgress: Double = 0.0
-    var hasPreparingArchives: Bool {
-        batchFiles.contains { $0.status == .preparingArchive }
+    /// True while any added file is still being archived or hashed, including
+    /// regular files, which only appear in `batchFiles` once they are ready.
+    var isPreparingFiles: Bool {
+        !preparations.isEmpty || batchFiles.contains { $0.status == .preparingArchive }
     }
 
+    private var preparationGeneration = UUID()
+    private var preparations: [UUID: FilePreparationTask] = [:]
     private var processingTasks: [UUID: Task<Void, Never>] = [:]
     private var cancellationTokens: [UUID: FileAnalysisCancellationToken] = [:]
     private var securityScopedFileURLs: Set<URL> = []
@@ -84,7 +88,9 @@ final class FileBatchViewModel {
     // MARK: - Public Methods
 
     func addFiles(_ urls: [URL]) async {
+        let generation = preparationGeneration
         for url in urls {
+            guard generation == preparationGeneration, !Task.isCancelled else { return }
             await addFile(url)
         }
     }
@@ -96,6 +102,7 @@ final class FileBatchViewModel {
             processingTasks.removeValue(forKey: batchFile.id)
         }
         cancellationTokens.removeValue(forKey: batchFile.id)?.cancelAll()
+        preparations.removeValue(forKey: batchFile.id)?.task.cancel()
 
         FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
         releaseSecurityScopedAccess(for: batchFile.originalFileURL)
@@ -104,7 +111,10 @@ final class FileBatchViewModel {
     }
 
     func clearAllFiles() {
+        preparationGeneration = UUID()
         cancelAllProcessing()
+        preparations.values.forEach { $0.task.cancel() }
+        preparations.removeAll()
         batchFiles.forEach { FilePreparation.cleanupPreparedFile(at: $0.preparedFileURL) }
         releaseAllSecurityScopedAccess()
         batchFiles.removeAll()
@@ -121,7 +131,7 @@ final class FileBatchViewModel {
     }
 
     func startBatchAnalysis() async {
-        guard !isProcessing, !hasPreparingArchives else { return }
+        guard !isProcessing, !isPreparingFiles else { return }
 
         isProcessing = true
         resetProgress()
@@ -196,6 +206,11 @@ final class FileBatchViewModel {
         case sha256(fileName: String, fileSize: Int64)
     }
 
+    private struct FilePreparationTask {
+        let file: BatchFile
+        let task: Task<Result<PreparedFileDetails, FilePreparationFailure>, Never>
+    }
+
     private func addFile(_ url: URL) async {
         let didStartAccessing = url.startAccessingSecurityScopedResource()
 
@@ -215,7 +230,23 @@ final class FileBatchViewModel {
         let batchFile = makeBatchFile(for: url)
         appendPreparingFileIfNeeded(batchFile, shouldShowPreparation: inspection.shouldShowPreparation)
 
-        switch await prepareFileDetails(for: url) {
+        let task = Task {
+            await prepareFileDetails(for: url)
+        }
+        preparations[batchFile.id] = FilePreparationTask(file: batchFile, task: task)
+        let result = await task.value
+        preparations.removeValue(forKey: batchFile.id)
+
+        // Cleared or removed while it was prepared: drop the result instead
+        // of adding the file back to the list.
+        guard !task.isCancelled else {
+            if case .success(let details) = result {
+                FilePreparation.cleanupPreparedFile(at: details.fileURL)
+            }
+            return
+        }
+
+        switch result {
         case .success(let details):
             updatePreparedFile(
                 batchFile,
@@ -247,7 +278,8 @@ final class FileBatchViewModel {
     }
 
     private func isDuplicateFile(_ url: URL, preparedFileName: String) -> Bool {
-        batchFiles.contains { $0.fileName == preparedFileName || $0.fileName == url.lastPathComponent }
+        let knownFiles = batchFiles + preparations.values.map(\.file)
+        return knownFiles.contains { $0.fileName == preparedFileName || $0.fileName == url.lastPathComponent }
     }
 
     private func makeBatchFile(for url: URL) -> BatchFile {
@@ -394,9 +426,8 @@ final class FileBatchViewModel {
         do {
             try Task.checkCancellation()
             try await refreshPreparedFile(for: batchFile)
-            defer {
-                FilePreparation.cleanupPreparedFile(at: batchFile.preparedFileURL)
-            }
+            let preparedURL = batchFile.preparedFileURL
+            defer { FilePreparation.cleanupPreparedFile(at: preparedURL) }
 
             if try await handleExistingReport(for: batchFile, cancellationToken: cancellationToken) {
                 return
@@ -404,11 +435,13 @@ final class FileBatchViewModel {
 
             try await uploadAndAnalyze(batchFile, cancellationToken: cancellationToken)
         } catch is CancellationError {
-            if batchFiles.contains(where: { $0.id == batchFile.id }) {
+            if cancellationTokens[batchFile.id] === cancellationToken,
+               batchFiles.contains(where: { $0.id == batchFile.id }) {
                 batchFile.status = .pending
                 batchFile.uploadProgress = 0.0
             }
         } catch {
+            guard cancellationTokens[batchFile.id] === cancellationToken else { return }
             batchFile.status = .failed
             batchFile.errorMessage = error.displayMessageWithCode
             log.error(batchFile.errorMessage ?? "Unknown Error")
@@ -461,10 +494,10 @@ final class FileBatchViewModel {
             }
         }
 
-        let uploadSuccess = try await uploadFile(batchFile, cancellationToken: cancellationToken)
+        let uploadResult = try await uploadFile(batchFile, cancellationToken: cancellationToken)
         try Task.checkCancellation()
 
-        guard uploadSuccess else {
+        guard uploadResult.uploadSuccess == true else {
             batchFile.status = .failed
             batchFile.errorMessage = "Upload Failed"
             log.error("Upload Failed")
@@ -474,7 +507,9 @@ final class FileBatchViewModel {
         }
 
         batchFile.status = .analyzing
-        try await Task.sleep(nanoseconds: 20_000_000_000) // 20 seconds
+        if let analysisID = uploadResult.analysisId {
+            try await FileAnalysis.shared.waitForAnalysis(analysisId: analysisID, cancellationToken: cancellationToken)
+        }
         try Task.checkCancellation()
         await getAnalysisResults(batchFile, cancellationToken: cancellationToken)
     }
@@ -520,7 +555,7 @@ final class FileBatchViewModel {
         }
     }
 
-    private func uploadFile(_ batchFile: BatchFile, cancellationToken: FileAnalysisCancellationToken) async throws -> Bool {
+    private func uploadFile(_ batchFile: BatchFile, cancellationToken: FileAnalysisCancellationToken) async throws -> FileUploadResult {
         var apiEndpoint = chooseUploadEndpoint(for: batchFile)
 
         // Get large file endpoint if needed
@@ -529,8 +564,7 @@ final class FileBatchViewModel {
             try Task.checkCancellation()
             guard endpointResult.getEndpointSuccess == true,
                   let largeEndpoint = endpointResult.largeFileEndpoint else {
-                log.error("Failed to get large file endpoint")
-                return false
+                throw VTError.upload(endpointResult.errorMessage ?? "Failed to get large file endpoint")
             }
             apiEndpoint = largeEndpoint
         }
@@ -549,7 +583,7 @@ final class FileBatchViewModel {
             progressHandler: progressHandler
         )
 
-        return uploadResult.uploadSuccess == true
+        return uploadResult
     }
 
     private func getAnalysisResults(_ batchFile: BatchFile, cancellationToken: FileAnalysisCancellationToken) async {
@@ -579,7 +613,7 @@ final class FileBatchViewModel {
                     return
                 }
 
-                if reportResult.getReportSuccess != true {
+                if reportResult.statusMonitor == .fail {
                     batchFile.status = .failed
                     batchFile.errorMessage = reportResult.errorMessage
                     return

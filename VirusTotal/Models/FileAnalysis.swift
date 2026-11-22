@@ -95,6 +95,12 @@ private final class FileAnalysisRequestRegistrationBox: @unchecked Sendable {
 actor FileAnalysis {
     static let shared = FileAnalysis()
 
+    func waitForAnalysis(analysisId: String, cancellationToken: FileAnalysisCancellationToken?) async throws {
+        try await AnalysisWaiter.waitForCompletion {
+            try await self.getAnalysisStatus(analysisId: analysisId, cancellationToken: cancellationToken)
+        }
+    }
+
     /// Ask VirusTotal how far along the queued analysis is.
     /// Returns the raw `status` string, or nil when the response carries none.
     func getAnalysisStatus(analysisId: String,
