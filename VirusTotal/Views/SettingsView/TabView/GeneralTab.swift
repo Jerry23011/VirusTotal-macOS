@@ -5,6 +5,7 @@
 //  Created by Jerry on 2024-05-19.
 //
 
+import AppKit
 import SwiftUI
 import LaunchAtLogin
 import Defaults
@@ -46,6 +47,19 @@ struct GeneralTab: View {
                                      labelText: "settings.general.startpage")
                 }
                 .controlSize(.regular)
+
+                LabeledContent {
+                    Button("settings.general.language.open") {
+                        openLanguageSettings()
+                    }
+                } label: {
+                    SettingsViewItem(
+                        color: .blue,
+                        systemImage: "globe",
+                        labelText: "settings.general.language",
+                        subtitleText: "settings.general.language.hint"
+                    )
+                }
             }
 
             Section {
@@ -80,7 +94,6 @@ struct GeneralTab: View {
         }
         .controlSize(.small)
         .formStyle(.grouped)
-        .scrollDisabled(true)
     }
 
     // MARK: Internal
@@ -90,6 +103,17 @@ struct GeneralTab: View {
     }
 
     // MARK: Private
+    private func openLanguageSettings() {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.Localization-Settings.extension"),
+           NSWorkspace.shared.open(url) {
+            return
+        }
+
+        if let settings = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.systempreferences") {
+            NSWorkspace.shared.open(settings)
+        }
+    }
+
     private var currentVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     }
