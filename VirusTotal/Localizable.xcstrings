@@ -1,6 +1,34 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "quota.error.unavailable" : {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unable to load API quotas."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удалось загрузить квоты API."
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nepodařilo se načíst kvóty API."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "无法加载 API 配额。"
+          }
+        }
+      }
+    },
     "" : {
       "localizations" : {
         "cs" : {
