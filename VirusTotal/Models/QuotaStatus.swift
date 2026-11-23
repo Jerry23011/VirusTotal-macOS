@@ -13,24 +13,24 @@ actor QuotaStatus {
     static let shared = QuotaStatus()
 
     func performRequest() async throws -> QuotaResult {
-        let quotas = try await fetchQuotas(apiKey: apiKey, userName: userName)
+        var accountQuotas: AccountQuotas?
+        var accountQuotasError: Error?
 
-        var quotaResult = QuotaResult(
-            statusSuccess: nil,
-            errorMessage: nil,
-            hourlyQuota: quotas.data.apiRequestsHourly.user,
-            dailyQuota: quotas.data.apiRequestsDaily.user,
-            monthlyQuota: quotas.data.apiRequestsMonthly.user
-        )
-
-        await storeQuotas(quotaResult)
-
-        if await isQuotaExceeded(quotaResult) {
-            quotaResult.statusSuccess = false
-            quotaResult.errorMessage = maxQuotaMessage
-        } else {
-            quotaResult.statusSuccess = true
+        do {
+            accountQuotas = try await fetchUserQuotas(apiKey: apiKey)
+        } catch {
+            accountQuotasError = error
         }
+
+        // Avoid spending another API request when the user endpoint is complete.
+        let overallQuotas = accountQuotas?.isComplete == true
+            ? nil
+            : try? await fetchQuotas(apiKey: apiKey, userName: userName)
+        guard accountQuotas != nil || overallQuotas != nil else {
+            throw accountQuotasError ?? QuotaError.unavailable
+        }
+        let quotaResult = try QuotaResult.resolve(account: accountQuotas, overall: overallQuotas)
+        await storeQuotas(quotaResult)
 
         return quotaResult
     }
@@ -39,18 +39,6 @@ actor QuotaStatus {
 
     private var apiKey: String { APIKeychain.apiKey }
     private var userName: String { Defaults[.userName] }
-    private let maxQuotaMessage: String = "Maximum quota exceeded"
-
-    /// Given a QuotaResult, return true if hourly or daily quota used
-    /// is equal or larger than hourly or daily quota allowed, return false otherwise
-    private func isQuotaExceeded(_ result: QuotaResult) async -> Bool {
-        guard let hourlyQuota = result.hourlyQuota,
-              let dailyQuota = result.dailyQuota else {
-            return false
-        }
-        return hourlyQuota.used >= hourlyQuota.allowed || dailyQuota.used >= dailyQuota.allowed
-    }
-
     /// Given a QuotaResult, store hourly, daily, and monthly quotas in Defaults
     private func storeQuotas(_ result: QuotaResult) async {
         if let hourlyQuota = result.hourlyQuota {
@@ -68,7 +56,8 @@ actor QuotaStatus {
 // MARK: - Networking
 
 private func fetchQuotas(apiKey: String, userName: String) async throws -> Quotas {
-    let apiEndPoint = "https://www.virustotal.com/api/v3/users/\(userName)/overall_quotas"
+    let userID = userName.isEmpty ? apiKey : userName
+    let apiEndPoint = "https://www.virustotal.com/api/v3/users/\(userID)/overall_quotas"
     let headers: HTTPHeaders = [
         "accept": "application/json",
         "x-apikey": apiKey
@@ -82,52 +71,17 @@ private func fetchQuotas(apiKey: String, userName: String) async throws -> Quota
     return quotas
 }
 
-// MARK: - QuotaResult
+private func fetchUserQuotas(apiKey: String) async throws -> AccountQuotas {
+    let apiEndPoint = "https://www.virustotal.com/api/v3/users/\(apiKey)"
+    let headers: HTTPHeaders = [
+        "accept": "application/json",
+        "x-apikey": apiKey
+    ]
 
-struct QuotaResult {
-    var statusSuccess: Bool?
-    var errorMessage: String?
-    var hourlyQuota: UserQuota?
-    var dailyQuota: UserQuota?
-    var monthlyQuota: UserQuota?
-}
+    let user = try await AF.request(apiEndPoint, method: .get, headers: headers)
+        .validate()
+        .serializingDecodable(VTUserResponse.self)
+        .value
 
-// MARK: Quota Response
-
-struct Quotas: Decodable {
-    let data: RequestData
-
-    private enum CodingKeys: String, CodingKey {
-        case data
-    }
-}
-
-struct RequestData: Decodable {
-    let apiRequestsHourly: UserQuotaWrapper
-    let apiRequestsDaily: UserQuotaWrapper
-    let apiRequestsMonthly: UserQuotaWrapper
-
-    private enum CodingKeys: String, CodingKey {
-        case apiRequestsHourly = "api_requests_hourly"
-        case apiRequestsDaily = "api_requests_daily"
-        case apiRequestsMonthly = "api_requests_monthly"
-    }
-}
-
-struct UserQuotaWrapper: Decodable {
-    let user: UserQuota
-
-    private enum CodingKeys: String, CodingKey {
-        case user
-    }
-}
-
-struct UserQuota: Decodable {
-    let used: Int
-    let allowed: Int
-
-    private enum CodingKeys: String, CodingKey {
-        case used
-        case allowed
-    }
+    return user.data.attributes.quotas
 }

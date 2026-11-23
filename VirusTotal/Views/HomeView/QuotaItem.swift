@@ -50,7 +50,7 @@ struct QuotaItem: View {
     // MARK: Private
 
     private var unusedQuota: Int {
-        return quotaItem.allowed - quotaItem.used
+        return max(quotaItem.allowed - quotaItem.used, 0)
     }
 
     private var quotaUsage: [QuotaUsage] {

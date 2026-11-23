@@ -34,13 +34,13 @@ struct HomeView: View {
             Section {
                 QuotaItem(title: "homepage.quota.hourly",
                           systemImage: "clock.fill",
-                          quotaItem: hourlyQuota)
+                          quotaItem: currentHourlyQuota)
                 QuotaItem(title: "homepage.quota.daily",
                           systemImage: "sun.horizon.fill",
-                          quotaItem: dailyQuota)
+                          quotaItem: currentDailyQuota)
                 QuotaItem(title: "homepage.quota.monthly",
                           systemImage: "calendar",
-                          quotaItem: monthlyQuota)
+                          quotaItem: currentMonthlyQuota)
             }
         }
         .formStyle(.grouped)
@@ -53,6 +53,20 @@ struct HomeView: View {
         .onDisappear {
             viewModel.statusSuccess = nil
         }
+    }
+
+    // MARK: Private
+
+    private var currentHourlyQuota: UserQuota {
+        viewModel.hourlyQuota ?? hourlyQuota
+    }
+
+    private var currentDailyQuota: UserQuota {
+        viewModel.dailyQuota ?? dailyQuota
+    }
+
+    private var currentMonthlyQuota: UserQuota {
+        viewModel.monthlyQuota ?? monthlyQuota
     }
 }
 
