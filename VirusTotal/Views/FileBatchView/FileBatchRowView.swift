@@ -15,7 +15,11 @@ struct FileBatchRowView: View {
     var body: some View {
         HStack(spacing: 12) {
             // File Icon
-            if let thumbnailImage = batchFile.thumbnailImage {
+            if batchFile.status == .preparingArchive {
+                ProgressView()
+                    .controlSize(.small)
+                    .frame(width: 30, height: 35)
+            } else if let thumbnailImage = batchFile.thumbnailImage {
                 Image(nsImage: thumbnailImage)
                     .resizable()
                     .frame(width: 30, height: 35)
@@ -35,14 +39,20 @@ struct FileBatchRowView: View {
                     .lineLimit(1)
 
                 HStack {
-                    Text(formatFileSize(batchFile.fileSize))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-
-                    if let typeDescription = batchFile.typeDescription {
-                        Text("filebatchview.type.description \(typeDescription)")
+                    if batchFile.status == .preparingArchive {
+                        Text("filebatchview.text.creating.archive")
                             .font(.caption)
                             .foregroundStyle(.secondary)
+                    } else {
+                        Text(formatFileSize(batchFile.fileSize))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+
+                        if let typeDescription = batchFile.typeDescription {
+                            Text("filebatchview.type.description \(typeDescription)")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
@@ -53,7 +63,7 @@ struct FileBatchRowView: View {
             statusView
 
             // Remove Button
-            if batchFile.status == .preparing {
+            if batchFile.status == .preparingArchive || batchFile.status == .preparing {
                 EmptyView()
             } else if batchFile.status != .uploading && batchFile.status != .analyzing && batchFile.status != .success {
                 Button(action: onRemove) {
@@ -72,7 +82,8 @@ struct FileBatchRowView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-        .background(Color(NSColor.controlBackgroundColor))
+        .background(batchFile.status == .preparingArchive ? Color.gray.opacity(0.12) : Color(NSColor.controlBackgroundColor))
+        .opacity(batchFile.status == .preparingArchive ? 0.65 : 1)
         .cornerRadius(8)
     }
 
@@ -139,6 +150,10 @@ struct FileBatchRowView: View {
                 }
         case .upload:
             Text("filebatchview.text.ready")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        case .preparingArchive:
+            Text("filebatchview.text.preparing")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         case .preparing:

@@ -365,6 +365,34 @@
         }
       }
     },
+    "error.analysis.timeout" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Časový limit analýzy vypršel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analysis timeout"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "分析超时"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время ожидания анализа истекло"
+          }
+        }
+      }
+    },
     "errorview.title" : {
       "localizations" : {
         "cs" : {
@@ -814,6 +842,34 @@
         }
       }
     },
+    "filebatchview.text.creating.archive" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Vytváření .app.zip"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creating .app.zip"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "正在创建 .app.zip"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создание .app.zip"
+          }
+        }
+      }
+    },
     "filebatchview.text.malicious" : {
       "localizations" : {
         "cs" : {
@@ -838,6 +894,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "恶意"
+          }
+        }
+      }
+    },
+    "filebatchview.text.preparing" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Příprava"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparing"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "准备中"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подготовка"
           }
         }
       }
