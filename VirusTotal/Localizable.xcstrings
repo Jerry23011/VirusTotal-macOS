@@ -3741,7 +3741,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "machine_translated",
             "value" : "Jazyk aplikace"
           }
         },
@@ -3759,7 +3759,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "machine_translated",
             "value" : "应用语言"
           }
         }
@@ -3769,7 +3769,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "machine_translated",
             "value" : "Jazyk vyberte v části Aplikace v nastavení Jazyk a oblast."
           }
         },
@@ -3787,7 +3787,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "machine_translated",
             "value" : "在“语言与地区”的“应用程序”部分选择语言。"
           }
         }
@@ -3797,7 +3797,7 @@
       "localizations" : {
         "cs" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "machine_translated",
             "value" : "Otevřít Nastavení systému"
           }
         },
@@ -3815,7 +3815,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "machine_translated",
             "value" : "打开系统设置"
           }
         }
